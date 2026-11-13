@@ -1,64 +1,53 @@
-# ADR-[XXX]: [Título Curto e Imperativo da Decisão]
+# 📐 ADR-[XXX] · [Título curto e imperativo da decisão]
 
 ```yaml
-status: PROPOSED # [PROPOSED | ACCEPTED | REJECTED | DEPRECATED | SUPERSEDED]
+status: PROPOSED # PROPOSED | ACCEPTED | REJECTED | DEPRECATED | SUPERSEDED
 date: YYYY-MM-DD
-deciders: [Agente Reflexivo (Cowork), Operador Humano]
+deciders: [papel que decide, operador humano]
 hierarchy_layer: ADR
-governs: [specs/servico-alvo.md]
-justified_by: [Plan/docs/framework-principles.md §Princípio X]
-replaces: [] # Ex: [ADR-012]
-eee_phase: 2 # Fase 2 (Contratos) ou Fase 6 (Abstração)
+governs: [specs/componente.md]
+justified_by: [Plan/docs/principios.md §Princípio X]
+replaces: [] # ex.: [ADR-012]
+eee_phase: 2 # 2 (contrato) | 6 (abstração após repetição)
+ratified_by: null # artefato separado que cita evidência, SHA e nível R15 — quem propõe não ratifica
 ```
 
 ---
 
-## 1. Contexto do Problema e Evidência Empírica
-> *Qual o problema concreto observado em runtime ou na especificação?*
-> *Qual o impacto medido ou o risco de segurança/integridade?*
+## 1. Contexto e evidência empírica
 
-- **Origem Empírica:** [Citar achado, teste vermelho ou incidente real com commit/data].
-- **Sintoma Observado:** [Descrição precisa da falha ou lacuna].
-- **Princípios Afetados:** [Princípios do Plan impactados].
+- **Origem empírica:** [achado, teste vermelho ou incidente, com data e referência].
+- **Sintoma observado:** [descrição precisa da falha ou lacuna; nível de ground truth R15].
+- **Princípios afetados:** [princípios do Plan impactados].
 
----
+## 2. Decisão
 
-## 2. Decisão Arquitetural
-> *Qual escolha técnica estamos fazendo formalmente?*
+- **D1 · [título]:** [regra imperativa].
+- **D2 · [título]:** [regra imperativa].
+- **D3 · Postura de falha (M11):** [fail-closed para decisão; fail-open com buffer durável para evidência].
+- **D4 · Flag e fases:** [`FLAG_X ∈ {off, shadow, enforce}`, default `off`; gate de saída de cada fase].
 
-- **D1 ([Título da Sub-decisão]):** [Descrição imperativa da regra adotada].
-- **D2 ([Título da Sub-decisão]):** [Descrição imperativa da regra adotada].
-- **D3 ([Postura em Falha M11]):** [Definição explícita de Fail-Closed vs Fail-Open com Log Durável].
-
----
-
-## 3. Alternativas Consideradas
+## 3. Alternativas consideradas (≥ 2)
 
 | Alternativa | Prós | Contras | Veredito |
 |---|---|---|:---:|
-| **Opção A:** [Descrição] | • [Vantagem] | • [Desvantagem] | **REJEITADA** |
-| **Opção B (Escolhida):** [Descrição] | • [Vantagem] | • [Desvantagem] | **ACEITA** |
-| **Opção C:** [Descrição] | • [Vantagem] | • [Desvantagem] | **REJEITADA** |
+| **A ·** [descrição] | [vantagem] | [desvantagem] | **REJEITADA** |
+| **B (escolhida) ·** [descrição] | [vantagem] | [desvantagem] | **ACEITA** |
+| **C ·** [descrição] | [vantagem] | [desvantagem] | **REJEITADA** |
 
----
+## 4. Consequências assumidas
 
-## 4. Consequências Assumidas
+- **Positivas:** [o que se ganha em segurança, integridade, desacoplamento].
+- **Negativas / custos aceitos:** [complexidade, latência, esforço de migração].
 
-### Positivas
-- [O que ganhamos em segurança, integridade ou desacoplamento].
+## 5. Superfície contratual introduzida (contratos explícitos)
 
-### Negativas / Custos Aceitos
-- [Complexidade adicional, overhead de rede, latência ou esforço de migração].
+- **Invariantes novas:** [regras que nunca podem ser violadas].
+- **Controle de acesso:** [políticas exigidas].
+- **Auditoria obrigatória:** [eventos gerados].
+- **Spec a atualizar no mesmo arco (R30):** [tabelas, flags, jobs criados por esta decisão].
 
----
+## 6. Precondições e varredura de dependentes
 
-## 5. Superfície Contratual Introduzida (§7)
-- **Invariantes Novas:** [Regras estritas que nunca podem ser violadas].
-- **Controle de Acesso:** [Políticas RBAC / FGA necessárias].
-- **Auditoria Obrigatória:** [Eventos de auditoria gerados].
-
----
-
-## 6. Precondições e Pré-Voo de Implementação
-- **Precondição de Estado:** [Tuplas, tabelas ou variáveis que precisam existir antes do código].
-- **Comando de Verificação:** `[comando]`
+- **Precondição de estado:** [tuplas, tabelas, variáveis que precisam existir antes do código]. Comando de verificação: `[comando]`.
+- **Decisões que se apoiavam na premissa alterada (R9):** [lista a revisar].

@@ -3,7 +3,7 @@
 ```yaml
 status: ACCEPTED
 date: 2026-09-28
-deciders: [Reflective Agent (Cowork), Platform Lead]
+deciders: [deciding role, platform lead]
 hierarchy_layer: ADR
 governs: [spec/task-gateway.md]
 justified_by: [plan/framework-principles.md §Principle 1, §Principle 2]
@@ -14,7 +14,7 @@ eee_phase: 4
 ---
 
 ## 1. Problem Context and Empirical Evidence
-- **Empirical Origin:** C6 vulnerability incident where caller supplied `caller_type="internal"` in the request body, bypassing tenant quota checks.
+- **Empirical Origin:** Incident in which a caller supplied `caller_type="internal"` in the request body and bypassed the risk classifier and tenant quota checks (the classic "plausible answer" instance: the gate validated a subject chosen by the caller).
 - **Observed Symptom:** Security admission was evaluating user-controlled attributes instead of cryptographically proven identity claims.
 - **Affected Principles:** Principle 1 (Least Privilege), Principle 2 (Fail-Closed).
 
@@ -36,6 +36,6 @@ eee_phase: 4
 
 ---
 
-## 4. Consequences Assumidas
-- **Positive:** Closes the C6 spoofing vector; ensures all task submissions carry non-repudiable audit trails.
+## 4. Accepted Consequences
+- **Positive:** Closes the body-declared identity spoofing vector; every task submission carries a non-repudiable audit trail.
 - **Negative:** External client scripts must authenticate and obtain a valid session token before dispatching tasks.

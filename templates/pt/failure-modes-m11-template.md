@@ -1,25 +1,35 @@
-# Matriz M11: Modos de Falha e Postura de Degradação
-## Anexo Obrigatório para Especificações Contratuais (§7 e §11)
+# 🧯 MATRIZ M11 · Modos de Falha e Postura de Degradação
+
+*Anexo obrigatório de toda spec contratual: o que acontece quando a dependência cai*
 
 ```yaml
-service_name: [Nome do Serviço / Componente]
-spec_reference: specs/[servico].md
+component: [nome]
+spec_reference: specs/[componente].md
 governing_adr: ADR-[XXX]
 ```
 
 ---
 
-## 1. Matriz de Modos de Falha por Interface / Endpoint
+## 1. Doutrina
 
-| Operação / Rota | Condição de Erro | Modo de Falha | Postura de Degradação | Código HTTP / Ação | Log & Telemetria |
-|---|---|---|---|:---:|---|
-| `POST /v1/tasks` | Token ausente | Falha-Dura | **Fail-Closed** | `401 Unauthorized` | Log de segurança imediato com IP de origem |
-| `POST /v1/tasks` | Vault Transit indisponível | Falha-Transiente | **Fail-Closed** | `503 Service Unavailable` | Retry com backoff exponencial; não aceita sem assinar |
-| `POST /v1/audit` | Banco Moon inacessível | Falha-Transiente | **Fail-Open com Buffer Durável** | `202 Accepted` | Encaminha mensagem para fila JetStream em disco (R7) |
-| `POST /v1/access/check` | Timeout OpenFGA (>100ms) | Falha-Transiente | **Fail-Closed** | `403 Forbidden (Timeout)` | Nega por segurança de mundo fechado (ADR-040) |
+1. **Decisões de segurança são fail-closed.** Sob qualquer dúvida de autenticação, autorização ou parsing de permissão, a máquina nega, e loga alto.
+2. **Evidência de algo que já aconteceu é fail-open com buffer durável.** Falha no pipeline de auditoria jamais descarta o registro; retém até o downstream voltar (R7).
+3. **Tri-estado na resposta.** `inválido` (401), `negado` (403) e `não consegui verificar` (503) são estados distintos; colapsá-los é a assinatura da família (R1).
+4. **Cada linha tem um teste de injeção de falha.** Linha sem teste é intenção, não postura.
 
----
+## 2. Matriz por interface
 
-## 2. Invariantes da Doutrina M11
-1. **Decisões de Segurança são SEMPRE Fail-Closed:** Sob qualquer dúvida de autorização, autenticação ou parsing de permissões, a máquina nega o acesso.
-2. **Preservação de Evidência Histórica é Fail-Open com Buffer Durável:** Falhas no pipeline de auditoria jamais descartam logs de eventos ocorridos; retêm os registros em buffer durável até a recuperação do downstream.
+| Operação | Condição de erro | Classe | Postura | Resposta / ação | Log e telemetria | Teste |
+|---|---|---|---|:---:|---|---|
+| `POST /v1/items` | credencial ausente | dura | **Fail-closed** | `401` | evento de segurança com origem | `test_items_missing_bearer_401` |
+| `POST /v1/items` | serviço de autorização indisponível | transiente | **Fail-closed** | `503` | retry com backoff; nunca aceita sem verificar | `test_items_authz_down_503` |
+| `POST /v1/items` | timeout da política (> limite declarado na spec) | transiente | **Fail-closed** | `403` | nega por mundo fechado | `test_items_policy_timeout_denies` |
+| `POST /v1/audit` | armazenamento indisponível | transiente | **Fail-open com buffer durável** | `202` | evento na fila persistente; alerta | `test_audit_store_down_buffers` |
+| `GET /v1/items/{id}` | identidade derivada falha | dura | **Fail-closed** | `401` | nunca cai em identidade padrão | `test_items_identity_resolution_fails_closed` |
+
+## 3. Sumidouros de evidência (a metade que costuma faltar)
+
+| Sumidouro | Falha | Postura | Buffer | Prova de que nada se perdeu |
+|---|---|---|---|---|
+| log de auditoria | banco indisponível | FO-durável | fila persistente | contagem emitida = gravada + bufferizada (par discordável) |
+| intent-log de shadow | disco cheio | FO-durável | rotação com alerta | idem |

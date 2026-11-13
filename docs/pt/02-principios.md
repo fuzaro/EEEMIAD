@@ -1,71 +1,79 @@
-# 02. Princípios Fundamentais e a Pilha de DONE
-## As Regras Inegociáveis da Engenharia Empírica Evolutiva
+# 🏛️ 02 · Princípios e a Pilha de DONE
+
+*As regras inegociáveis da Engenharia Empírica Evolutiva*
 
 ---
 
-### 1. A Pilha Estratificada de DONE
-Na EEEMIAD, **é expressamente proibido declarar uma tarefa como "pronta" (*DONE*) sem qualificador**. 
-Um status "concluído" desprovido de seu nível convida o leitor a jusante a presumir que o sistema está correto no mundo real — a semente de todo débito técnico com agentes.
+## 1. A pilha estratificada de DONE
+
+Na EEE, **é proibido declarar uma tarefa "pronta" sem qualificador**. Um `closed` liso convida o leitor a jusante a completar "funciona": é a mentira cravada no mecanismo.
 
 ```mermaid
 graph BT
-    D1["DONE@estrutural<br/>(Fidelidade à Spec / Superfície)"] --> D2["DONE@funcional<br/>(Comportamento / Teste Estanque)"]
-    D2 --> D3["DONE@gate<br/>(Validação da Intenção pelo Humano)"]
-    D3 --> D4["DONE@propósito<br/>(Devolução de Tempo Humano / Sino de Bambu)"]
-
-    style D1 fill:#e1f5fe,stroke:#0288d1
-    style D2 fill:#fff9c4,stroke:#fbc02d
-    style D3 fill:#ffe0b2,stroke:#f57c00
-    style D4 fill:#c8e6c9,stroke:#388e3c
+    D1["DONE@estrutural<br/>código fiel à spec onde a spec fala (superfície)"] --> D2["DONE@funcional<br/>comportamento fiel onde a spec é silenciosa"]
+    D2 --> D3["DONE@gate<br/>spec fiel à intenção humana"]
+    D3 --> D4["DONE@propósito<br/>devolveu tempo e atenção (sino de bambu)"]
+    style D1 fill:#e3f2fd,stroke:#1565c0,color:#0d1b2a
+    style D2 fill:#fff8e1,stroke:#f9a825,color:#0d1b2a
+    style D3 fill:#fbe9e7,stroke:#d84315,color:#0d1b2a
+    style D4 fill:#e8f5e9,stroke:#2e7d32,color:#0d1b2a
 ```
 
-| Nível de DONE | O que afirma | Quem julga | Mensurável por Máquina? |
+| Degrau | O que afirma | Quem julga | Mensurável pela máquina? |
 |---|---|---|:---:|
-| **`DONE@estrutural`** | O código é uma imagem topologicamente fiel da especificação onde a especificação se manifesta (rotas, assinaturas, tipos, constraints). | Máquina (Extrator AST / Grafo) | **Sim** |
-| **`DONE@funcional`** | O comportamento é correto onde a especificação foi silenciosa (lógica interna do corpo das funções). | Máquina (Testes unitários / integração estanques) | **Sim** |
-| **`DONE@gate`** | A especificação é fiel à intenção humana e resolve a necessidade real. | Humano (Revisão deliberada) | **Não** |
-| **`DONE@propósito`** | O sistema devolveu horas e atenção humana de qualidade (critério do manifesto). | Humano (Vida real) | **Não, por design** |
+| `DONE@estrutural` | O código é imagem topologicamente fiel da spec onde a spec se manifesta: rotas, assinaturas, tipos, constraints. | Máquina (extrator AST, grafo) | Sim (topológico) |
+| `DONE@funcional` | O comportamento é fiel onde a spec é silenciosa: o corpo das funções. | Máquina (testes estanques) | Sim (exit code) |
+| `DONE@gate` | A spec é fiel à intenção e resolve a necessidade real. | Humano (revisão deliberada) | Não |
+| `DONE@propósito` | O sistema devolveu horas e atenção humana de qualidade. | Humano (vida real) | **Não, por desenho** |
 
 > [!IMPORTANT]
-> **A Falha Geológica: Verificação $\ne$ Validação**
-> - **Verificação** = *"Construímos o produto de forma correta?"* (Fidelidade do código à especificação). A máquina faz perfeitamente.
-> - **Validação** = *"Construímos o produto certo?"* (Fidelidade da especificação ao propósito humano). Somente o humano pode julgar.
-> `verified` **nunca pode vestir o crachá de** `validated`.
+> **Verificação ≠ Validação.**
+> *Verificação* responde "construímos certo?" (código fiel à spec); a máquina faz.
+> *Validação* responde "construímos a coisa certa?" (spec fiel à intenção); só o humano faz.
+> `verified` **nunca veste o crachá de** `validated`. O ápice da pilha é imensurável pela máquina de propósito: a honestidade dos degraus de baixo existe para que o humano gaste julgamento só no topo.
 
----
+### Por que o teste funcional é uma muleta
 
-### 2. Os 8 Princípios Fundamentais da EEEMIAD
+"Estrutural = correto" só vale se o materializador for confiável. Um compilador conquista essa confiança (determinístico, provado). Um LLM não: pode emitir uma superfície que casa com a spec e um corpo que faz outra coisa. O teste funcional é necessário **na exata medida em que a spec subdetermina o programa**. Conforme a spec ganha verdade (pré e pós-condições, tipos, cardinalidades), a muleta encolhe.
 
-#### Princípio 1: O Sistema Não Pode Dizer "Pronto" Além da Evidência que Possui
-A confiança nunca é presumida; ela é **conquistada e registrada**. Um motor de verdade honesto é, no limite, um **motor de evidência**: uma máquina que diz exatamente o que sabe e se recusa terminantemente a arredondar para "verdadeiro".
+### Modo de verificação por garantia
 
-#### Princípio 2: Todo Critério Publica Sua Fidelidade e Limite
-Todo teste ou validador deve declarar formalmente o que ele **garante** e o que ele **não garante**. 
-O quadrante mais perigoso da engenharia de software é:
-$$\text{Zona de Perigo} = \text{Alta Decidibilidade} \times \text{Baixa Fidelidade}$$
-(Um teste com resultado verde nítido e instantâneo que testa uma propriedade cosmética ou mock forjado).
+Cada garantia carrega um **modo**, e o modo limita o degrau de DONE que ela alcança:
 
-#### Princípio 3: Nada de Porcentagem no Subjetivo
-Critério subjetivo é **julgamento atribuído** (um juiz humano nomeado + um procedimento formal de avaliação + carimbo de tempo imutável). 
-Atribuir porcentagem a critérios qualitativos (ex.: "87% de usabilidade", "92% de elegância") é lavagem de subjetividade com verniz de falso rigor.
+| Modo | O que é | Degrau máximo |
+|---|---|---|
+| **Determinístico** | Match exato; passou = tem a propriedade. | `DONE@funcional` nítido |
+| **Limiar + confiança** | Gate estatístico com banda (p. ex. limite inferior de Wilson). Honesto só com a confiança declarada; nunca "100%". | `DONE@funcional` com banda |
+| **Forma / juízo** | Fuzzy, atribuído a um juiz nomeado. | `DONE@gate` |
 
-#### Princípio 4: Abstrair Somente o que se Repetiu ($\ge 2$ Vezes)
-É expressamente proibido criar frameworks, middlewares genéricos, abstrações prematuras ou novas tabelas de banco para suportar cenários hipotéticos de primeiro uso. A abstração só é justificada quando o padrão de divergência ou repetição foi **observado e medido no mínimo duas vezes em fatias funcionais distintas**.
+Granularidade é modo: **fatie até o pedaço ser determinístico; o resíduo que não reduz é o subjetivo irredutível**, e recebe juiz atribuído, nunca um número exato.
 
-#### Princípio 5: Automatizar Somente o que Está Estável
-Não se escrevem pipelines de CI/CD sofisticados, geradores autônomos ou rotinas de sincronização para fluxos de negócio ou contratos de dados que ainda sofrem alterações frequentes na Fase 3 (POC). Automatizar o instável gera manutenção desnecessária.
+## 2. Os seis princípios do DONE
 
-#### Princípio 6: Evolução Contínua Guiada por Feedback Real de Runtime
-Nenhuma decisão de design resiste à prova de carga em produção. Quando os dados observados no cluster (*reality*) contradizem uma hipótese teórica registrada no *Plan*, a realidade prevalece: inicia-se o rito formal de revisão ascendente via ADR.
+Cristalizados no documento canônico *A verdade, o materializador e o DONE*:
 
-#### Princípio 7: Contratos Implícitos São Proibidos (§7 Explicit Contract Registry)
-Toda interface de serviço deve manter um registro explícito cobrindo:
-1. Invariantes de segurança (privilégio mínimo, segregação de tenants).
-2. Trilha de auditoria (quem chamou, em nome de quem, sob qual autoridade).
-3. Pré-condições e pós-condições.
-4. Concorrência (locks de escrita, níveis de isolamento).
-5. Modos de falha (Tabela M11).
+1. **DONE é estratificado e autodeclarante.** Sempre `done@tier`, nunca "done" pelado.
+2. **Todo critério publica sua fidelidade, não só o veredito.** Um check diz o que passar nele garante **e o que não garante**. O quadrante perigoso é *alta decidibilidade com baixa fidelidade*: um verde nítido que não entrega.
+3. **Nada de porcentagem no subjetivo.** Critério subjetivo é **julgamento atribuído** (juiz, procedimento e carimbo de tempo), não número. "87% de usabilidade" é lavagem de subjetividade com verniz de rigor.
+4. **DONE escala com o risco.** A barra de evidência é função do custo de errar. Declare a aposta para a qual o critério foi calibrado: protótipo não é marca-passo.
+5. **DONE é derrogável (*defeasible*).** Significa "nenhum defeito achado pela bateria B até o instante t", nunca "correto". Prova-se *não-done* (um teste falha); nunca se prova *done*. Testes de regressão são como uma aposta de DONE vira durável.
+6. **Separar construção de validação.** "Construído certo" (fechamento) e "era a coisa certa" (gate) não trocam crachá.
 
-#### Princípio 8: Doutrina do Fechamento por Re-avaliação (*Closure-by-Re-evaluation*)
-Nenhuma tarefa ou issue pode ser fechada com base no auto-relato (*self-report*) do agente executor ("implementei as rotas solicitadas"). O encerramento exige a re-execução mecânica da verificação automatizada ou da consulta canônica no grafo que originalmente detectou a lacuna:
-$$\text{Fechamento Legítimo} \iff \text{QueryDeDetecção}(\text{Sistema}) == 0$$
+## 3. Os cinco princípios da evolução
+
+Os princípios que fazem a EEE **evolutiva**, extraídos da prática em arcos sucessivos:
+
+7. **Abstrair somente o que se repetiu (≥ 2 vezes).** É proibido criar frameworks, middlewares genéricos ou tabelas transversais para cenários hipotéticos. A abstração só se justifica quando a mesma divergência ou repetição foi **observada em pelo menos duas fatias distintas** (Fase 6).
+8. **Automatizar somente o que está estável.** Pipelines sofisticados e geradores autônomos não se escrevem para contratos que ainda mudam a cada fatia. Automatizar o instável multiplica manutenção.
+9. **A realidade do runtime prevalece sobre a hipótese do plano.** Quando o observado contradiz o planejado, inicia-se o rito de **reconciliação ascendente** via ADR. Nunca se ajusta a spec para perdoar o código.
+10. **Contratos implícitos são proibidos.** Toda interface mantém registro explícito de: invariantes de segurança, trilha de auditoria (quem chamou, em nome de quem, sob qual autoridade), pré e pós-condições, concorrência e **modos de falha** (matriz M11). Quem decide também descreve: toda tabela, flag ou job criado sob uma ADR entra na spec **no mesmo arco em que nasce**.
+11. **Fechamento por reavaliação.** Nenhuma tarefa fecha por auto-relato. Fecha quando a verificação (consulta, teste, sonda) que **detectou o déficit** é reexecutada e retorna zero.
+
+> [!TIP]
+> **Uma frase para guardar:** *medir, não autopromover*. Disciplina EEE, "conquistar confiança em vez de presumi-la" e o sino de bambu são a mesma verdade em altitudes diferentes.
+
+## 4. Vigias: o que pode apodrecer
+
+- **Satisfação como carimbo.** "O humano decide" pode degenerar em gosto-como-veto. O ápice não é "o operador gostou?", e sim a pergunta específica: *devolveu tempo e atenção para o que importa?*
+- **Atenção de construção confundida com regime permanente.** Construir a plataforma exige vigília; usá-la não pode exigir. O dia em que construir deixa de doer não é o dia em que usar deixa de doer; só o segundo cumpre o manifesto.
+- **Retrofit de história bonita.** Casar tese técnica com o ethos é agradável, e por isso suspeito. Procurar ativamente a decisão de projeto que **contradiz** o manifesto, não só as confirmações.

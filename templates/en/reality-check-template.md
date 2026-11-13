@@ -1,35 +1,39 @@
-# REALITY-CHECK: [Target Brief / Change]
-## First Deliverable Emitted by the Executive Agent (§4.4)
+# 🔎 REALITY-CHECK · [Target]
+
+*First artefact before any edit: is the ground what the document assumes?*
 
 ```yaml
-brief_reference: BRIEF-[XXX]
-author: Executive Agent (Code)
-execution_date: YYYY-MM-DD
+target: [ADR-XXX | charter ARC-XXX | spec]
+author_role: [builder]
+date: YYYY-MM-DD
 git_head_sha: [short sha]
-environment: [local-dev | cluster-staging | CI]
+environment: [local | staging | production]
 verdict: [GREENLIGHT | DRIFT_DETECTED | BLOCKED]
 ```
 
 ---
 
-## 1. Verification of Anchors Cited in Brief
+## 1. Anchors verified (symbol, not line — R14)
 
-| Anchor Cited in Brief | Real State Observed in Codebase | Status | Evidence (Command / Real Line) |
-|---|---|:---:|---|
-| `path/file.py:L120` | Function exists at L134 (14-line drift) | ✅ OK | `grep -n "def function_name"` |
-| `saturn.users` (table) | Table missing in database schema | ❌ DRIFT | `\dt saturn.*` (table not found) |
-| `OIDC_ENABLED="true"` | Variable active in Nomad job | ✅ OK | `nomad job inspect ...` |
+| Anchor cited | Observed reality | Status | Evidence (command) | R15 level |
+|---|---|---|:---:|---|
+| `module.py::func_x` | exists; signature `(a, b, *, tenant)` | ✅ OK | `python -c "import ast..."` | 1 |
+| table `schema.table` | missing in target database | ❌ DRIFT | `\dt schema.*` | 3 |
+| `FLAG_X="enforce"` | present in manifest; **0 consumers in code** | ❌ GHOST | AST sweep | 2 |
 
----
+## 2. State claims in the document ("X already applied", "infra stable")
 
-## 2. Drift Report
-> *If any file, function signature, or precondition differs from brief assumptions, document here before touching code.*
+| Claim | Verified? | How | Result |
+|---|:---:|---|---|
+| "service credential exists" | ❌ | `secret-store get svc/credential` | missing → **state precondition fails** |
 
-- **Drift 1:** [Description of drift and implementation impact].
-- **Executor Recommendation:** [Return to Cowork for ADR amendment or proceed with offset].
+## 3. Drift report
 
----
+- **Drift 1:** [description, layer where measured, impact].
+- **Recommendation:** [escalate to ADR amendment | proceed with spec adjustment | block].
 
-## 3. Pre-Flight Verdict
-- [ ] **GREENLIGHT:** Anchors confirmed, state preconditions satisfied, safe to proceed with edits.
-- [ ] **DRIFT_DETECTED:** Material divergence surfaced; brief paused for Cowork reassessment.
+## 4. Verdict
+
+- [ ] **GREENLIGHT** · anchors confirmed, preconditions satisfied, phase mechanism exists (R26).
+- [ ] **DRIFT_DETECTED** · material divergence; the document returns to the decider before any edit.
+- [ ] **BLOCKED** · environment unreachable to measure; **inference forbidden** (not certifiable).

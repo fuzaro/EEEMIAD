@@ -1,67 +1,91 @@
-# 04. As Oito Fases Formais do Ciclo de Vida
-## Da Intenção Inicial à Governança Evolutiva
+# 🔄 04 · As Oito Fases do Ciclo
+
+*Da intenção inicial à governança evolutiva*
 
 ---
 
-### 1. Visão Geral das 8 Fases
-O ciclo de vida da EEEMIAD divide o amadurecimento de qualquer subsistema, contrato ou funcionalidade em **oito fases progressivas**, desenhadas para prevenir a proliferação descontrolada de complexidade e código morto:
+## 1. Visão geral
+
+A EEE divide o amadurecimento de qualquer subsistema, contrato ou funcionalidade em **oito fases progressivas**. Elas não são um processo em cascata: um sistema maduro tem subsistemas em fases diferentes ao mesmo tempo, e cada **arco** (ver [06 · Construção Evolutiva](06-construcao-evolutiva.md)) percorre um trecho delas.
 
 ```mermaid
 flowchart LR
-    F1["Fase 1<br/>Exploração & Grounding"] --> F2["Fase 2<br/>Mapeamento de Contratos"]
-    F2 --> F3["Fase 3<br/>Fluxo Mínimo (POC)"]
-    F3 --> F4["Fase 4<br/>Refinamento Progressivo"]
-    F4 --> F5["Fase 5<br/>Shadow Validation"]
-    F5 --> F6["Fase 6<br/>Identificação de Padrões"]
-    F6 --> F7["Fase 7<br/>Cut-over Controlado"]
-    F7 --> F8["Fase 8<br/>Governança & Sweeps"]
-    F8 -.->|"Feedback Longitudinal"| F1
+    F1["1<br/>Exploração e<br/>grounding"] --> F2["2<br/>Contrato e<br/>mock de destino"]
+    F2 --> F3["3<br/>Elo mínimo<br/>(fatia fina)"]
+    F3 --> F4["4<br/>Hardening<br/>(desmock)"]
+    F4 --> F5["5<br/>Shadow<br/>(observação)"]
+    F5 --> F6["6<br/>Abstração<br/>do que repetiu"]
+    F6 --> F7["7<br/>Cut-over<br/>(enforce)"]
+    F7 --> F8["8<br/>Governança<br/>e sweeps"]
+    F8 -.->|"feedback longitudinal"| F1
+    style F2 fill:#e3f2fd,stroke:#1565c0,color:#0d1b2a
+    style F3 fill:#e3f2fd,stroke:#1565c0,color:#0d1b2a
+    style F4 fill:#fff8e1,stroke:#f9a825,color:#0d1b2a
+    style F5 fill:#fff8e1,stroke:#f9a825,color:#0d1b2a
+    style F7 fill:#fbe9e7,stroke:#d84315,color:#0d1b2a
+    style F8 fill:#e8f5e9,stroke:#2e7d32,color:#0d1b2a
 ```
 
----
+## 2. As fases
 
-### 2. Detalhamento Operacional de Cada Fase
+### Fase 1 · Exploração e grounding
+- **Objetivo:** confrontar a intenção com o terreno real; produzir o mapa sistêmico ponta a ponta.
+- **Atividades:** sondas de rede e de API, inspeção de bibliotecas, inventário de superfícies existentes.
+- **Disciplina:** nada vai para a árvore de produção. Rascunhos vivem em `scratch/` ou em branches de *spike*. Toda afirmação de estado sai com o **nível de ground truth** declarado (Regra R15).
 
-#### Fase 1: Exploração e Grounding Inicial
-- **Objetivo:** Investigar a viabilidade técnica e confrontar a intenção humana contra o terreno real.
-- **Atividades:** Sondagens de rede, inspeção de bibliotecas externas, análise de compatibilidade de APIs.
-- **Regra de Isolamento:** Proibido commitar código na árvore de produção. Todo o trabalho ocorre em arquivos temporários de rascunho (`scratch/`) ou branches de spike.
+### Fase 2 · Contrato e mock de destino
+- **Objetivo:** fixar as interfaces antes de qualquer lógica de negócio, e definir **o contrato que o mock e a implementação real terão de satisfazer**.
+- **Atividades:** schemas de entrada e saída, DDL com constraints, rascunho da ADR governante (`PROPOSED`), primeira versão da matriz M11.
+- **Critério de saída:** o mock devolve **formas verdadeiras**, reproduzíveis pela implementação real quando ela entrar atrás. Um mock que devolve formas que o real não produzirá é dívida disfarçada.
 
-#### Fase 2: Mapeamento de Contratos e Fronteiras
-- **Objetivo:** Estabelecer as interfaces explícitas antes de qualquer implementação de negócio.
-- **Atividades:** Definição de Schemas Pydantic / OpenAPI, DDLs de tabelas relacionais com índices e constraints, e redação preliminar da ADR governante (`status=proposed`).
-- **Critério de Saída:** Schemas aprovados e validados contra os Princípios Fundamentais.
+### Fase 3 · Elo mínimo (fatia fina vertical)
+- **Objetivo:** provar o acoplamento ponta a ponta com o mínimo de código.
+- **Atividades:** uma fatia que liga entrada, processamento e saída, atravessando todas as camadas uma vez.
+- **Disciplina:** pragmatismos locais (stubs em memória, `DRY_RUN=1`) são permitidos **desde que marcados como tais** no código e nos dados que produzem. **O mock valida o cano, não a medida**: prova que o fluxo atravessa; não prova que o valor está certo.
 
-#### Fase 3: Fluxo Mínimo Funcional (POC / Fatia Fina)
-- **Objetivo:** Provar o acoplamento ponta a ponta com o mínimo de código indispensável.
-- **Atividades:** Implementação da "fatia fina vertical" (*thin vertical slice*), conectando entrada, processamento e saída.
-- **Disciplina:** Permitido adotar pragmatismos locais temporários (ex.: stubs mockados em memória), desde que categorizados explicitamente como tais no código.
+### Fase 4 · Hardening (desmock)
+- **Objetivo:** substituir cada stub pela implementação real, um de cada vez, e endurecer segurança e resiliência.
+- **Atividades:** troca de defaults de desenvolvimento por configuração e segredos da fonte oficial; autenticação nos saltos internos; tratamento de exceções; **tabelamento dos modos de falha** (M11) e injeção de falha para provar a postura de cada gate.
+- **Critério de saída:** nenhum caminho de produção depende de literal de desenvolvimento; cada stub remanescente está atrás de flag com default desligado e gatilho de aposentadoria verificável.
 
-#### Fase 4: Refinamento Progressivo (Hardening)
-- **Objetivo:** Eliminar atalhos provisórios da Fase 3 e endurecer a segurança e a resiliência.
-- **Atividades:** Substituição de stubs por implementações completas, inclusão de middlewares de autenticação, injeção de segredos via Vault, tratamento estrito de exceções e tabelamento formal dos modos de falha (Tabela M11).
+### Fase 5 · Shadow (observação não bloqueante)
+- **Objetivo:** medir o comportamento novo sob carga real **sem** que ele decida.
+- **Atividades:** o componente opera em `shadow`: consome payloads reais, calcula a decisão e grava a divergência contra o comportamento vigente em um *intent-log* auditável.
+- **Janela:** declarada no charter do arco em **oportunidades reais** (Regra R5), não em tempo de calendário apenas. "Zero divergências em amostra insuficiente" é resultado inconclusivo, não evidência (R6).
+- **Limite do shadow:** ele valida *o que a lógica nova computa*; o primeiro *enforce* valida *o que escrever ao reconciliar o estado*. Orce uma surpresa de reconciliação.
 
-#### Fase 5: Shadow Validation (Observação Não-Bloqueante)
-- **Objetivo:** Medir o comportamento da nova funcionalidade sob carga real de produção sem interferir nas decisões do sistema.
-- **Atividades:** O componente opera em modo `shadow=true`. Ele consome os payloads reais, calcula decisões, pontuações ou políticas e grava o resultado em log auditável (*intent-log*), enquanto a decisão em vigor continua sendo a do legado.
-- **Janela Mínima:** Pelo menos 14 a 21 dias de coleta contínua ou no mínimo 5.000 amostras medidas com concordância comprovada.
+### Fase 6 · Abstração do que se repetiu
+- **Objetivo:** nomear o padrão depois que ele apareceu duas vezes.
+- **Regra:** só após observar o mesmo comportamento ou a mesma divergência em **duas ou mais fatias distintas** autoriza-se extrair biblioteca, modelo genérico ou tabela transversal. Casos especiais empilhados sem consolidação são dívida da Fase 6; abstração antes da segunda ocorrência é especulação.
 
-#### Fase 6: Identificação de Padrões e Abstração Justificada
-- **Objetivo:** Consolidar aprendizados e abstrair componentes comuns sob a égide do Princípio 4.
-- **Regra:** Somente após observar o mesmo comportamento ou a mesma divergência em 2 ou mais fatias distintas, autoriza-se a extração de uma biblioteca compartilhada, modelo de autorização genérico ou tabela transversal.
+### Fase 7 · Cut-over controlado (enforce)
+- **Objetivo:** virar a chave de `shadow` para `enforce`.
+- **Rito obrigatório (pré-voo):**
+  1. **Raio de explosão** enumerado: o que muda além do alvo declarado (credenciais, estado de cluster, dados destrutivos).
+  2. **Reversível?** Se não, parar: exige decisão explícita por ação.
+  3. **Rollback ensaiado** antes da virada, com tempo de recuperação medido.
+  4. **Precondição de estado** verificada na fonte: tuplas, grants, chaves e tabelas existem **antes** do deploy (comando e resultado observado).
+  5. **Composição de flips:** quais outros gates mudaram nesta janela e o **produto** deles foi exercitado ponta a ponta (comando e resultado, não inferência).
+  6. **Mecanismo existe:** o caminho `enforce` está construído e verificado sintaticamente; nomear a fase na ADR não a constrói (R26).
+- **Após o flip:** janela de observação declarada antes de **aposentar** a flag.
 
-#### Fase 7: Cut-over Controlado (Transição para Enforce)
-- **Objetivo:** Virar a chave operacional de `shadow` para `enforce`.
-- **Rito Mandatório:**
-  1. Pré-voo de Raio de Explosão preenchido.
-  2. Precondição de estado verificada na fonte (chaves, grants e tabelas existem antes do deploy).
-  3. Composição de gates testada: provar que a combinação de flags não quebra o produto final.
-  4. Procedimento de rollback ensaiado e cronometrado antes da virada da flag.
+### Fase 8 · Governança evolutiva e sprint-exit sweeps
+- **Objetivo:** impedir a regeneração do *spec-rot* e manter a entropia baixa.
+- **Rito de saída de sprint:**
+  - Varredura via AST por código morto, rotas órfãs e **flags fantasma** (declaradas, zero consumidores).
+  - Confronto bidirecional 1:1 entre rotas expostas e rotas especificadas.
+  - **Custódia do registro de decisão:** toda ADR citada existe no ramo principal; âncoras `arquivo:linha` resolvem para o símbolo nomeado ao lado (R13, R14).
+  - Envelhecimento: decisões em `PROPOSED` além do prazo declarado são promovidas, emendadas ou canceladas.
+  - **Proof test** dos mecanismos de contingência: tratadores cuja única manifestação orgânica é a falha que tratam são exercitados deliberadamente, em cadência declarada.
+  - Reexecução da bateria de fechamento por reavaliação.
 
-#### Fase 8: Governança Evolutiva e Sprint-Exit Sweeps
-- **Objetivo:** Preservar a entropia zero e impedir a regeneração do *spec-rot*.
-- **Rito do Sprint-Exit Sweep:**
-  - Varredura exaustiva via AST contra código morto ou flags fantasma.
-  - Confrontação bidirecional 1:1 entre rotas expostas em código e rotas descritas nas especificações.
-  - Avaliação de conformidade das ADRs: decisões em `proposed` há mais de 30 dias são canceladas ou promovidas.
-  - Re-execução da bateria canônica de fechamento por re-avaliação.
+## 3. Como as fases se encaixam em um arco
+
+| Trecho do arco | Fases percorridas | Flag |
+|---|---|---|
+| Charter e contrato | 1 → 2 | não existe ainda |
+| Fatia fina com stubs | 3 | `OFF` (comportamento neutro) |
+| Desmock e M11 | 4 | `OFF` → `SHADOW` |
+| Observação | 5 | `SHADOW` |
+| Virada | 7 | `ENFORCE` |
+| Aposentadoria da flag e sweep | 8 (e 6, se repetiu) | removida |

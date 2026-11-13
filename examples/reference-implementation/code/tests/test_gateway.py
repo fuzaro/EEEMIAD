@@ -39,7 +39,7 @@ def test_submit_task_invalid_bearer_token_fails_401():
     assert "invalid or expired" in resp.json()["detail"]
 
 def test_submit_task_body_spoofing_attempt_rejected_422():
-    # Attempting to inject identity claims into body (C6 vulnerability repro)
+    # Attempting to inject identity claims into the body (identity-spoofing reproduction)
     headers = {"Authorization": "Bearer valid-user-token"}
     payload = {
         "task_id": "tsk-004",

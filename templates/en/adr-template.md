@@ -1,64 +1,53 @@
-# ADR-[XXX]: [Short and Imperative Decision Title]
+# 📐 ADR-[XXX] · [Short, imperative decision title]
 
 ```yaml
-status: PROPOSED # [PROPOSED | ACCEPTED | REJECTED | DEPRECATED | SUPERSEDED]
+status: PROPOSED # PROPOSED | ACCEPTED | REJECTED | DEPRECATED | SUPERSEDED
 date: YYYY-MM-DD
-deciders: [Reflective Agent (Cowork), Human Operator]
+deciders: [deciding role, human operator]
 hierarchy_layer: ADR
-governs: [specs/target-service.md]
-justified_by: [Plan/docs/framework-principles.md §Principle X]
-replaces: [] # E.g.: [ADR-012]
-eee_phase: 2 # Phase 2 (Contracts) or Phase 6 (Abstraction)
+governs: [specs/component.md]
+justified_by: [Plan/docs/principles.md §Principle X]
+replaces: [] # e.g. [ADR-012]
+eee_phase: 2 # 2 (contract) | 6 (abstraction after repetition)
+ratified_by: null # separate artefact citing evidence, SHA and R15 level — whoever proposes does not ratify
 ```
 
 ---
 
-## 1. Problem Context and Empirical Evidence
-> *What concrete defect was observed in runtime or specification?*
-> *What was the measured blast radius or security integrity risk?*
+## 1. Context and empirical evidence
 
-- **Empirical Origin:** [Cite finding, failing test, or live incident with commit/date].
-- **Observed Symptom:** [Precise failure description].
-- **Affected Principles:** [Plan-layer principles impacted].
+- **Empirical origin:** [finding, red test or incident, with date and reference].
+- **Observed symptom:** [precise description; ground-truth level R15].
+- **Affected principles:** [Plan principles impacted].
 
----
+## 2. Decision
 
-## 2. Architectural Decision
-> *What technical choice is formally adopted?*
+- **D1 · [title]:** [imperative rule].
+- **D2 · [title]:** [imperative rule].
+- **D3 · Failure posture (M11):** [fail-closed for decisions; fail-open with durable buffer for evidence].
+- **D4 · Flag and phases:** [`FLAG_X ∈ {off, shadow, enforce}`, default `off`; exit gate per phase].
 
-- **D1 ([Sub-decision Title]):** [Imperative rule statement].
-- **D2 ([Sub-decision Title]):** [Imperative rule statement].
-- **D3 ([M11 Failure Posture]):** [Explicit Fail-Closed vs Fail-Open with Durable Log definition].
-
----
-
-## 3. Alternatives Considered
+## 3. Alternatives considered (≥ 2)
 
 | Alternative | Pros | Cons | Ruling |
 |---|---|---|:---:|
-| **Option A:** [Description] | • [Advantage] | • [Disadvantage] | **REJECTED** |
-| **Option B (Selected):** [Description] | • [Advantage] | • [Disadvantage] | **ACCEPTED** |
-| **Option C:** [Description] | • [Advantage] | • [Disadvantage] | **REJECTED** |
+| **A ·** [description] | [advantage] | [drawback] | **REJECTED** |
+| **B (selected) ·** [description] | [advantage] | [drawback] | **ACCEPTED** |
+| **C ·** [description] | [advantage] | [drawback] | **REJECTED** |
 
----
+## 4. Accepted consequences
 
-## 4. Accepted Consequences
+- **Positive:** [security, integrity, decoupling gains].
+- **Negative / accepted costs:** [complexity, latency, migration effort].
 
-### Positive
-- [Gains in security, integrity, isolation, or decoupling].
+## 5. Contract surface introduced (explicit contracts)
 
-### Negative / Incurred Costs
-- [Additional complexity, network overhead, latency budget, or migration cost].
+- **New invariants:** [rules that may never be violated].
+- **Access control:** [required policies].
+- **Mandatory audit:** [events emitted].
+- **Spec to update in the same arc (R30):** [tables, flags, jobs created by this decision].
 
----
+## 6. Preconditions and dependent sweep
 
-## 5. Contract Surface Introduced (§7)
-- **New Invariants:** [Hard rules that must never be broken].
-- **Access Control:** [Required RBAC / OpenFGA relation tuples].
-- **Mandatory Audit:** [Emitted audit subjects].
-
----
-
-## 6. Preconditions and Implementation Pre-Flight
-- **State Precondition:** [Tuples, tables, keys that must exist before code].
-- **Verification Command:** `[command]`
+- **State precondition:** [tuples, tables, variables that must exist before code]. Verification command: `[command]`.
+- **Decisions resting on the changed premise (R9):** [list to review].

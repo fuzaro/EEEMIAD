@@ -1,5 +1,6 @@
-# Specification: Task Ingress Gateway
-## Service: Task Ingress & Admission Control
+# Specification · Task Ingress Gateway
+
+*Service: task ingress and admission control*
 
 ```yaml
 service_name: task-gateway

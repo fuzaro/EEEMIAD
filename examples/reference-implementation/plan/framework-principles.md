@@ -1,5 +1,6 @@
-# Reference Plan: Foundational Principles
-## Subsystem: Task Ingress Gateway
+# Reference Plan · Foundational Principles
+
+*Subsystem: Task Ingress Gateway*
 
 ```yaml
 status: ACTIVE

@@ -1,40 +1,54 @@
-# 00. The Finite Human Attention Manifesto
-## The Founding Ethos and Core Purpose of EEEMIAD
+# 🎐 00 · The Finite Human Attention Manifesto
 
-> *"The problem is not inefficiency. It is lost life. Human attention is finite, irreplaceable, and increasingly colonized by tasks that do not deserve it."*  
-> — SolarSystems Founding Document (`why-we-build.md`)
+*The founding ethos of Evolutionary Empirical Engineering (EEE)*
+
+> *"The problem is not inefficiency. It is lost life. Human attention is finite, irreplaceable, and increasingly colonized by tasks that do not deserve it."*
+> — founding document *why-we-build* (2026), origin of the practice EEE distils
 
 ---
 
-### 1. The Human Attention Thesis
-Modern automation and generative artificial intelligence are frequently championed through the lens of relentless acceleration: churning out more lines of code per second, multiplying pull request volumes, and drowning repositories in synthetic noise.
+## 1. The human attention thesis
 
-**EEEMIAD** categorically rejects this premise. The supreme objective of software engineering is not to accelerate the machine; it is to **unburden the human**.
+Automation and generative AI are usually promoted through the lens of acceleration: more code per second, more commits, more synthetic artefacts.
 
-Human attention is a strictly non-renewable resource. Every hour a software engineer, researcher, or operator spends debugging subtle stochastic hallucinations, chasing silent drifts between documentation and code, or serving as a "perpetual debugger of LLM output", is an hour stolen from their family, their health, their authentic creativity, and their physical presence in the world.
+EEE rejects that premise. The goal of engineering is not to speed up the machine; it is to **unburden the human**.
 
-### 2. The Bamboo Chime Metaphor
-The foundational imagery of the methodology is that of the **bamboo wind chime**:
-The human operator sits on the porch at dusk; the breeze rustles the trees, the orchids are in bloom, a cup of tea rests on the table, enjoying unhurried presence with loved ones. In the distance, the bamboo wind chime sounds softly with the wind.
+Human attention is a non-renewable resource. Every hour an engineer spends debugging hallucinations, chasing silent drift between documentation and code, or acting as a "perpetual debugger of stochastic output" is an hour taken from family, health, creativity and presence in the real world.
 
-The chime does not demand adjustment every few seconds; it does not trigger shrill alarms unless a genuine storm approaches; it simply **exists, operating in quiet harmony with its environment**.
+## 2. The bamboo chime metaphor
 
-Technology only achieves its highest ethical purpose when it reaches the **condition of invisibility**:
+The founding image is the **bamboo wind chime**: the operator sits on the porch at dusk; the breeze moves the trees, a cup of tea rests on the table, there is unhurried presence with loved ones. In the distance, the chime sounds softly.
+
+The chime does not demand adjustment every minute, does not raise shrill alarms unless a real storm approaches; it simply **is there, working in harmony with its surroundings**.
+
+> [!IMPORTANT]
 > **The best infrastructure is the one that disappears when it works.**
+> Infrastructure only disappears if it is trustworthy. An untrustworthy builder never disappears: you watch it forever.
 
-If an intelligent agent platform demands perpetual neurotic vigilance, forcing engineers to review line after line of ungrounded code, the platform has failed—regardless of how impressive its tokens-per-second benchmarks may be.
+If an agent platform requires the human to live in permanent vigilance, reviewing line by line, the platform has failed, however impressive its tokens-per-second benchmark.
 
-### 3. Rejection of the "AI Projection Problem"
-The methodology formally repudiates synthetic intimacy, simulated empathy, and the personification of language models (*the AI Projection Problem*):
-- Software agents are not "friends", "colleagues", or "sentient peers".
-- Personifying agents obfuscates technical accountability and invites dangerous complacency during code reviews and security audits.
-- The machine must execute what is predictable, mechanical, and formal with cold mathematical rigor and contractual compliance. The human provides moral judgment, values, ethics, and purpose.
+## 3. Rejecting the personification of agents
 
-### 4. The Single Evaluation Criterion
-When evaluating any new agent framework, prompt pattern, foundation model, or architectural shift, EEEMIAD subjects the decision to a single test:
-$$\text{Validation Criterion} = \text{"Does this give people back time and attention for what truly matters — or does it consume more?"}$$
+The methodology repudiates synthetic affect and the personification of language models:
 
-If it demands more human attention in surveillance, anxiety, and debugging than the time it saves in execution, **the solution is rejected by design**.
+- Software agents are not "friends", "colleagues" or "sentient entities".
+- Treating agents as people disguises technical accountability and invites complacency in code and security review.
+- The machine executes, with precision and contractual compliance, what is predictable and mechanical. The human provides value judgement, ethics and purpose.
+
+## 4. The single evaluation criterion
+
+Faced with any new tool, prompt pattern, model or refactoring, EEE submits the decision to one tribunal:
+
+> **Does this give people back time and presence for what truly matters, or does it consume more?**
+
+If it consumes more attention in maintenance, anxiety and vigilance than the time it saves in execution, **the solution is rejected by definition**.
+
+## 5. Why "done" is the same question as "why"
+
+The sentence that anchors the whole methodology is: **the system has no right to say "done" beyond the evidence it holds**. An honest truth engine is, in the limit, an evidence engine: it says exactly how much it knows and refuses to round up to "true".
+
+When a system stamps "verified" without having measured, it does not merely break a technical norm; it breaks the founding ethos. Trust is not assumed: it is **earned and recorded**. That is what frees the human to **judge** instead of **debug**.
 
 ---
-*EEEMIAD exists so that technology gives back the time it has colonized.*
+
+*EEE exists so that technology gives back the time it has colonized.*

@@ -14,7 +14,7 @@ def authenticate_bearer_token(authorization: Optional[str] = Header(None)) -> di
         raise HTTPException(status_code=401, detail="Invalid Bearer token format")
     
     token = parts[1]
-    # In production this verifies the RS256 JWT signature via Vault/Keycloak public key
+    # In production this verifies the JWT signature against the identity provider public key
     if token == "valid-user-token":
         return {"principal_id": "usr-42", "tenant_id": "tnt-prod", "role": "member"}
     elif token == "valid-admin-token":

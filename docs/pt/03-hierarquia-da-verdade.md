@@ -1,91 +1,93 @@
-# 03. A Hierarquia Unívoca da Verdade
-## A Cascata Canônica Plan → ADR → Spec → Code e a Reconciliação Ascendente
+# 🔺 03 · A Hierarquia Unívoca da Verdade
+
+*A cascata Plan → ADR → Spec → Code e a reconciliação ascendente*
 
 ---
 
-### 1. A Estrutura da Cascata
-Na EEEMIAD, a integridade do sistema apoia-se em uma hierarquia unidirecional de autoridade documental:
+## 1. A estrutura da cascata
 
-$$\mathbf{Plan} \;\;(\text{Nível 1: Intenção \& Princípios}) \;\;\longrightarrow\;\; \mathbf{ADR} \;\;(\text{Nível 2: Decisões Arquiteturais}) \;\;\longrightarrow\;\; \mathbf{Spec} \;\;(\text{Nível 3: Contratos Formais}) \;\;\longrightarrow\;\; \mathbf{Code} \;\;(\text{Nível 4: Runtime \& Testes})$$
+A integridade de um sistema sob EEE apoia-se em uma hierarquia unidirecional de autoridade documental:
+
+```
+Plan  (nível 1 · intenção e princípios)
+  └─► ADR  (nível 2 · decisões arquiteturais)
+        └─► Spec  (nível 3 · contratos formais)
+              └─► Code  (nível 4 · runtime e testes)
+```
 
 ```mermaid
 flowchart TD
-    subgraph PlanLayer ["Nível 1: Plan"]
-        P1["Documentos Fundacionais<br/>(why-we-build, framework-principles)"]
-        P2["Invariantes Éticas & Limites Globais"]
+    subgraph L1 ["Nível 1 · Plan"]
+        P1["Propósito, princípios, limites globais"]
     end
-
-    subgraph ADRLayer ["Nível 2: ADR"]
-        A1["ADRs Aceitas (status=accepted)"]
-        A2["Alternativas Consideradas (≥ 2)"]
-        A3["Consequências Técnicas & Trade-offs"]
+    subgraph L2 ["Nível 2 · ADR"]
+        A1["Decisões com ≥ 2 alternativas e consequências"]
     end
-
-    subgraph SpecLayer ["Nível 3: Spec"]
-        S1["Living Specifications (specs/)"]
-        S2["Contratos OpenAPI / Schemas Pydantic / DDL"]
-        S3["Tabela M11 de Modos de Falha"]
+    subgraph L3 ["Nível 3 · Spec"]
+        S1["Contratos: schemas, rotas, DDL, M11"]
     end
-
-    subgraph CodeLayer ["Nível 4: Code"]
-        C1["Código-fonte em Runtime (FastAPI, Rust, Nomad)"]
-        C2["Testes Estanques (Unitários, Integração, e2e)"]
-        C3["Deploy e Infraestrutura (Vault, Keycloak, NATS)"]
+    subgraph L4 ["Nível 4 · Code"]
+        C1["Implementação, testes, infraestrutura"]
     end
-
-    PlanLayer -->|Justifica| ADRLayer
-    ADRLayer -->|Governa| SpecLayer
-    SpecLayer -->|Materializa-se em| CodeLayer
-
-    CodeLayer -.->|"Desvio Detectado: Reconciliação ASCENDENTE Obrigatória"| ADRLayer
+    L1 -->|justifica| L2
+    L2 -->|governa| L3
+    L3 -->|materializa-se em| L4
+    L4 -.->|"drift detectado → reconciliação ASCENDENTE"| L2
 ```
 
----
+## 2. Definição de cada camada
 
-### 2. Definição Formal de Cada Camada
+### Nível 1 · Plan (intenção e princípios)
+- **Contém:** o propósito, os limites operacionais (orçamentos, isolamento, posturas de falha padrão) e a visão do produto.
+- **Autoridade:** dita o que o sistema **pode e não pode** fazer; não trata de implementação.
+- **Vida útil:** anos. Muda só com alteração fundamental de estratégia.
 
-#### Camada 1: Plan (Intenção e Princípios)
-- **O que reside aqui:** O propósito ético, os limites operacionais estritos (orçamentos de tokens, tempo de execução, modelo de isolamento de tenants) e a visão macro do produto.
-- **Autoridade:** Não trata de implementação técnica; dita o que o sistema **pode e não pode fazer**.
-- **Vida útil:** Anos. Só muda com alterações fundamentais na estratégia de produto.
+### Nível 2 · ADR (registros de decisão arquitetural)
+- **Contém:** as decisões que arbitram escolhas técnicas.
+- **Forma obrigatória:** número sequencial; status (`PROPOSED`, `ACCEPTED`, `DEPRECATED`, `SUPERSEDED`); contexto com origem empírica; **pelo menos duas alternativas** com prós e contras; consequências assumidas; decisões numeradas (D1, D2, ...).
+- **Regra de ouro:** nenhuma decisão nasce aceita. **Quem propõe não ratifica**: a ratificação é artefato separado, que cita evidência, SHA e nível de prova.
 
-#### Camada 2: ADR (Architecture Decision Records)
-- **O que reside aqui:** As decisões arquiteturais que arbitram escolhas técnicas complexas.
-- **Forma obrigatória:** Toda ADR possui número sequencial, status (`PROPOSED`, `ACCEPTED`, `DEPRECATED`, `SUPERSEDED`), contexto do problema, pelo menos duas alternativas analisadas com pró/contra explícitos, justificativa baseada em evidência empírica e lista de consequências assumidas.
-- **Regra de ouro:** Nenhuma decisão arquitetural nasce aceita; toda minuta nasce `PROPOSED`.
+### Nível 3 · Spec (contratos formais vivos)
+- **Contém:** a verdade operacional da máquina: schemas de entrada e saída, rotas, mensagens assíncronas, DDL, invariantes e a matriz de modos de falha (M11).
+- **Invariante:** a spec é uma *living specification* em paridade com o que deve ser materializado. Não contém código nem hacks. **Critério de saída que cita um limite operacional aponta para onde o limite vive; não o copia** (um literal numérico copiado diverge no deploy seguinte, e a divergência se resolve em silêncio a favor do código).
 
-#### Camada 3: Spec (Especificações Contratuais Formais)
-- **O que reside aqui:** A verdade operacional da máquina. Schemas de entrada e saída (JSON Schema / Pydantic), endpoints HTTP, tipos de mensagens assíncronas (NATS), tabelas e constraints de banco de dados (DDL SQL).
-- **Invariante:** Cada especificação é uma *Living Specification* que reflete 100% o que deve ser materializado. Especificações não contêm código-fonte ou hacks de implementação.
+### Nível 4 · Code (runtime e implementação)
+- **Contém:** código executável, migrações, manifestos de deploy, suítes de teste.
+- **Relação com a spec:** o código é a **materialização fiel** da spec, como o binário é a materialização fiel do fonte.
 
-#### Camada 4: Code (Runtime e Implementação)
-- **O que reside aqui:** O código executável nos microserviços, scripts de migração, configurações de container e suítes de testes.
-- **Relação com a Spec:** O código é a **materialização fiel da especificação**, exatamente como o código binário/assembly gerado por um compilador é a materialização fiel de um código em C.
+## 3. A regra inviolável: reconciliação ascendente
 
----
-
-### 3. A Regra Inviolável de Arbitragem: Reconciliação Ascendente
-Quando um teste, reality-check ou incidente em produção detecta uma discrepância entre o que o `Code` executa e o que a `Spec` prescreve:
+Quando um teste, um reality-check ou um incidente detecta discrepância entre o que o código faz e o que a spec prescreve:
 
 > [!CAUTION]
-> **O CÓDIGO NUNCA VENCE A DIVERGÊNCIA POR JÁ ESTAR NO AR.**
-> Resolver o conflito simplesmente ajustando o texto da `Spec` para se conformar ao atalho do `Code` constitui a mais grave violação metodológica: a **Inversão de Hierarquia (Anti-padrão §6.7 / 10.7)**.
+> **O código nunca vence a divergência por já estar no ar.**
+> Ajustar o texto da spec para se conformar ao atalho do código é a violação mais grave da metodologia: a **inversão de hierarquia**. Corolário: **não se reconstrói ADR a partir do código**. O código é evidência do que foi feito, nunca do que foi decidido.
 
-#### O Fluxo de Reconciliação Correto:
-1. **Identificação e Isolamento:** O Agente Executivo ou o teste aponta o drift entre código e especificação.
-2. **Subida para a Camada Superior:**
-   - Se o desvio do código foi um pragmatismo deliberado da Fase 3 que se provou seguro e indispensável em runtime, **ele não pode ser aprovado silenciosamente**.
-   - Redige-se uma **ADR Formal de Emenda** justificando tecnicamente por que o comportamento do código é superior ao da especificação original.
-3. **Ratificação Humana:** A ADR é aprovada pelo operador/arquiteto (`status=accepted`).
-4. **Atualização da Especificação:** A `Spec` é formalmente atualizada para incorporar o novo contrato.
-5. **Harmonização do Código:** Os testes e o código são homologados contra a nova especificação.
+### O fluxo correto
 
----
+1. **Identificar e isolar** o drift, com a camada em que foi medido declarada.
+2. **Subir para a camada superior.** Se o desvio do código foi um pragmatismo da Fase 3 que se provou indispensável em runtime, ele **não é aprovado em silêncio**: redige-se uma **emenda de ADR** (`status=PROPOSED`) justificando por que o comportamento observado é superior ao contrato original.
+3. **Ratificar** em artefato separado, por quem decide (humano ou papel decisor), com a evidência de runtime citada.
+4. **Atualizar a spec** para incorporar o novo contrato.
+5. **Homologar código e testes** contra a spec nova.
+6. **Varrer as dependentes.** Corrigir uma premissa exige varrer todas as decisões que se apoiavam nela (Regra R9).
 
-### 4. Exemplos Reais de Prevenção de Inversão de Hierarquia
+### Em conflito entre camadas
 
-| Cenário de Divergência | Resolução Errada (Inversão de Hierarquia) | Resolução Correta (EEEMIAD) |
+| Conflito | Quem vence |
+|---|---|
+| Spec ↔ Código | Spec |
+| ADR ↔ Spec | ADR |
+| Texto original da ADR ↔ emenda ratificada | Emenda |
+| Qualquer camada ↔ Plan | Plan |
+
+Toda reconciliação declara a **camada autoritativa** contra a qual confirmou, e confirma contra a **mais alta** que fala do assunto, não contra um degrau acima do código.
+
+## 4. Exemplos ilustrativos (genéricos)
+
+| Divergência observada | Resolução errada (inversão) | Resolução EEE |
 |---|---|---|
-| **Caso 1: Autenticação de Hop Interno** (Sun recebia tarefas sem validação de token interno). | Alterar a spec para dizer que a rota `/v1/tasks` é pública e aberta. | Emitir a **ADR-042**, criar o token de serviço `SUN_SERVICE_TOKEN`, fechar a rota e atualizar a spec para exigir Bearer obrigatório. |
-| **Caso 2: Token de Admin Global** (`SATURN_ADMIN_TOKEN_FALLBACK` permitia bypass de todo o RBAC). | Documentar o token mestre como funcionalidade na spec de segurança. | Emitir a **ADR-031**, eliminar o token mestre do código e impor que toda administração passe pelo OpenFGA. |
-| **Caso 3: Timeout de Latência do Themis** (Spec dizia 75 ms; Nomad operava com 500 ms). | Alterar o arquivo `.nomad` para 75 ms às cegas (quebrando produção) ou ignorar o número. | Medir a latência real em carga, emitir emenda à **ADR-011** documentando a razão empírica dos 500 ms e atualizar a spec. |
+| Um salto interno entre dois serviços aceita tarefas sem validar credencial; a spec exige token. | Reescrever a spec dizendo que a rota interna é "confiável por rede". | Emitir ADR de emenda; introduzir credencial de serviço; fechar a rota; atualizar a spec exigindo `Bearer`. |
+| Um token administrativo global permite contornar toda a autorização; "facilita a operação". | Documentar o token mestre como funcionalidade. | ADR eliminando o token; toda administração passa pela política de autorização; migração com janela de rollback. |
+| A spec diz *timeout* de 75 ms; o deploy opera a 500 ms há meses sem incidentes. | Alterar o deploy para 75 ms às cegas, ou ignorar o número. | Medir a latência real sob carga; emendar a ADR com a razão empírica; fazer a spec **apontar para a fonte** do limite em vez de copiá-lo. |
+| Cinco tabelas existem em produção e nenhuma aparece na spec de banco. | Considerar "detalhe de implementação". | Quem decide também descreve: cada tabela entra na spec no mesmo arco; Fase 8 varre a paridade. |

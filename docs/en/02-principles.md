@@ -1,71 +1,79 @@
-# 02. Foundational Principles and the Stratified DONE Stack
-## Non-Negotiable Rules of Evolutionary Empirical Engineering
+# 🏛️ 02 · Principles and the DONE Stack
+
+*The non-negotiable rules of Evolutionary Empirical Engineering*
 
 ---
 
-### 1. The Stratified DONE Stack
-In EEEMIAD, **it is strictly prohibited to declare a task as "done" without a qualifying tier**.
-A naked "done" invites downstream consumers to assume that the system works in the physical world—the genesis of all compounding agentic technical debt.
+## 1. The stratified DONE stack
+
+In EEE, **declaring a task "done" without a qualifier is forbidden**. A bare `closed` invites the downstream reader to complete it with "it works": the lie nailed into the mechanism.
 
 ```mermaid
 graph BT
-    D1["DONE@structural<br/>(Fidelity to Spec / Surface Match)"] --> D2["DONE@functional<br/>(Behavior / Sandboxed Test Exit-Code)"]
-    D2 --> D3["DONE@gate<br/>(Intent Validation by Human Review)"]
-    D3 --> D4["DONE@purpose<br/>(Time/Attention Returned / Bamboo Chime)"]
-
-    style D1 fill:#e1f5fe,stroke:#0288d1
-    style D2 fill:#fff9c4,stroke:#fbc02d
-    style D3 fill:#ffe0b2,stroke:#f57c00
-    style D4 fill:#c8e6c9,stroke:#388e3c
+    D1["DONE@structural<br/>code faithful to spec where the spec speaks (surface)"] --> D2["DONE@functional<br/>behaviour faithful where the spec is silent"]
+    D2 --> D3["DONE@gate<br/>spec faithful to human intent"]
+    D3 --> D4["DONE@purpose<br/>returned time and attention (bamboo chime)"]
+    style D1 fill:#e3f2fd,stroke:#1565c0,color:#0d1b2a
+    style D2 fill:#fff8e1,stroke:#f9a825,color:#0d1b2a
+    style D3 fill:#fbe9e7,stroke:#d84315,color:#0d1b2a
+    style D4 fill:#e8f5e9,stroke:#2e7d32,color:#0d1b2a
 ```
 
-| DONE Tier | What it Claims | Evaluator | Machine-Measurable? |
+| Tier | What it claims | Who judges | Machine-measurable? |
 |---|---|---|:---:|
-| **`DONE@structural`** | The code is a faithful topological image of the specification where the spec speaks (endpoints, signatures, types, relational schemas). | Machine (AST / Graph Extractor) | **Yes** |
-| **`DONE@functional`** | The behavior is correct where the specification was silent (internal function logic and edge conditions). | Machine (Isolated unit / integration test suite) | **Yes** |
-| **`DONE@gate`** | The specification faithfully represents human intent and solves the real problem. | Human (Deliberate gate review) | **No** |
-| **`DONE@purpose`** | The system returned real human hours and genuine attention (manifesto criterion). | Human (Physical reality) | **No, by design** |
+| `DONE@structural` | The code is a topologically faithful image of the spec where the spec manifests: routes, signatures, types, constraints. | Machine (AST extractor, graph) | Yes (topological) |
+| `DONE@functional` | Behaviour is faithful where the spec is silent: function bodies. | Machine (isolated tests) | Yes (exit code) |
+| `DONE@gate` | The spec is faithful to intent and solves the real need. | Human (deliberate review) | No |
+| `DONE@purpose` | The system returned quality human hours and attention. | Human (real life) | **No, by design** |
 
 > [!IMPORTANT]
-> **The Epistemological Divide: Verification $\ne$ Validation**
-> - **Verification** = *"Did we build the product correctly?"* (Code fidelity to specification). Machines execute this flawlessly.
-> - **Validation** = *"Did we build the right product?"* (Specification alignment with human need). Only humans can judge this.
-> `verified` **must never wear the badge of** `validated`.
+> **Verification ≠ Validation.**
+> *Verification* answers "did we build it right?" (code faithful to spec); the machine does it.
+> *Validation* answers "did we build the right thing?" (spec faithful to intent); only the human does it.
+> `verified` **never wears the badge of** `validated`. The apex of the stack is machine-immeasurable on purpose: the honesty of the lower tiers exists so the human spends judgement only at the top.
 
----
+### Why the functional test is a crutch
 
-### 2. The 8 Foundational Principles of EEEMIAD
+"Structural = correct" only holds if the materializer is trustworthy. A compiler earns that trust (deterministic, proven). An LLM does not: it can emit a surface that matches the spec and a body that does something else. The functional test is necessary **exactly to the extent that the spec under-determines the program**. As the spec gains truth (pre- and post-conditions, types, cardinalities), the crutch shrinks.
 
-#### Principle 1: The System Has No Right to Declare "Done" Beyond the Evidence it Holds
-Trust is never assumed; it is **earned and immutably recorded**. An honest truth engine is ultimately an **evidence engine**: a machine that declares exactly what it knows and refuses to round up to "true".
+### Verification mode per guarantee
 
-#### Principle 2: Every Criterion Publishes its Fidelity and Boundaries
-Every test or validator must formally state what it **guarantees** and what it **does not guarantee**. 
-The most perilous quadrant in software engineering is:
-$$\text{Danger Zone} = \text{High Decidability} \times \text{Low Fidelity}$$
-(A lightning-fast, crisp green test verifying a cosmetic surface or an artificial mock).
+Every guarantee carries a **mode**, and the mode limits the DONE tier it can reach:
 
-#### Principle 3: No Percentages on the Subjective
-Subjective criteria must be represented as **attributed judgments** (a named human judge + an explicit evaluation procedure + an immutable timestamp). 
-Assigning pseudo-scientific percentages to qualitative facets (e.g., "87% code elegance", "92% usability") is the laundering of subjectivity under a veneer of false rigor.
+| Mode | What it is | Maximum tier |
+|---|---|---|
+| **Deterministic** | Exact match; passed = has the property. | crisp `DONE@functional` |
+| **Threshold + confidence** | Statistical gate with a band (e.g. Wilson lower bound). Honest only with the confidence declared; never "100%". | `DONE@functional` with band |
+| **Shape / judgement** | Fuzzy, attributed to a named judge. | `DONE@gate` |
 
-#### Principle 4: Abstract Only What Has Repeated ($\ge 2$ Times)
-It is strictly forbidden to build generic frameworks, predictive middlewares, or speculative database schemas for hypothetical use cases. Abstraction is justified only when the observed pattern has **manifested at least twice across distinct functional slices**.
+Granularity is mode: **slice until the piece is deterministic; the residue that does not reduce is the irreducible subjective**, and receives an attributed judge, never an exact number.
 
-#### Principle 5: Automate Only What is Stable
-Do not write sophisticated CI/CD pipelines, autonomous generators, or complex sync tasks for business flows or data schemas that are still undergoing rapid churn in Phase 3 (POC). Automating the unstable generates compounding maintenance friction.
+## 2. The six principles of DONE
 
-#### Principle 6: Continuous Evolution Driven by Real Runtime Feedback
-No architectural hypothesis survives production unscathed. When telemetry from the cluster (*reality*) contradicts a theoretical claim in the *Plan*, reality governs: a formal upward reconciliation ritual via ADR is initiated.
+Crystallized in the canonical document *Truth, the Materializer and DONE*:
 
-#### Principle 7: Implicit Contracts are Prohibited (§7 Explicit Contract Registry)
-Every service boundary must maintain an explicit contract registry covering:
-1. Security invariants (least privilege, tenant isolation).
-2. Audit provenance (caller identity, on-behalf delegations, authorization authority).
-3. Pre-conditions and post-conditions.
-4. Concurrency semantics (write locks, isolation levels).
-5. Failure modes (The M11 Table).
+1. **DONE is stratified and self-declaring.** Always `done@tier`, never a bare "done".
+2. **Every criterion publishes its fidelity, not only its verdict.** A check says what passing it guarantees **and what it does not**. The dangerous quadrant is *high decidability with low fidelity*: a crisp green that does not deliver.
+3. **No percentages on the subjective.** A subjective criterion is an **attributed judgement** (judge, procedure, timestamp), not a number. "87% usability" is subjectivity laundered with a veneer of rigour.
+4. **DONE scales with risk.** The evidence bar is a function of the cost of being wrong. Declare the bet the criterion was calibrated for: a prototype is not a pacemaker.
+5. **DONE is defeasible.** It means "no defect found by battery B up to instant t", never "correct". You prove *not-done* (a test fails); you never prove *done*. Regression tests are how a DONE bet becomes durable.
+6. **Separate construction from validation.** "Built right" (closure) and "was the right thing" (gate) do not swap badges.
 
-#### Principle 8: Closure-by-Re-evaluation Doctrine
-No engineering task can be closed on the agent's self-report ("I have implemented the requested routes"). Closure strictly requires the automated re-execution of the canonical query or verification harness that originally surfaced the deficit:
-$$\text{Legitimate Closure} \iff \text{DeficitQuery}(\text{TargetSystem}) == 0$$
+## 3. The five principles of evolution
+
+The principles that make EEE **evolutionary**, extracted from practice across successive arcs:
+
+7. **Abstract only what has repeated (≥ 2 times).** Building frameworks, generic middleware or cross-cutting tables for hypothetical scenarios is forbidden. Abstraction is justified only when the same divergence or repetition has been **observed in at least two distinct slices** (Phase 6).
+8. **Automate only what is stable.** Sophisticated pipelines and autonomous generators are not written for contracts still changing every slice. Automating the unstable multiplies maintenance.
+9. **Runtime reality prevails over the plan's hypothesis.** When the observed contradicts the planned, the rite of **upward reconciliation** via ADR begins. The spec is never adjusted to forgive the code.
+10. **Implicit contracts are forbidden.** Every interface keeps an explicit register of: security invariants, audit trail (who called, on whose behalf, under which authority), pre- and post-conditions, concurrency and **failure modes** (M11 matrix). Whoever decides also describes: every table, flag or job created under an ADR enters the spec **in the same arc it is born**.
+11. **Closure by re-evaluation.** No task closes on self-report. It closes when the verification (query, test, probe) that **detected the deficit** is re-run and returns zero.
+
+> [!TIP]
+> **One sentence to keep:** *measure, don't self-promote*. EEE discipline, "earn trust instead of assuming it" and the bamboo chime are the same truth at different altitudes.
+
+## 4. Watchpoints: what can rot
+
+- **Satisfaction as a stamp.** "The human decides" can degenerate into taste-as-veto. The apex is not "did the operator like it?", but the specific question: *did it return time and attention for what matters?*
+- **Construction attention mistaken for the steady state.** Building the platform demands vigilance; using it must not. The day building stops hurting is not the day using stops hurting; only the second fulfils the manifesto.
+- **Retrofitting a pretty story.** Marrying a technical thesis to the ethos is pleasant, and therefore suspect. Actively seek the design decision that **contradicts** the manifesto, not only the confirmations.

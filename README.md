@@ -1,160 +1,178 @@
-# EEEMIAD ⚖️
-### Engenharia Empírica Evolutiva — Metodologia de Inteligência Artificial para Desenvolvimento
-### *Evolutionary Empirical Engineering — AI Methodology for Software Development*
+<p align="center">
+  <img src="assets/eeemiad-banner.svg" alt="EEEMIAD — Engenharia Empírica Evolutiva" width="100%">
+</p>
+
+# ⚖️ EEEMIAD
+
+**Engenharia Empírica Evolutiva — Metodologia de Inteligência Artificial para Desenvolvimento**
+*Evolutionary Empirical Engineering — AI Methodology for Software Development*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Status: Production-Grade](https://img.shields.io/badge/Status-Industrial_Empirical-emerald.svg)](docs/)
-[![Languages: PT | EN](https://img.shields.io/badge/Languages-PT_|_EN_(FR_&_ES_Scaffolded)-purple.svg)](docs/)
-[![Architecture: Plan-ADR-Spec-Code](https://img.shields.io/badge/Hierarchy-Plan_→_ADR_→_Spec_→_Code-orange.svg)](docs/pt/03-hierarquia-da-verdade.md)
+[![Version](https://img.shields.io/badge/Version-1.1.0-emerald.svg)](CHANGELOG.md)
+[![Languages](https://img.shields.io/badge/Languages-PT_%7C_EN_(FR_%26_ES_scaffold)-purple.svg)](docs/)
+[![Hierarchy](https://img.shields.io/badge/Hierarchy-Plan_%E2%86%92_ADR_%E2%86%92_Spec_%E2%86%92_Code-orange.svg)](docs/pt/03-hierarquia-da-verdade.md)
 
-> **"O sistema não tem o direito de dizer 'pronto' além da evidência mensurável que possui."**  
-> *The system has no right to declare 'done' beyond the measurable evidence it holds.*
+> **"O sistema não tem o direito de dizer 'pronto' além da evidência mensurável que possui."**
+> *The system has no right to declare "done" beyond the measurable evidence it holds.*
 
 ---
 
 ## 🌐 Idiomas / Languages
-- 🇧🇷 [**Documentação em Português**](docs/pt/01-visao-geral.md) | [Manifesto](docs/pt/00-manifesto.md) | [Guia de Aplicação](docs/pt/08-guia-de-aplicacao.md)
-- 🇺🇸 [**English Documentation**](docs/en/01-overview.md) | [Manifesto](docs/en/00-manifesto.md) | [Application Guide](docs/en/08-application-guide.md)
-- 🇫🇷 [Guide en Français (Scaffold & Roadmap)](docs/fr/README.md)
-- 🇪🇸 [Guía en Español (Scaffold & Roadmap)](docs/es/README.md)
+
+| | Documentação | Entrada recomendada |
+|---|---|---|
+| 🇧🇷 | [Português](docs/pt/01-visao-geral.md) | [Manifesto](docs/pt/00-manifesto.md) · [Construção Evolutiva](docs/pt/06-construcao-evolutiva.md) · [Guia de Aplicação](docs/pt/08-guia-de-aplicacao.md) |
+| 🇺🇸 | [English](docs/en/01-overview.md) | [Manifesto](docs/en/00-manifesto.md) · [Evolutionary Construction](docs/en/06-evolutionary-construction.md) · [Application Guide](docs/en/08-application-guide.md) |
+| 🇫🇷 | [Français](docs/fr/README.md) | scaffold e roteiro de tradução |
+| 🇪🇸 | [Español](docs/es/README.md) | scaffold e roteiro de tradução |
 
 ---
 
-## 🚀 O Problema de Mercado / The Market Problem
+## 🧭 O que é a EEE / What EEE is
 
-### Por que 85% dos Agentes de IA Falham ao Chegar na Produção Corporativa
-Ferramentas modernas de desenvolvimento assistido por IA (Claude Code, Cursor, Codex, Copilot, AutoGPT) impressionam na demonstração, mas frequentemente colapsam em ambientes corporativos e regulados. O fosso não reside na inteligência do modelo, mas na **ausência de um método de engenharia rigoroso**:
+A **Engenharia Empírica Evolutiva (EEE)** é uma disciplina de engenharia de software para sistemas em que modelos de linguagem e agentes autônomos constroem código. Três palavras, três compromissos:
 
-1. **A Falácia da Auto-Graduação ($p_0 \approx 0.616$):** Quando o mesmo agente de IA redige a especificação, gera o código e escreve os testes, surge uma *alucinação conforme*. O modelo comete um defeito lógico sutil e escreve um teste defeituoso que valida com sucesso o seu próprio engano. O teste fica verde (`exit-code 0`), mas a funcionalidade está corrompida.
-2. **A Família da Resposta Plausível:** O agente retorna uma resposta perfeitamente bem-formada e tipada para uma pergunta que **não foi feita**. Por parecer correta, atravessa code reviews humanos e testes automatizados rasos.
-3. **Spec-Rot e Inversão de Hierarquia (*Hierarchy Inversion*):** O código diverge silenciosamente da documentação. Sob pressão, a documentação é adaptada retroativamente para perdoar o atalho do código, destruindo as invariantes de segurança e governança.
-4. **Falsos Dones:** Agentes declaram tarefas como "concluídas" por auto-relato (*self-report*), gerando débito técnico invisível e incidentes severos de produção.
+| | Compromisso | Mecanismo |
+|---|---|---|
+| **Engenharia** | Nada é aceito por auto-relato. | Hierarquia `Plan → ADR → Spec → Code`; contratos explícitos; fechamento por reavaliação. |
+| **Empírica** | Toda afirmação de estado é medida na fonte. | Par discordável (R2); nível de ground truth (R15); "não exercitado ≠ passou" (R6). |
+| **Evolutiva** | O sistema cresce por arcos, nunca por salto. | Fatia fina → stubs e mocks → flag `off → shadow → enforce` → abstração só do que se repetiu. |
+
+**EEEMIAD** é esta publicação: a EEE formulada como metodologia de IA para desenvolvimento, para uso geral e aberto.
+
+> [!NOTE]
+> **Escopo.** Este repositório apresenta **somente a EEE**. A instanciação em dois agentes (reflexivo e executivo), com briefs, reality-check de pré-voo e avaliação decisão por decisão, vive no repositório irmão **[EEEMIAD-dual](#-repositórios-irmãos--sibling-repositories)**.
 
 ---
 
-## 🛡️ A Solução EEEMIAD / The EEEMIAD Solution
+## 🚨 O problema / The problem
 
-A **EEEMIAD** é uma metodologia de engenharia de software de alta disciplina, forjada em um ecossistema real de mais de 250.000 linhas de código, 52 ADRs arquiteturais, milhares de jobs distribuídos e centenas de milhares de inferências governadas.
+Agentes de código impressionam na demonstração e colapsam em operação por **ausência de método**, não por falta de inteligência do modelo:
 
-Ela transforma o desenvolvimento com agentes de IA de uma "improvisação estocástica contínua" em um **processo de compilação confiável e verificável**.
+1. **Auto-graduação.** O mesmo agente escreve spec, código e teste; um erro coerente passa na própria verificação. Em medição interna com autoria única, "verificado por execução" ficou em ~0,51 e, mesmo após melhorias, o ~0,62 obtido é um **limite superior** da correção real ([09 §1](docs/pt/09-fundamentacao-academica.md#1-o-problema-epistemológico)).
+2. **Resposta plausível.** Valor bem-formado e tipado para uma pergunta que não foi feita; atravessa revisão porque parece resposta.
+3. **Inversão de hierarquia.** O código diverge do documento e o documento é ajustado para perdoar o atalho.
+4. **"Pronto" pelado.** Tarefas fechadas por auto-relato, sem degrau de evidência declarado.
+
+---
+
+## 🏗️ Como a EEE constrói / How EEE builds
 
 ```mermaid
-flowchart TD
-    subgraph FluxoGovernança ["Hierarquia Unívoca da Verdade"]
-        Plan["1. PLAN<br/>(Intenção, Princípios & Fronteiras)"] -->|Deriva| ADR["2. ADR<br/>(Decisões Arquiteturais Registradas)"]
-        ADR -->|Contrato Formal| Spec["3. SPEC<br/>(Schemas, Invariantes & Modos de Falha M11)"]
-        Spec -->|Compilação Fiel| Code["4. CODE<br/>(Runtime, Implementação & Testes Estanques)"]
-    end
-
-    subgraph DualAgent ["Divisão Estrutural de Papéis (Dual-Agent)"]
-        Reflective["🧠 Agente Reflexivo (Cowork/Arquiteto)<br/>Planeja, redige ADRs, avalia cumprimento"]
-        Executive["⚡ Agente Executivo (Code/Implementador)<br/>Reality-Check First, AST-based, executa fatias"]
-        Verifier["⚖️ Verificador Cego & Independente<br/>Testa a spec sem ver o código gerado"]
-    end
-
-    subgraph FechamentoMecanico ["Garantias de Fechamento"]
-        Closure["Doutrina do Fechamento por Re-avaliação<br/>(Closure-by-Re-evaluation via Grafo/Query)"]
-        DoneTier["Pilha Estratificada de DONE<br/>(done@estrutural → done@funcional → done@gate → done@propósito)"]
-    end
-
-    FluxoGovernança <--> DualAgent
-    DualAgent --> FechamentoMecanico
+flowchart LR
+    CH["📜 Charter<br/>propriedade +<br/>condição de refutação"] --> P1["P1 · Fatia fina<br/>stubs marcados<br/>flag OFF"]
+    P1 --> P2["P2 · Shadow<br/>computa, registra<br/>divergência, não decide"]
+    P2 --> P3["P3 · Hardening<br/>desmock + M11 +<br/>injeção de falha"]
+    P3 --> P4["P4 · Cut-over<br/>pré-voo →<br/>flag ENFORCE"]
+    P4 --> F["✅ Fechamento<br/>consulta de déficit = 0<br/>done@tier declarado"]
+    F --> R["🧹 Flag aposentada<br/>sweep Fase 8"]
+    style CH fill:#e3f2fd,stroke:#1565c0,color:#0d1b2a
+    style P4 fill:#fbe9e7,stroke:#d84315,color:#0d1b2a
+    style R fill:#e8f5e9,stroke:#2e7d32,color:#0d1b2a
 ```
 
+- **O mock valida o cano, não a medida.** Stubs provam que o fluxo atravessa; nunca produzem valor lido como medição.
+- **Flags são contratos:** default neutro no código, valor explícito no deploy, domínio `off | shadow | enforce`, postura de falha declarada, linha no ledger.
+- **Testes carregam o par discordável:** o alvo passa, o legado passa, **o vizinho segue barrado**. Dívidas entram como `xfail(strict)` e anunciam a própria quitação.
+
+Leia o capítulo completo: [06 · Construção Evolutiva](docs/pt/06-construcao-evolutiva.md). Veja rodando: [`examples/evolutionary-arc/`](examples/evolutionary-arc/README.md).
+
 ---
 
-## 🏛️ Os Pilares Fundamentais / Core Pillars
+## 🏛️ Pilares / Pillars
 
-| Pilar | Descrição Sintética | Documento Normativo |
+| Pilar | Síntese | Capítulo |
 |---|---|---|
-| **Hierarquia da Verdade (§2)** | `Plan → ADR → Spec → Code`. O código nunca vence uma divergência contra a especificação por já estar no ar. O desvio sempre sobe para reconciliação na camada superior. | [Hierarquia da Verdade](docs/pt/03-hierarquia-da-verdade.md) |
-| **A Pilha de DONE** | Eliminação do "done pelado". Todo avanço deve declarar seu degrau: `done@estrutural`, `done@funcional`, `done@gate` e `done@propósito` (o critério do sino de bambu). | [Princípios Fundamentais](docs/pt/02-principios.md) |
-| **As 10 Regras do Refinamento** | Doutrina empírica contra respostas plausíveis (R1 a R10), incluindo pares discordáveis (R2), checagem sintática via AST (R8) e priorização por taxa de degradação (R10). | [10 Regras de Refinamento](docs/pt/05-regras-do-refinamento.md) |
-| **Dual-Agent Workflow** | Separação física entre raciocínio reflexivo (Cowork) e execução disciplinada (Code), com reality-check obrigatório antes de qualquer edição. | [Dual-Agent Workflow](docs/pt/06-dual-agent-workflow.md) |
-| **Fechamento por Re-avaliação** | Tarefas só são encerradas quando a verificação canônica independente que detectou o déficit é reexecutada e retorna zero — nunca por auto-relato do agente. | [Guia de Aplicação](docs/pt/08-guia-de-aplicacao.md) |
-| **Modos de Falha M11** | Mapeamento explícito de postura para cada interface: `Fail-Closed` para decisões de segurança; `Fail-Open com Log Durável` para preservação de evidência histórica. | [Catálogo de Anti-Padrões](docs/pt/07-anti-padroes.md) |
+| 🔺 **Hierarquia da Verdade** | `Plan → ADR → Spec → Code`. O código nunca vence por já estar no ar; o drift sobe para reconciliação. | [03](docs/pt/03-hierarquia-da-verdade.md) |
+| 🪜 **Pilha de DONE** | `done@estrutural → funcional → gate → propósito`. Verificação ≠ validação. | [02](docs/pt/02-principios.md) |
+| 🔄 **Oito fases** | Exploração → contrato e mock → elo mínimo → hardening → shadow → abstração → cut-over → sweeps. | [04](docs/pt/04-fases-do-ciclo.md) |
+| 🔬 **Regras do refinamento** | R1–R10 contra a família da resposta plausível, mais as regras de construção (R11–R30). | [05](docs/pt/05-regras-do-refinamento.md) |
+| 🏗️ **Construção evolutiva** | Stubs, mocks, flags e arcos; integração por testes; ampliação evolutiva. | [06](docs/pt/06-construcao-evolutiva.md) |
+| 🧯 **Modos de falha (M11)** | Decisão falha fechada; evidência falha aberta com buffer durável. | [05 R7](docs/pt/05-regras-do-refinamento.md), [template](templates/pt/failure-modes-m11-template.md) |
+| ⚠️ **Anti-padrões** | Catálogo medido: ratify-and-write, inversão, flag fantasma, mock que vira medida, composição não exercitada. | [07](docs/pt/07-anti-padroes.md) |
 
 ---
 
-## 📂 Estrutura do Repositório / Repository Layout
+## 📂 Estrutura / Layout
 
 ```
 EEEMIAD/
-├── docs/                               # Base de Conhecimento Normativa & Teórica
-│   ├── pt/                             # Documentação Completa em Português (10 Capítulos)
-│   ├── en/                             # Full English Documentation (10 Chapters)
-│   ├── fr/                             # Documentation en Français (Scaffolding & Roadmap)
-│   └── es/                             # Documentación en Español (Scaffolding & Roadmap)
-├── templates/                          # Templates Operacionais Prontos para Uso
-│   ├── pt/ & en/
-│   │   ├── adr-template.md             # Template Canônico de ADR com Matriz de Decisão
-│   │   ├── brief-template.md           # Template de Brief com Pré-Voo de Raio de Explosão
-│   │   ├── reality-check-template.md   # Template de Reality-Check "Verificar, Não Confiar"
-│   │   ├── evaluation-ledger-template.md # Livro-Razão de Avaliação Decisão por Decisão
-│   │   └── failure-modes-m11-template.md # Matriz M11 de Postura em Falha
-├── skills/                             # Skills Modulares para Agentes de IA
-│   ├── eee-architect/                  # Skill do Agente Reflexivo (Planejamento & ADRs)
-│   ├── eee-executor/                   # Skill do Agente Executivo (Reality-Check & AST)
-│   ├── eee-adversarial-verifier/       # Skill do Verificador Cego & Independente
-│   └── eee-governance-sweep/           # Skill de Varredura Periódica contra Spec-Rot (Fase 8)
-└── examples/                           # Harness de Testes e Implementação de Referência
-    ├── verification-harness/           # Scripts Python para Validação Automática de Invariantes
-    └── reference-implementation/       # Projeto Exemplo Ponta a Ponta (Plan → Code)
+├── docs/
+│   ├── pt/   00 manifesto · 01 visão geral · 02 princípios · 03 hierarquia · 04 fases
+│   │         05 regras · 06 construção evolutiva · 07 anti-padrões · 08 guia
+│   │         09 fundamentação · 10 casos ilustrativos · 11 glossário
+│   ├── en/   (same twelve chapters)
+│   ├── fr/   scaffold + roadmap
+│   └── es/   scaffold + roadmap
+├── templates/{pt,en}/
+│   ├── adr-template.md                 ADR com alternativas, D1..Dn, ratificação separada
+│   ├── arc-charter-template.md         charter de arco: propriedade, refutação, flag, gates
+│   ├── flag-ledger-template.md         ledger de enforcement
+│   ├── failure-modes-m11-template.md   matriz M11 (gates e sumidouros)
+│   └── reality-check-template.md       reality-check por símbolo e nível R15
+├── skills/
+│   ├── eee-adversarial-verifier/       papel "quem verifica": testes a partir da spec, sem ler o código
+│   └── eee-governance-sweep/           Fase 8 por AST: fantasmas, paridade, custódia
+├── examples/
+│   ├── evolutionary-arc/               arco executável off → shadow → enforce (Python puro)
+│   ├── reference-implementation/       Plan → ADR → Spec → Code ponta a ponta (FastAPI)
+│   └── verification-harness/           verify_hierarchy.py · check_falsification.py
+└── assets/                             banner e elementos gráficos
 ```
 
 ---
 
-## 🧰 Skills para Agentes (Inspiradas no padrão de mercado)
+## ⚡ Início rápido / Quick start
 
-Nossas skills foram construídas no padrão aberto de agentes modernos ([Antigravity](https://github.com/google), [Claude Code](https://github.com/anthropics), [Cursor](https://cursor.com), [Codex](https://openai.com)):
-
-- [`eee-architect`](skills/eee-architect/SKILL.md): Opera em modo puramente reflexivo. Conduz a elaboração de ADRs com contraditório explícito, análise de alternativas e mapeamento de dependências.
-- [`eee-executor`](skills/eee-executor/SKILL.md): Opera em modo estritamente executivo. Executa o **Reality-Check pré-voo**, analisa o código via AST (nunca regex cego) e aplica testes estanques.
-- [`eee-adversarial-verifier`](skills/eee-adversarial-verifier/SKILL.md): Rompe a auto-consistência errônea. Gera suítes de testes consumindo apenas a especificação e as ADRs, sem acesso prévio ao código gerado.
-- [`eee-governance-sweep`](skills/eee-governance-sweep/SKILL.md): Executa a varredura ritual da Fase 8, detectando rotas órfãs, contratos implícitos, flags fantasma e divergências bidirecionais.
-
----
-
-## ⚡ Início Rápido / Quick Start
-
-### 1. Clonar o Repositório e Instalar o Harness
 ```bash
-git clone https://github.com/luizsolarsystems/EEEMIAD.git
+git clone https://github.com/fuzaro/EEEMIAD.git
 cd EEEMIAD
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r examples/verification-harness/requirements.txt
 ```
 
-### 2. Validar a Integridade de um Projeto com o Harness EEE
-```bash
-# Executa a verificação estrita da hierarquia Plan -> ADR -> Spec -> Code
-python3 examples/verification-harness/verify_hierarchy.py --project-root ./examples/reference-implementation
+**1. Veja um arco completo rodar** (11 testes verdes + 1 dívida declarada em `xfail`):
 
-# Verifica se todos os testes possuem controles negativos e pares discordáveis (Regra R2)
-python3 examples/verification-harness/check_falsification.py --test-dir ./examples/reference-implementation/tests
+```bash
+pytest -q examples/evolutionary-arc/code/tests
 ```
 
-### 3. Integrar as Skills ao seu Assistente de IA
-Copie a pasta `skills/` para o diretório de customizações do seu ambiente:
-- **Antigravity CLI:** `cp -r skills/* ~/.gemini/antigravity-cli/custom/skills/`
-- **Claude Code:** Adicione as diretrizes de `skills/` ao seu `CLAUDE.md` corporativo.
-- **Cursor / VSCode:** Importe os playbooks em `.cursorrules` ou nas instruções do workspace.
+**2. Verifique a hierarquia da verdade de um projeto:**
+
+```bash
+python3 examples/verification-harness/verify_hierarchy.py --project-root ./examples/reference-implementation
+python3 examples/verification-harness/check_falsification.py --test-dir ./examples/reference-implementation/code/tests
+```
+
+**3. Adote em um projeto novo ou legado:** siga o [Guia de Aplicação](docs/pt/08-guia-de-aplicacao.md) e abra o primeiro arco com o [template de charter](templates/pt/arc-charter-template.md).
+
+**4. Integre as skills ao seu assistente de IA:** copie `skills/` para o diretório de skills do seu ambiente, ou cole os prompts em `skills/*/prompts/` no início da sessão.
 
 ---
 
-## 📜 Fundamentação Acadêmica e Epistemológica
-A EEEMIAD apoia-se em literatura seminal da ciência da computação e teoria dos sistemas:
-- **Teoria dos Grafos de Propriedade & Ontologias:** Formalização de modelos extensionais para rastreabilidade de artefatos de engenharia (Angles et al., 2017).
-- **Semiótica e Pragmatismo de Peirce:** A teoria da verdade como limite da investigação empírica (Peirce, 1878).
-- **Verificação Formal e Model Checking:** Princípios de Dijkstra e Hoare aplicados à síntese por modelos probabilísticos.
-- **Modelagem Bayesiana de Incerteza:** Calibração com Beta-Bernoulli e limite inferior de Wilson (Wilson, 1927).
-- *Leia a fundamentação completa em:* [Fundamentação Acadêmica](docs/pt/09-fundamentacao-academica.md).
+## 📚 Fundamentação / Foundations
+
+A EEE apoia-se em literatura clássica e recente: verdade pragmática e falseabilidade (Peirce, Popper), desenho experimental e controles (Fisher, Neyman–Pearson), verificação × validação (Boehm), processo racional documentado (Parnas–Clements), contratos (Hoare, Dijkstra, Meyer), *fail-safe defaults* (Saltzer–Schroeder), acidentes por composição (Perrow), entrega evolutiva (Gilb, Boehm), dublês de teste e *toggles* (Fowler, Meszaros, Humble–Farley, Hodgson), estabilidade (Nygard), engenharia de software empírica (Basili, Kitchenham), e os limites da autocorreção em LLMs (Huang et al., Kadavath et al.). Bibliografia completa em [09 · Fundamentação Acadêmica](docs/pt/09-fundamentacao-academica.md).
 
 ---
 
-## 📄 Licença
-Distribuído sob a licença [MIT](LICENSE).
+## 🔗 Repositórios irmãos / Sibling repositories
+
+| Repositório | Papel |
+|---|---|
+| **EEEMIAD** (este) | A metodologia EEE: princípios, hierarquia, fases, regras, construção evolutiva, anti-padrões, guia. |
+| **EEEMIAD-dual** | A instanciação da EEE em **dois agentes**: papel reflexivo (decide) e executivo (constrói), handoff por brief, reality-check de pré-voo, avaliação de cumprimento decisão por decisão. |
 
 ---
-*Construído com base na experiência real de campo do ecossistema SolarSystemsAI.*  
-*Para devolver às pessoas suas horas e sua atenção.*
+
+## 🤝 Contribuindo / Contributing
+
+Veja [CONTRIBUTING.md](CONTRIBUTING.md). Toda proposta de regra ou anti-padrão entra com **evidência observada**, nunca por analogia.
+
+## 📄 Licença / License
+
+[MIT](LICENSE).
+
+---
+
+*Destilada da prática de campo de um ecossistema real de agentes governados. Publicada para devolver às pessoas suas horas e sua atenção.*

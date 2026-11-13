@@ -1,35 +1,39 @@
-# REALITY-CHECK: [Brief / Mudança Alvo]
-## Primeiro Artefato Emitido pelo Agente Executivo (§4.4)
+# 🔎 REALITY-CHECK · [Alvo]
+
+*Primeiro artefato antes de qualquer edição: o terreno é o que o documento assume?*
 
 ```yaml
-brief_reference: BRIEF-[XXX]
-author: Agente Executivo (Code)
-execution_date: YYYY-MM-DD
+target: [ADR-XXX | charter ARC-XXX | spec]
+author_role: [quem constrói]
+date: YYYY-MM-DD
 git_head_sha: [sha curto]
-environment: [local-dev | cluster-staging | CI]
+environment: [local | staging | produção]
 verdict: [GREENLIGHT | DRIFT_DETECTED | BLOCKED]
 ```
 
 ---
 
-## 1. Verificação de Âncoras Citadas no Brief
+## 1. Âncoras verificadas (símbolo, não linha — R14)
 
-| Âncora Citada no Brief | Estado Real Observado no Código | Status | Evidência (Comando / Linha Real) |
-|---|---|:---:|---|
-| `caminho/arquivo.py:L120` | Função existe na linha 134 (drift de 14 linhas) | ✅ OK | `grep -n "def nome_funcao"` |
-| `saturn.users` (tabela) | Tabela inexistente no schema do banco | ❌ DRIFT | `\dt saturn.*` (tabela não encontrada) |
-| `OIDC_ENABLED="true"` | Variável ativa no Nomad template | ✅ OK | `nomad job inspect ...` |
+| Âncora citada | Estado real observado | Status | Evidência (comando) | Nível R15 |
+|---|---|---|:---:|---|
+| `modulo.py::funcao_x` | existe; assinatura `(a, b, *, tenant)` | ✅ OK | `python -c "import ast..."` | 1 |
+| tabela `schema.tabela` | inexistente no banco alvo | ❌ DRIFT | `\dt schema.*` | 3 |
+| `FLAG_X="enforce"` | presente no manifesto; **0 consumidores no código** | ❌ FANTASMA | sweep AST | 2 |
 
----
+## 2. Afirmações de estado do documento ("X já aplicado", "infra estável")
 
-## 2. Relatório de Desvios (*Drift Report*)
-> *Se algum arquivo, assinatura ou precondição divergir do assumido pelo Brief, documente aqui antes de tocar em qualquer código.*
+| Afirmação | Verificada? | Como | Resultado |
+|---|:---:|---|---|
+| "credencial de serviço existe" | ❌ | `secret-store get svc/credential` | não existe → **precondição de estado falha** |
 
-- **Desvio 1:** [Descrição do desvio e impacto na implementação].
-- **Recomendação do Executor:** [Voltar ao Cowork para emenda de ADR ou prosseguir com ajuste de linha].
+## 3. Relatório de desvios (drift report)
 
----
+- **Desvio 1:** [descrição, camada em que foi medido, impacto].
+- **Recomendação:** [subir para emenda de ADR | prosseguir com ajuste de spec | bloquear].
 
-## 3. Veredito de Pré-Voo
-- [ ] **GREENLIGHT:** Âncoras confirmadas, precondições de estado satisfeitas, seguro para codar.
-- [ ] **DRIFT_DETECTED:** Divergência material encontrada; brief pausado para reavaliação do Cowork.
+## 4. Veredito
+
+- [ ] **GREENLIGHT** · âncoras confirmadas, precondições satisfeitas, mecanismo da fase existe (R26).
+- [ ] **DRIFT_DETECTED** · divergência material; o documento volta a quem decide antes de qualquer edição.
+- [ ] **BLOCKED** · ambiente inalcançável para medir; **proibido inferir** (não certificável).

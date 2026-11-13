@@ -1,25 +1,35 @@
-# M11 Failure Modes and Degradation Posture Matrix
-## Mandatory Annex for Contract Specifications (§7 and §11)
+# 🧯 M11 MATRIX · Failure Modes and Degradation Posture
+
+*Mandatory annex of every contractual spec: what happens when the dependency falls*
 
 ```yaml
-service_name: [Service / Component Name]
-spec_reference: specs/[service].md
+component: [name]
+spec_reference: specs/[component].md
 governing_adr: ADR-[XXX]
 ```
 
 ---
 
-## 1. Failure Mode Matrix per Interface / Route
+## 1. Doctrine
 
-| Operation / Endpoint | Error Condition | Failure Class | Degradation Posture | HTTP Status / Action | Telemetry & Audit |
-|---|---|---|---|:---:|---|
-| `POST /v1/tasks` | Missing token | Hard Failure | **Fail-Closed** | `401 Unauthorized` | Immediate security log with client IP |
-| `POST /v1/tasks` | Vault Transit down | Transient Failure | **Fail-Closed** | `503 Service Unavailable` | Retry with exponential backoff; never proceed unsigned |
-| `POST /v1/audit` | Moon DB unreachable | Transient Failure | **Fail-Open with Durable Buffer** | `202 Accepted` | Push event to disk-backed JetStream stream (R7) |
-| `POST /v1/access/check` | OpenFGA timeout (>100ms) | Transient Failure | **Fail-Closed** | `403 Forbidden (Timeout)` | Closed-world deny on ambiguity (ADR-040) |
+1. **Security decisions fail closed.** Under any doubt about authentication, authorization or permission parsing, the machine denies, and logs loudly.
+2. **Evidence of something that already happened fails open with a durable buffer.** A failing audit pipeline never discards the record; it retains it until downstream recovers (R7).
+3. **Tri-state responses.** `invalid` (401), `denied` (403) and `could not verify` (503) are distinct states; collapsing them is the family's signature (R1).
+4. **Every row has a fault-injection test.** A row without a test is intention, not posture.
 
----
+## 2. Matrix per interface
 
-## 2. Invariants of the M11 Doctrine
-1. **Security Decisions are ALWAYS Fail-Closed:** On any ambiguity regarding token authenticity, RBAC permissions, or scope validity, the gateway rejects access.
-2. **Historical Evidence Preservation is Fail-Open with Durable Buffer:** Failures in audit persistence must never discard historical event data; events are buffered in durable storage until downstream recovery.
+| Operation | Error condition | Class | Posture | Response / action | Log and telemetry | Test |
+|---|---|---|---|:---:|---|---|
+| `POST /v1/items` | missing credential | hard | **Fail-closed** | `401` | security event with origin | `test_items_missing_bearer_401` |
+| `POST /v1/items` | authorization service unavailable | transient | **Fail-closed** | `503` | retry with backoff; never accept unverified | `test_items_authz_down_503` |
+| `POST /v1/items` | policy timeout (> limit declared in spec) | transient | **Fail-closed** | `403` | closed-world denial | `test_items_policy_timeout_denies` |
+| `POST /v1/audit` | store unavailable | transient | **Fail-open with durable buffer** | `202` | event on persistent queue; alert | `test_audit_store_down_buffers` |
+| `GET /v1/items/{id}` | identity derivation fails | hard | **Fail-closed** | `401` | never falls back to a default identity | `test_items_identity_resolution_fails_closed` |
+
+## 3. Evidence sinks (the half that is usually missing)
+
+| Sink | Failure | Posture | Buffer | Proof nothing was lost |
+|---|---|---|---|---|
+| audit log | database unavailable | FO-durable | persistent queue | emitted count = stored + buffered (disagreeable pair) |
+| shadow intent-log | disk full | FO-durable | rotation with alert | same |
