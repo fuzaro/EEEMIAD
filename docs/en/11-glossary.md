@@ -47,4 +47,5 @@
 | **Proof levels 3a / 3b** | R15 level 3 split: 3a is state in the test process, 3b is state in the deployment artifact. Packaging defects only show at 3b. | [05](05-refinement-rules.md) |
 | **Task packet** | A task closed for dispatch: allowed inputs, forbidden reads, output contract, mechanical gate and refutation. Exists only when the operator accepted the context-level division. | [08 §6](08-application-guide.md), [template](../../templates/en/task-packet-template.md) |
 | **Context level (local / module / system)** | How much a task must read. Decides who executes and who checks; a task without a mechanical gate cannot be local. | [08 §6](08-application-guide.md) |
+| **Two keys** | Cross-session execution rule: a remote write needs the decision in the requesting session **and** the operator's authorization in the acting session. | [08 §7](08-application-guide.md) |
 | **Bamboo chime** | Metaphor of purpose: infrastructure that disappears when it works and returns attention to the human. | [00](00-manifesto.md) |

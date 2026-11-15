@@ -34,6 +34,7 @@
 | **Níveis de prova 3a / 3b** | Desdobramento do nível 3 de R15: 3a é estado no processo de teste, 3b é estado no artefato de deploy. Defeitos de empacotamento só aparecem em 3b. | [05](05-regras-do-refinamento.md) |
 | **Pacote de tarefa** | Tarefa fechada para despacho, com entradas permitidas, leituras proibidas, contrato de saída, gate mecânico e refutação. Só existe com a divisão por nível aceita pelo operador. | [08 §6](08-guia-de-aplicacao.md), [template](../../templates/pt/task-packet-template.md) |
 | **Nível de contexto (local / módulo / sistema)** | Tamanho do que uma tarefa precisa ler. Decide quem executa e quem confere; tarefa sem gate mecânico não pode ser local. | [08 §6](08-guia-de-aplicacao.md) |
+| **Duas chaves** | Regra da execução entre sessões: escrita remota exige a decisão na sessão que pede **e** a autorização do operador na sessão que age. | [08 §7](08-guia-de-aplicacao.md) |
 | **Par discordável** | Segunda medida que pode **discordar** da primeira. "Medida sem companheira discordável não é medida; é afirmação." | [05 R2](05-regras-do-refinamento.md) |
 | **Controle negativo** | Teste que deve **falhar** (ou barrar) para provar que a asserção positiva mede algo. Inclui o vizinho que deve seguir barrado. | [06](06-construcao-evolutiva.md) |
 | **Probe-and-revert** | Injetar o defeito exato que o teste existe para pegar, confirmar o vermelho, reverter; só então aceitar o verde. | [06](06-construcao-evolutiva.md) |

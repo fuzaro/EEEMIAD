@@ -8,7 +8,7 @@
 *Evolutionary Empirical Engineering — AI Methodology for Software Development*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.3.0-emerald.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.4.0-emerald.svg)](CHANGELOG.md)
 [![Languages](https://img.shields.io/badge/Languages-PT_%7C_EN_(FR_%26_ES_scaffold)-purple.svg)](docs/)
 [![Hierarchy](https://img.shields.io/badge/Hierarchy-Plan_%E2%86%92_ADR_%E2%86%92_Spec_%E2%86%92_Code-orange.svg)](docs/pt/03-hierarquia-da-verdade.md)
 

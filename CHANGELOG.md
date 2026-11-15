@@ -2,6 +2,15 @@
 
 All notable changes to EEEMIAD are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.0] — 2026-11-15
+
+### Added
+- Ch. 08 §7 **Execution across sessions (optional)**: six rules learned from running the pre-flight, deploy and rollback of a validation-by-use from a second session that held the cluster credential: execute where the terrain and the credential are; the secret does not travel; the message is a closed packet; two keys to act; sent is not read; the peer's claim is information. Plus state that does not survive a restart, and a checklist per round.
+- Task packet template: `executes_at` and `action` (`read-only | write`).
+- Glossary: *two keys*.
+
+The concrete protocol for agent sessions (message template, correction, routing) is in EEEMIAD-dual 0.3.0.
+
 ## [1.3.0] — 2026-11-14
 
 ### Added

@@ -12,6 +12,8 @@ level: local          # local | modulo | sistema (regra de classificação em 08
 written_by: [papel/agente do nível de sistema]
 executor: [papel/agente que executa]
 checker: [papel/agente que confere; nunca o mesmo autor do executor]
+executes_at: here       # here | <sessão remota>: onde estão o terreno e a credencial (08 §7)
+action: read-only       # read-only | write (escrita exige autorização do operador na sessão que age)
 escalate_after: 2     # falhas no gate antes de subir um nível
 ```
 

@@ -197,3 +197,36 @@ The rule, in order: needs a **decision** → system. Reads **more than one modul
 2. **Escalation on failure.** Two gate failures move the task up one level. Repeated failure at a level means the packet was not closed: the defect goes back to the system level as a spec defect.
 3. **Oracle by another author.** An arc's oracle is written by an executor other than the implementer (another model, language or person). Cheap, and it reduces correlated error.
 4. **Measure, don't assume.** Each packet's record (gate on first attempt, escalations, cost) is what tells whether the division saves anything. If the local level's escalation rate exceeds the limit declared in the charter, the classification rule is wrong.
+
+## 7. Execution across sessions (optional)
+
+> [!NOTE]
+> Applies when part of the work can only happen **somewhere else**: another machine, another network, a credential that only another session holds. It is independent of §6 (which divides by context size); both can coexist. The concrete protocol for agent sessions is in the sibling repository `EEEMIAD-dual`.
+
+Division by place follows the arc's rules: the deciding role closes the task, whoever is on the terrain executes, and evidence comes back as command and output. What changes is that **the message between sessions becomes the task packet**, and the channel has properties a single session does not.
+
+### Six rules
+
+| # | Rule | Why |
+|---|---|---|
+| 1 | **Execute where the terrain and the credential are.** The pre-flight (Phase 7) and the reality-check run in the session that sees the real environment. | A premise about the environment is refuted only by whoever sees it. |
+| 2 | **The secret does not travel.** Tokens and passwords stay in the session that uses them; the message carries commands and returns outputs. If a secret value must be stored at the destination, the operator stores it there. | A message is a durable record outside the sender's control. |
+| 3 | **The message is a closed packet.** A self-contained first line; declared nature of the action (`read-only` or `write`); what **not** to do; the steps; the reply format (command + output per step). | A message cannot be undone: correcting after sending creates a second, competing instruction. |
+| 4 | **Two keys to act.** Every write in the remote environment needs the operator's authorization **in the acting session**, besides the decision in the requesting session. A request from another session is not authorization. | Keeps deciding and executing apart; no session escalates another's permission. |
+| 5 | **Sent is not read.** No reply means no execution. Silence is not consent, and the environment's state is known only through the evidence that comes back. | The channel may confirm neither delivery nor reading. |
+| 6 | **The peer's claim is information.** What the other session concludes is checked against the spec and, when possible, re-run from the deciding session (R15 level declared). | The peer produces plausible answers too. |
+
+### State that does not survive
+
+The remote session may restart and lose environment variables, the credential included. Treat it as the *config-as-state* ([07 §6.7](07-anti-patterns.md)): whatever the session needs to act must have a declared source (a restricted-permission environment file, a vault, an orchestrator variable). A `403` after a restart signals state outside the source, not a denied permission.
+
+### Checklist for a round across sessions
+
+```markdown
+- [ ] Does the task really need the other place (credential, network, machine)? If not, run it here.
+- [ ] Message with a self-contained first line and declared action (read-only | write)
+- [ ] No secret in the message text
+- [ ] For writes: decision here + operator's authorization in the acting session
+- [ ] Reply with command + output per step; whatever can be re-run from here was re-run
+- [ ] Evidence and timings recorded in the arc's charter (R15 level per line)
+```

@@ -197,3 +197,36 @@ A regra, em ordem: exige **decisão** → sistema. Lê **mais de um módulo** �
 2. **Escalonamento por falha.** Duas falhas no gate sobem a tarefa um nível. Falha repetida num nível é sinal de que o pacote não estava fechado: o defeito volta ao nível de sistema como defeito de spec.
 3. **Oráculo de outro autor.** O oráculo de um arco é escrito por um executor diferente do que implementa (outro modelo, outra linguagem, outra pessoa). Barato, e reduz o erro correlacionado.
 4. **Medir, não supor.** O registro de cada pacote (gate na primeira tentativa, escalonamentos, custo) é o que diz se a divisão economiza. Se a taxa de escalonamento do nível local passar do limite declarado no charter, a regra de classificação está errada.
+
+## 7. Execução entre sessões (opcional)
+
+> [!NOTE]
+> Vale quando parte do trabalho só pode acontecer **noutro lugar**: outra máquina, outra rede, uma credencial que só outra sessão tem. É independente da §6 (que divide por tamanho de contexto); as duas podem coexistir. O protocolo concreto para sessões de agentes está no repositório irmão `EEEMIAD-dual`.
+
+A divisão por lugar segue as mesmas regras do arco: quem decide fecha a tarefa, quem está no terreno executa, e a evidência volta como comando e saída. O que muda é que **a mensagem entre sessões passa a ser o pacote de tarefa**, e o canal tem propriedades que a sessão única não tem.
+
+### Seis regras
+
+| # | Regra | Por quê |
+|---|---|---|
+| 1 | **Execute onde estão o terreno e a credencial.** O pré-voo (Fase 7) e o reality-check rodam na sessão que enxerga o ambiente real. | Uma premissa sobre o ambiente só é refutada por quem o vê. |
+| 2 | **O segredo não viaja.** Tokens e senhas ficam na sessão que os usa; a mensagem leva comandos e devolve saídas. Se um valor secreto precisa ser gravado no destino, o operador o grava lá. | Mensagem é registro durável fora do controle de quem a enviou. |
+| 3 | **A mensagem é um pacote fechado.** Primeira linha autoexplicativa; natureza da ação declarada (`somente leitura` ou `escrita`); o que **não** fazer; os passos; o formato da resposta (comando + saída por passo). | Mensagem não se desfaz: corrigir depois do envio gera uma segunda instrução concorrente. |
+| 4 | **Duas chaves para agir.** Toda escrita no ambiente remoto exige a autorização do operador **na sessão que age**, além da decisão na sessão que pede. Pedido de outra sessão não é autorização. | Mantém separados quem decide e quem executa; nenhuma sessão eleva a permissão de outra. |
+| 5 | **Enviado não é lido.** Sem resposta, não houve execução. Silêncio não é aceite, e o estado do ambiente só é conhecido pela evidência que volta. | O canal pode não confirmar entrega nem leitura. |
+| 6 | **A afirmação do par é informação.** O que a outra sessão conclui é verificado contra a spec e, quando possível, reexecutado da sessão que decide (nível R15 declarado). | O par também produz respostas plausíveis. |
+
+### Estado que não sobrevive
+
+A sessão remota pode reiniciar e perder variáveis de ambiente, inclusive a credencial. Trate isso como o *config-as-state* ([07 §6.7](07-anti-padroes.md)): o que a sessão precisa para agir deve ter uma fonte declarada (arquivo de ambiente com permissão restrita, cofre, variável do orquestrador). Uma falha `403` depois de um reinício é sinal de estado fora da fonte, não de permissão negada.
+
+### Checklist de uma rodada entre sessões
+
+```markdown
+- [ ] A tarefa precisa mesmo do outro lugar (credencial, rede, máquina)? Se não, execute aqui.
+- [ ] Mensagem com primeira linha autoexplicativa e ação declarada (somente leitura | escrita)
+- [ ] Nenhum segredo no texto da mensagem
+- [ ] Para escrita: decisão aqui + autorização do operador na sessão que age
+- [ ] Resposta com comando + saída por passo; o que for reexecutável daqui foi reexecutado
+- [ ] Evidência e tempos registrados no charter do arco (nível R15 de cada linha)
+```

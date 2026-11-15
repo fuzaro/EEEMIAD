@@ -12,6 +12,8 @@ level: local          # local | module | system (classification rule in 08 §6)
 written_by: [system-level role/agent]
 executor: [executing role/agent]
 checker: [checking role/agent; never the executor's author]
+executes_at: here       # here | <remote session>: where the terrain and the credential are (08 §7)
+action: read-only       # read-only | write (a write needs the operator's authorization in the acting session)
 escalate_after: 2     # gate failures before moving up one level
 ```
 
