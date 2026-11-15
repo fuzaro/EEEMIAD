@@ -50,7 +50,7 @@ flowchart LR
 
 ### Fase 5 · Shadow (observação não bloqueante)
 - **Objetivo:** medir o comportamento novo sob carga real **sem** que ele decida.
-- **Atividades:** o componente opera em `shadow`: consome payloads reais, calcula a decisão e grava a divergência contra o comportamento vigente em um *intent-log* auditável.
+- **Atividades:** o componente opera em `shadow`: consome payloads reais, calcula a decisão e grava a divergência contra o comportamento vigente em um *intent-log* auditável. Sem comportamento vigente (sistema novo), a comparação é contra um **oráculo nomeado** ([06 §3](06-construcao-evolutiva.md#flags-em-greenfield-sem-comportamento-vigente)).
 - **Janela:** declarada no charter do arco em **oportunidades reais** (Regra R5), não em tempo de calendário apenas. "Zero divergências em amostra insuficiente" é resultado inconclusivo, não evidência (R6).
 - **Limite do shadow:** ele valida *o que a lógica nova computa*; o primeiro *enforce* valida *o que escrever ao reconciliar o estado*. Orce uma surpresa de reconciliação.
 

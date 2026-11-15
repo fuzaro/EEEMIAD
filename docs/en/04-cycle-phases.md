@@ -50,7 +50,7 @@ flowchart LR
 
 ### Phase 5 · Shadow (non-blocking observation)
 - **Goal:** measure the new behaviour under real load **without** letting it decide.
-- **Activities:** the component runs in `shadow`: it consumes real payloads, computes the decision and records the divergence against the current behaviour in an auditable *intent log*.
+- **Activities:** the component runs in `shadow`: it consumes real payloads, computes the decision and records the divergence against the current behaviour in an auditable *intent log*. Without current behaviour (a new system), the comparison is against a **named oracle** ([06 §3](06-evolutionary-construction.md#flags-in-greenfield-no-current-behaviour)).
 - **Window:** declared in the arc charter in **real opportunities** (Rule R5), not calendar time alone. "Zero divergences on an insufficient sample" is an inconclusive result, not evidence (R6).
 - **Limit of shadow:** it validates *what the new logic computes*; the first *enforce* validates *what to write when reconciling state*. Budget for a reconciliation surprise.
 

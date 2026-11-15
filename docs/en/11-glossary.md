@@ -20,7 +20,7 @@
 | **Cut-over** | Flip from `shadow` to `enforce`, under mandatory pre-flight. | [04](04-cycle-phases.md) |
 | **Pre-flight (blast radius)** | Mandatory block before any action touching production: side effects, reversibility, rehearsed rollback, state precondition, flip composition. | [04](04-cycle-phases.md), [08](08-application-guide.md) |
 | **Flip composition** | Pre-flight question: which other gates changed in this window and whether their **product** was exercised. | [07](07-anti-patterns.md), [10](10-illustrative-cases.md) |
-| **Ghost flag** | Flag declared in configuration with zero consumers in code. | [06](06-evolutionary-construction.md), [07](07-anti-patterns.md) |
+| **Ghost flag** | Flag declared in configuration with zero consumers in code, with its arc already closed. Before P1, a consumer-less flag is "awaiting its arc". | [06](06-evolutionary-construction.md), [07](07-anti-patterns.md) |
 | **Enforcement ledger** | Living register of every flag: default, deployment value, state, guarantee, failure posture, ADR. Changes in the same commit as the flip. | [06](06-evolutionary-construction.md), [template](../../templates/en/flag-ledger-template.md) |
 | **Config-as-state** | Anti-pattern: behaviour governed by state that lives only at runtime, outside the versioned source. | [07](07-anti-patterns.md) |
 | **M11 (failure-mode matrix)** | Table declaring, per interface and error condition, the degradation posture (fail-closed, fail-open with durable buffer) and the expected response. | [05 R7](05-refinement-rules.md), [template](../../templates/en/failure-modes-m11-template.md) |
@@ -40,4 +40,9 @@
 | **Guarantee mode** | Deterministic, threshold + confidence, or shape/judgement. Limits the reachable tier. | [02](02-principles.md) |
 | **Fidelity × leverage** | Central tension: denser spec → more faithful materialization → less leverage. The target is the point where the residue of improvisation is cheap to verify. | [01](01-overview.md) |
 | **Sprint-exit sweep (Phase 8)** | Mechanical end-of-cycle sweep: AST for ghosts, routes ↔ specs parity, ADR custody, `PROPOSED` ageing, proof tests. | [04](04-cycle-phases.md), [08](08-application-guide.md) |
+| **Surface flag / rule flag** | A surface flag governs a route or resource (`off` → `404`); a rule flag governs a check inside an existing path (`off` → not evaluated). | [06 §3](06-evolutionary-construction.md) |
+| **Named oracle** | Independent pair that `shadow` compares against when there is no current behaviour: another implementation, a hand-written query, an invariant or a fixture. Carries its own negative control. | [06 §3](06-evolutionary-construction.md) |
+| **Anonymization gate** | Arc-opening line when real data is private: shape-only census, synthetic base, sentinel scan = 0 before the first commit. | [08 §3](08-application-guide.md) |
+| **Executor change** | A change of person, agent or model mid-work; triggers a full re-run of the battery before accepting earlier reports. | [08 §4](08-application-guide.md) |
+| **Proof levels 3a / 3b** | R15 level 3 split: 3a is state in the test process, 3b is state in the deployment artifact. Packaging defects only show at 3b. | [05](05-refinement-rules.md) |
 | **Bamboo chime** | Metaphor of purpose: infrastructure that disappears when it works and returns attention to the human. | [00](00-manifesto.md) |

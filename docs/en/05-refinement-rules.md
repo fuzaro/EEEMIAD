@@ -66,7 +66,7 @@ The following rules were born in later arcs and directly govern [evolutionary co
 | Rule | Statement |
 |---|---|
 | **R11 · Property, not mechanism** | Whoever decides specifies the **property** and the **refutation condition**; the query belongs to whoever executes. Prescribing *how to measure* is already mechanism. |
-| **R15 · Ground-truth level** | Every state claim declares its level: **1** intent (versioned file) · **2** applied intent (registered job) · **3** state (process environment) · **4** state and effect (live reproduction). A claim without a level is read as 4 and is usually 1. |
+| **R15 · Ground-truth level** | Every state claim declares its level: **1** intent (versioned file) · **2** applied intent (registered job) · **3a** state in the test process · **3b** state in the deployment artifact (the image or package that ships) · **4** state and effect (live reproduction). Packaging defects (a dynamically loaded dependency, a file read from disk) only show up at 3b. A claim without a level is read as 4 and is usually 1. |
 | **R26 · The phase mechanism exists** | Before planning a flip, verify syntactically that the `enforce` path **exists in the code**. Naming the phase in the ADR does not build it. |
 | **R28 · The test name declares the property measured** | A test called "flag lives in source" that pins a specific value measures **posture**, not **visibility**: it fails on a legitimate flip and passes on a ghost flag with the right value. |
 | **R29b · Negative debt in `xfail(strict)`** | A negative assertion recorded as `xfail(strict=True)` is, for free, a **closure detector**: when the defect is fixed, it turns `XPASS` and announces its own settlement. Debt is always recorded `strict`. |

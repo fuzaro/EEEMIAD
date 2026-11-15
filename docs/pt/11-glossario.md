@@ -20,13 +20,18 @@
 | **Cut-over** | Virada de `shadow` para `enforce`, sob pré-voo obrigatório. | [04](04-fases-do-ciclo.md) |
 | **Pré-voo (raio de explosão)** | Bloco obrigatório antes de qualquer ação que toque produção: efeitos colaterais, reversibilidade, rollback ensaiado, precondição de estado, composição de flips. | [04](04-fases-do-ciclo.md), [08](08-guia-de-aplicacao.md) |
 | **Composição de flips** | Pergunta do pré-voo: quais outros gates mudaram nesta janela e o **produto** deles foi exercitado. | [07](07-anti-padroes.md), [10](10-casos-ilustrativos.md) |
-| **Flag fantasma** | Flag declarada na configuração com zero consumidores no código. | [06](06-construcao-evolutiva.md), [07](07-anti-padroes.md) |
+| **Flag fantasma** | Flag declarada na configuração com zero consumidores no código, com o arco já fechado. Antes da P1, flag sem consumidor está "aguardando o arco". | [06](06-construcao-evolutiva.md), [07](07-anti-padroes.md) |
+| **Flag de superfície / flag de regra** | A de superfície governa uma rota ou recurso (`off` → `404`); a de regra governa uma verificação dentro de um caminho existente (`off` → não avalia). | [06 §3](06-construcao-evolutiva.md) |
+| **Oráculo nomeado** | Par independente contra o qual o `shadow` compara quando não há comportamento vigente: outra implementação, consulta à mão, invariante ou fixture. Tem o próprio controle negativo. | [06 §3](06-construcao-evolutiva.md) |
+| **Gate de anonimização** | Linha de abertura de arco com dado real privado: censo só de forma, base sintética, varredura de sentinelas = 0 antes do primeiro commit. | [08 §3](08-guia-de-aplicacao.md) |
+| **Troca de executor** | Mudança de pessoa, agente ou modelo no meio do trabalho; dispara a reexecução da bateria inteira antes de aceitar relatos anteriores. | [08 §4](08-guia-de-aplicacao.md) |
 | **Ledger de enforcement** | Registro vivo de cada flag: default, valor no deploy, estado, garantia, postura de falha, ADR. Muda no mesmo commit do flip. | [06](06-construcao-evolutiva.md), [template](../../templates/pt/flag-ledger-template.md) |
 | **Config-as-state** | Anti-padrão: comportamento governado por estado que vive só no runtime, fora da fonte versionada. | [07](07-anti-padroes.md) |
 | **M11 (matriz de modos de falha)** | Tabela que declara, por interface e condição de erro, a postura de degradação (fail-closed, fail-open com buffer durável) e a resposta esperada. | [05 R7](05-regras-do-refinamento.md), [template](../../templates/pt/failure-modes-m11-template.md) |
 | **Fail-closed / Fail-open durável** | Posturas de falha: a primeira protege **decisão**; a segunda protege **evidência** de algo que já aconteceu. | [05 R7](05-regras-do-refinamento.md) |
 | **Tri-estado** | Domínio de resposta que distingue `inválido` (401), `negado` (403) e `não consegui verificar` (503). Booleano aqui é a assinatura da família. | [05 R1](05-regras-do-refinamento.md) |
 | **Família da resposta plausível** | Valor bem-formado e tipado para uma pergunta que não foi feita, indistinguível da resposta correta. | [05](05-regras-do-refinamento.md) |
+| **Níveis de prova 3a / 3b** | Desdobramento do nível 3 de R15: 3a é estado no processo de teste, 3b é estado no artefato de deploy. Defeitos de empacotamento só aparecem em 3b. | [05](05-regras-do-refinamento.md) |
 | **Par discordável** | Segunda medida que pode **discordar** da primeira. "Medida sem companheira discordável não é medida; é afirmação." | [05 R2](05-regras-do-refinamento.md) |
 | **Controle negativo** | Teste que deve **falhar** (ou barrar) para provar que a asserção positiva mede algo. Inclui o vizinho que deve seguir barrado. | [06](06-construcao-evolutiva.md) |
 | **Probe-and-revert** | Injetar o defeito exato que o teste existe para pegar, confirmar o vermelho, reverter; só então aceitar o verde. | [06](06-construcao-evolutiva.md) |

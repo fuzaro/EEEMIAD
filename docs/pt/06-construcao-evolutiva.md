@@ -114,6 +114,18 @@ stateDiagram-v2
 - **Composição não exercitada:** três flips corretos na mesma janela, cada um com pré-voo próprio, **nenhum com pré-voo do produto**. O segundo quebra o caminho pelo qual o terceiro pergunta.
 - **Shadow que mede o delta errado:** shadow computa *nova lógica − lógica antiga*; o primeiro *enforce* reconcilia *lógica nova − estado real*. São deltas diferentes; o segundo traz surpresas que o primeiro estruturalmente não vê.
 
+### Flags em greenfield (sem comportamento vigente)
+
+O `shadow` mede *computado × vigente*. Num sistema novo não há vigente, e um `shadow` sem par é teatro. Três decisões tornam o contrato de flag aplicável mesmo assim:
+
+| Decisão | Regra |
+|---|---|
+| **Tipo da flag** | **De superfície** governa uma rota ou recurso: `off` responde `404` e a interface não o exibe (entregue, desligado). **De regra** governa uma verificação dentro de um caminho que já existe: `off` não avalia, `shadow` avalia e registra sem bloquear, `enforce` bloqueia. O charter declara o tipo. |
+| **Oráculo nomeado** | `shadow` só existe com um oráculo independente, nomeado no charter: implementação em outra linguagem, consulta escrita à mão, invariante verificável (unicidade, contagem) ou fixture com valor esperado. O oráculo tem o próprio controle negativo: adulterado, ele **precisa** divergir. |
+| **Sem oráculo em tempo de execução** | A flag é declarada **bi-estado** `off \| enforce`, no charter e no ledger. A propriedade é provada pela bateria (1)(2)(3), por oráculo offline e por injeção de falha. Declarado, isso é legítimo; implícito, é um tri-estado colapsado (R1). |
+
+Entre o charter e a P1, toda flag declarada ainda não tem consumidor. O sweep da Fase 8 lê o ledger: flag sem consumidor **e** sem evidência de arco é "aguardando o arco"; flag sem consumidor com o arco fechado é fantasma.
+
 ## 4. Integração por testes ao longo do arco
 
 Os testes de um arco não são uma fase; são a **trilha de evidência** que acompanha cada passo.
@@ -138,7 +150,7 @@ Quando uma propriedade ainda não vale (por exemplo, "a mutação de política e
 
 ### Injeção de falha para cada linha da M11
 
-Para cada gate, a bateria prova a postura declarada sob falha da dependência: indisponível, timeout, `5xx`, corpo inválido, configuração vazia. Em um gate de decisão, **todas** devem negar (fail-closed) e logar alto; em um sumidouro de evidência, **nenhuma** pode descartar o registro (fail-open com buffer durável, R7). O caminho feliz permanece verde ao lado, como controle.
+Para cada gate, a bateria prova a postura declarada sob falha da dependência: indisponível, timeout, `5xx`, corpo inválido, configuração vazia. Em um gate de decisão, **todas** devem negar (fail-closed) e logar alto; em um sumidouro de evidência, **nenhuma** pode descartar o registro (fail-open com buffer durável, R7). Numa **entrega com evidência obrigatória** (um artefato cuja emissão precisa ficar registrada), a evidência precede a entrega: falha ao registrar → nada é entregue; falha ao produzir depois de registrar → erro, com o registro mantido e anotado ([M11](../../templates/pt/failure-modes-m11-template.md), doutrina 5). O caminho feliz permanece verde ao lado, como controle.
 
 ### Independência no degrau funcional
 
@@ -146,7 +158,7 @@ Quando o mesmo autor (humano ou modelo) escreve spec, código e teste, casos **c
 
 ### Nível de prova no fechamento (R15)
 
-O fechamento do arco declara em que nível cada afirmação foi provada. Um ledger inteiro no nível 1 (arquivo versionado) com deploys reais provados no nível 4 (reprodução ao vivo) é honesto; um ledger que não declara nível é lido como 4 e costuma ser 1.
+O fechamento do arco declara em que nível cada afirmação foi provada. Um ledger inteiro no nível 1 (arquivo versionado) com deploys reais provados no nível 4 (reprodução ao vivo) é honesto; um ledger que não declara nível é lido como 4 e costuma ser 1. Antes do nível 4, exercite o **artefato de deploy** (nível 3b): uma suíte verde no processo de teste (3a) não vê o que o empacotamento deixou de fora.
 
 ## 5. A ampliação evolutiva
 

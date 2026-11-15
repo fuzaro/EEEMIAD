@@ -1,7 +1,7 @@
 ---
 name: eee-governance-sweep
 description: Runs the EEE Phase 8 sprint-exit sweep. Detects ghost flags, orphan routes, spec-code drift, config-as-state and decision-record custody gaps via AST analysis, never via text search.
-version: 1.1.0
+version: 1.2.0
 author: EEEMIAD
 ---
 
@@ -33,3 +33,11 @@ Keep entropy low and stop spec-rot from regenerating. The sweep is **mechanical*
 ```bash
 python3 skills/eee-governance-sweep/scripts/sweep_codebase.py --src ./src --specs ./specs
 ```
+
+For TypeScript / Next.js projects, use the adapter, which also separates a ghost flag from a flag *awaiting its arc* by reading the ledger:
+
+```bash
+python3 examples/verification-harness/typescript/sweep_ts.py --src app/src --specs specs
+```
+
+Whatever the script, read what it examined before trusting the verdict: a sweep that found no code proves nothing.

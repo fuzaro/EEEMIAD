@@ -114,6 +114,18 @@ stateDiagram-v2
 - **Unexercised composition:** three correct flips in the same window, each with its own pre-flight, **none with a pre-flight of the product**. The second breaks the path through which the third asks its question.
 - **Shadow measuring the wrong delta:** shadow computes *new logic − old logic*; the first *enforce* reconciles *new logic − real state*. They are different deltas; the second brings surprises the first structurally cannot see.
 
+### Flags in greenfield (no current behaviour)
+
+`shadow` measures *computed × current*. A new system has no current behaviour, and a `shadow` without a pair is theatre. Three decisions keep the flag contract applicable anyway:
+
+| Decision | Rule |
+|---|---|
+| **Flag kind** | A **surface** flag governs a route or resource: `off` answers `404` and the interface does not show it (shipped, switched off). A **rule** flag governs a check inside a path that already exists: `off` does not evaluate, `shadow` evaluates and records without blocking, `enforce` blocks. The charter declares the kind. |
+| **Named oracle** | `shadow` exists only with an independent oracle named in the charter: an implementation in another language, a hand-written query, a verifiable invariant (uniqueness, count) or a fixture with expected values. The oracle carries its own negative control: tampered, it **must** diverge. |
+| **No runtime oracle** | The flag is declared **bi-state** `off \| enforce`, in the charter and in the ledger. The property is proven by the (1)(2)(3) battery, an offline oracle and fault injection. Declared, this is legitimate; implicit, it is a collapsed tri-state (R1). |
+
+Between the charter and P1, every declared flag has no consumer yet. The Phase 8 sweep reads the ledger: a flag with no consumer **and** no arc evidence is "awaiting its arc"; a flag with no consumer whose arc is closed is a ghost.
+
 ## 4. Test integration along the arc
 
 An arc's tests are not a phase; they are the **evidence trail** that accompanies each step.
@@ -138,7 +150,7 @@ When a property does not yet hold (for example, "policy mutation requires a cred
 
 ### Fault injection for every M11 row
 
-For each gate, the battery proves the declared posture under dependency failure: unavailable, timeout, `5xx`, invalid body, empty configuration. On a decision gate **all** must deny (fail-closed) and log loudly; on an evidence sink **none** may discard the record (fail-open with durable buffer, R7). The happy path stays green beside them, as a control.
+For each gate, the battery proves the declared posture under dependency failure: unavailable, timeout, `5xx`, invalid body, empty configuration. On a decision gate **all** must deny (fail-closed) and log loudly; on an evidence sink **none** may discard the record (fail-open with durable buffer, R7). On a **delivery with mandatory evidence** (an artifact whose issuance must be recorded), evidence precedes delivery: failure to record → nothing is delivered; failure to produce after recording → error, with the record kept and annotated ([M11](../../templates/en/failure-modes-m11-template.md), doctrine 5). The happy path stays green beside them, as a control.
 
 ### Independence at the functional tier
 
@@ -146,7 +158,7 @@ When the same author (human or model) writes spec, code and test, **consistently
 
 ### Proof level at closure (R15)
 
-The arc's closure declares the level at which each claim was proven. A whole ledger at level 1 (versioned file) with real deploys proven at level 4 (live reproduction) is honest; a ledger that does not declare a level is read as 4 and is usually 1.
+The arc's closure declares the level at which each claim was proven. A whole ledger at level 1 (versioned file) with real deploys proven at level 4 (live reproduction) is honest; a ledger that does not declare a level is read as 4 and is usually 1. Before level 4, exercise the **deployment artifact** (level 3b): a suite that is green in the test process (3a) cannot see what packaging left out.
 
 ## 5. Evolutionary expansion
 

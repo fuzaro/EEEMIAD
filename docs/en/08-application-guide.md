@@ -66,6 +66,9 @@ python3 examples/verification-harness/check_falsification.py --test-dir ./tests
 
 Closes when: harness green; the query that detected the deficit returns zero; the tier is declared (`done@functional`, R15 proof level). Anything above that is `done@gate` and belongs to the human.
 
+> [!IMPORTANT]
+> **Read the `examined` line, not only the verdict.** The verifier fails when it finds no code to examine; in Phase 2, before code exists, pass `--allow-missing-code`. A verifier that examines nothing must not say it passed. TypeScript/Next.js projects use the [TypeScript adapter](../../examples/verification-harness/typescript/README.md); other languages need an adapter that keeps the same contract.
+
 ## 2. Legacy project (brownfield)
 
 Adopting EEE on existing code is reverse engineering in **four stages**, with one rule: **do not edit the living spec while the census is in progress**.
@@ -112,9 +115,10 @@ Printable. An arc is complete when every line has evidence (command + result, no
 - [ ] Charter with property, refutation condition, flag (domain + default), M11 posture, exit gate, window
 - [ ] Reality-check of the terrain: anchors verified by symbol (R14), proof level declared (R15)
 - [ ] Mechanism of each phase exists in the code before being briefed (R26)
+- [ ] Private real data? Census of **shape** only (counts, formats, cardinalities), synthetic base with provenance `synthetic`, and a scan of the real data's sentinels over the repository = 0 before the first commit (anonymization gate)
 
 ### P1 · Thin slice (flag OFF)
-- [ ] Stubs tagged in source; scaffold data with provenance `unknown`
+- [ ] Stubs tagged in source; scaffold data with provenance `unknown`, `scaffold` or `synthetic` (never `real`)
 - [ ] Target test red → green; legacy green; neighbour barred (R2)
 - [ ] Debts recorded in xfail(strict=True) (R29b)
 - [ ] Flag in the ledger; spec describes what was created (R30)
@@ -131,8 +135,9 @@ Printable. An arc is complete when every line has evidence (command + result, no
 
 ### P4 · Cut-over
 - [ ] Pre-flight: blast radius · reversible? · rehearsed rollback · state precondition · flip composition
+- [ ] Deployment artifact exercised end to end before the flip (level 3b)
 - [ ] Flip and ledger in the same commit; explicit value in the deployment
-- [ ] Live reproduction of the property and of the refutation (level 4)
+- [ ] Live reproduction of the property and of the refutation (level 4), recorded in the [cut-over evidence template](../../templates/en/cutover-evidence-template.md)
 
 ### Closure
 - [ ] Deficit query = 0; harness green
@@ -148,10 +153,11 @@ Printable. An arc is complete when every line has evidence (command + result, no
 4. `PROPOSED` ageing beyond the declared window: promote, amend or cancel.
 5. Proportion of unexercised gates (R6) and **proof test** of contingency mechanisms on cadence.
 6. Re-run the closure-by-re-evaluation battery.
+7. **Executor change** (person, agent or model): before accepting any earlier report, the new executor re-runs the whole battery from the repository. Any divergence between report and re-run goes to the ledger, even a small one: it is the plausible answer in miniature.
 
 ## 5. Adopting with AI agents
 
-EEE is tool-agnostic. Two attachment points:
+EEE is tool-agnostic; the harness is not. It reads Python through the AST and TypeScript/Next.js through an [adapter](../../examples/verification-harness/typescript/README.md); for another language, write an adapter with the same contract before trusting its verdict. Two attachment points:
 
 - **Skills:** [`eee-governance-sweep`](../../skills/eee-governance-sweep/SKILL.md) automates Phase 8; [`eee-adversarial-verifier`](../../skills/eee-adversarial-verifier/SKILL.md) instantiates the role *who verifies* (tests from the spec, without reading the code).
 - **Role division between agents:** the full instantiation with two agents (reflective and executive), with brief, pre-flight reality-check and decision-by-decision evaluation, is in the sibling repository `EEEMIAD-dual`.

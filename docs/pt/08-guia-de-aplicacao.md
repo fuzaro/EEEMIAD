@@ -66,6 +66,9 @@ python3 examples/verification-harness/check_falsification.py --test-dir ./tests
 
 Fecha quando: harness verde; a consulta que detectou o déficit retorna zero; o tier é declarado (`done@funcional`, nível de prova R15). Qualquer coisa acima disso é `done@gate` e pertence ao humano.
 
+> [!IMPORTANT]
+> **Leia a linha `examined`, não só o veredito.** O verificador falha quando não encontra código para examinar; na Fase 2, antes do código, use `--allow-missing-code`. Um verificador que não examina nada não pode dizer que passou. Projetos em TypeScript/Next.js usam o [adaptador TypeScript](../../examples/verification-harness/typescript/README.md); outras linguagens precisam de um adaptador que mantenha o mesmo contrato.
+
 ## 2. Projeto legado (brownfield)
 
 Adotar a EEE em código existente é engenharia reversa em **quatro etapas**, com uma regra: **não edite a spec viva enquanto o censo estiver em andamento**.
@@ -112,9 +115,10 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 - [ ] Charter com propriedade, condição de refutação, flag (domínio + default), postura M11, gate de saída, janela
 - [ ] Reality-check do terreno: âncoras verificadas por símbolo (R14), nível de prova declarado (R15)
 - [ ] Mecanismo de cada fase existe no código antes de ser briefado (R26)
+- [ ] Dados reais privados? Censo só de **forma** (contagens, formatos, cardinalidades), base sintética com proveniência `synthetic`, e varredura das sentinelas do dado real sobre o repositório = 0 antes do primeiro commit (gate de anonimização)
 
 ### P1 · Fatia fina (flag OFF)
-- [ ] Stubs marcados na fonte; dados de andaime com proveniência `unknown`
+- [ ] Stubs marcados na fonte; dados de andaime com proveniência `unknown`, `scaffold` ou `synthetic` (nunca `real`)
 - [ ] Teste alvo vermelho → verde; legado verde; vizinho barrado (R2)
 - [ ] Dívidas registradas em xfail(strict=True) (R29b)
 - [ ] Flag no ledger; spec descreve o que foi criado (R30)
@@ -131,8 +135,9 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 
 ### P4 · Cut-over
 - [ ] Pré-voo: raio de explosão · reversível? · rollback ensaiado · precondição de estado · composição de flips
+- [ ] Artefato de deploy exercitado ponta a ponta antes do flip (nível 3b)
 - [ ] Flip e ledger no mesmo commit; valor explícito no deploy
-- [ ] Reprodução ao vivo da propriedade e da refutação (nível 4)
+- [ ] Reprodução ao vivo da propriedade e da refutação (nível 4), registrada no [template de evidência de cut-over](../../templates/pt/cutover-evidence-template.md)
 
 ### Fechamento
 - [ ] Consulta de déficit = 0; harness verde
@@ -148,10 +153,11 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 4. Envelhecimento de `PROPOSED` além do prazo declarado: promover, emendar ou cancelar.
 5. Proporção de gates não exercitados (R6) e **proof test** dos mecanismos de contingência em cadência.
 6. Reexecutar a bateria de fechamento por reavaliação.
+7. **Troca de executor** (pessoa, agente ou modelo): antes de aceitar qualquer relato anterior, o novo executor reexecuta a bateria inteira a partir do repositório. Divergência entre relato e reexecução vai para o ledger, mesmo quando pequena: é a resposta plausível em miniatura.
 
 ## 5. Adotando com agentes de IA
 
-A EEE é agnóstica de ferramenta. Dois pontos de encaixe:
+A EEE é agnóstica de ferramenta; o harness, não. Ele lê Python pela AST e TypeScript/Next.js por um [adaptador](../../examples/verification-harness/typescript/README.md); para outra linguagem, escreva um adaptador com o mesmo contrato antes de confiar no veredito. Dois pontos de encaixe:
 
 - **Skills:** [`eee-governance-sweep`](../../skills/eee-governance-sweep/SKILL.md) automatiza a Fase 8; [`eee-adversarial-verifier`](../../skills/eee-adversarial-verifier/SKILL.md) instancia o papel *quem verifica* (testes a partir da spec, sem ler o código).
 - **Divisão de papéis entre agentes:** a instanciação completa em dois agentes (reflexivo e executivo), com brief, reality-check de pré-voo e avaliação decisão por decisão, está no repositório irmão `EEEMIAD-dual`.
