@@ -115,6 +115,7 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 - [ ] Charter com propriedade, condição de refutação, flag (domínio + default), postura M11, gate de saída, janela
 - [ ] Reality-check do terreno: âncoras verificadas por símbolo (R14), nível de prova declarado (R15)
 - [ ] Mecanismo de cada fase existe no código antes de ser briefado (R26)
+- [ ] Divisão por nível de contexto perguntada ao operador e registrada (`delegation: none | tiered`, [§6](#6-divisão-de-tarefas-por-nível-de-contexto-opcional))
 - [ ] Dados reais privados? Censo só de **forma** (contagens, formatos, cardinalidades), base sintética com proveniência `synthetic`, e varredura das sentinelas do dado real sobre o repositório = 0 antes do primeiro commit (gate de anonimização)
 
 ### P1 · Fatia fina (flag OFF)
@@ -161,3 +162,38 @@ A EEE é agnóstica de ferramenta; o harness, não. Ele lê Python pela AST e Ty
 
 - **Skills:** [`eee-governance-sweep`](../../skills/eee-governance-sweep/SKILL.md) automatiza a Fase 8; [`eee-adversarial-verifier`](../../skills/eee-adversarial-verifier/SKILL.md) instancia o papel *quem verifica* (testes a partir da spec, sem ler o código).
 - **Divisão de papéis entre agentes:** a instanciação completa em dois agentes (reflexivo e executivo), com brief, reality-check de pré-voo e avaliação decisão por decisão, está no repositório irmão `EEEMIAD-dual`.
+
+## 6. Divisão de tarefas por nível de contexto (opcional)
+
+> [!NOTE]
+> **Opcional e desligada por padrão.** Só entra em uso quando o operador responde **sim** à pergunta da fase de perguntas (abaixo). Sem essa resposta, o arco segue como nas seções 1 a 4. A instanciação com agentes e modelos de linguagem está no repositório irmão `EEEMIAD-dual`; aqui fica só o princípio, neutro quanto a ferramenta.
+
+A ideia: o trabalho caro da EEE é **fechar** a tarefa (charter, spec, M11). Uma tarefa fechada pode ser executada por um executor de menor alcance e conferida por outro, de alcance intermediário, **contra um gate mecânico**. O nível de sistema fica com o que exige decisão.
+
+### A pergunta (fase de perguntas, antes do primeiro charter)
+
+Quem decide pergunta ao operador, uma vez por projeto ou por arco, e registra a resposta no charter (`delegation`):
+
+> *"Adotar divisão de tarefas por nível de contexto neste arco? Tarefas locais com gate mecânico passam a ser executadas por um executor de menor alcance e conferidas por outro, com escalonamento depois de duas falhas. Custo extra: escrever um pacote por tarefa."*
+
+| Resposta | Efeito |
+|---|---|
+| **sim** | `delegation: tiered` no charter; tarefas despachadas por [pacote de tarefa](../../templates/pt/task-packet-template.md) |
+| **não** (ou sem resposta) | `delegation: none`; nada desta seção se aplica |
+
+### Os três níveis e a regra de classificação
+
+| Nível | Precisa ler | Exemplos | Executa | Confere |
+|---|---|---|---|---|
+| **Local** | uma seção de spec e até dois arquivos | gerar DDL da spec, um teste de uma linha da M11, preencher evidência a partir da saída de comandos, tradução, formatação | executor de menor alcance | intermediário, **contra o gate** |
+| **Módulo** | um charter, sua spec e o código do módulo | P1 a P3 de um arco, oráculo independente, testes ponta a ponta, manifestos de deploy | intermediário | sistema, nos pontos de gate (probe-and-revert, par 3) |
+| **Sistema** | Plan, ADRs, várias specs e o histórico | censo, ADRs, propriedade e refutação de charters, conflitos entre camadas, pré-voo, relatórios | sistema | **o humano** (`done@gate`) |
+
+A regra, em ordem: exige **decisão** → sistema. Lê **mais de um módulo** → módulo. **Não tem gate mecânico** → não pode ser local. O resto é local.
+
+### Quatro regras de operação
+
+1. **Conferência cega.** Quem confere recebe o pacote, a saída e o gate; nunca o raciocínio de quem executou. Roda o gate antes de ler a saída.
+2. **Escalonamento por falha.** Duas falhas no gate sobem a tarefa um nível. Falha repetida num nível é sinal de que o pacote não estava fechado: o defeito volta ao nível de sistema como defeito de spec.
+3. **Oráculo de outro autor.** O oráculo de um arco é escrito por um executor diferente do que implementa (outro modelo, outra linguagem, outra pessoa). Barato, e reduz o erro correlacionado.
+4. **Medir, não supor.** O registro de cada pacote (gate na primeira tentativa, escalonamentos, custo) é o que diz se a divisão economiza. Se a taxa de escalonamento do nível local passar do limite declarado no charter, a regra de classificação está errada.

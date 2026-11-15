@@ -115,6 +115,7 @@ Printable. An arc is complete when every line has evidence (command + result, no
 - [ ] Charter with property, refutation condition, flag (domain + default), M11 posture, exit gate, window
 - [ ] Reality-check of the terrain: anchors verified by symbol (R14), proof level declared (R15)
 - [ ] Mechanism of each phase exists in the code before being briefed (R26)
+- [ ] Context-level division asked to the operator and recorded (`delegation: none | tiered`, [§6](#6-task-division-by-context-level-optional))
 - [ ] Private real data? Census of **shape** only (counts, formats, cardinalities), synthetic base with provenance `synthetic`, and a scan of the real data's sentinels over the repository = 0 before the first commit (anonymization gate)
 
 ### P1 · Thin slice (flag OFF)
@@ -161,3 +162,38 @@ EEE is tool-agnostic; the harness is not. It reads Python through the AST and Ty
 
 - **Skills:** [`eee-governance-sweep`](../../skills/eee-governance-sweep/SKILL.md) automates Phase 8; [`eee-adversarial-verifier`](../../skills/eee-adversarial-verifier/SKILL.md) instantiates the role *who verifies* (tests from the spec, without reading the code).
 - **Role division between agents:** the full instantiation with two agents (reflective and executive), with brief, pre-flight reality-check and decision-by-decision evaluation, is in the sibling repository `EEEMIAD-dual`.
+
+## 6. Task division by context level (optional)
+
+> [!NOTE]
+> **Optional and off by default.** It is used only when the operator answers **yes** to the question of the questions phase (below). Without that answer the arc proceeds as in sections 1 to 4. The instantiation with agents and language models lives in the sibling repository `EEEMIAD-dual`; this section holds only the tool-neutral principle.
+
+The idea: EEE's expensive work is **closing** a task (charter, spec, M11). A closed task can be executed by a narrower executor and checked by another, of intermediate reach, **against a mechanical gate**. The system level keeps what requires a decision.
+
+### The question (questions phase, before the first charter)
+
+The deciding role asks the operator, once per project or per arc, and records the answer in the charter (`delegation`):
+
+> *"Adopt task division by context level in this arc? Local tasks with a mechanical gate will be executed by a narrower executor and checked by another, escalating after two failures. Extra cost: writing one packet per task."*
+
+| Answer | Effect |
+|---|---|
+| **yes** | `delegation: tiered` in the charter; tasks dispatched as a [task packet](../../templates/en/task-packet-template.md) |
+| **no** (or no answer) | `delegation: none`; nothing in this section applies |
+
+### The three levels and the classification rule
+
+| Level | Must read | Examples | Executes | Checks |
+|---|---|---|---|---|
+| **Local** | one spec section and up to two files | generate DDL from the spec, one test for an M11 row, fill evidence from command output, translation, formatting | narrower executor | intermediate, **against the gate** |
+| **Module** | one charter, its spec and the module's code | P1 to P3 of an arc, independent oracle, end-to-end tests, deploy manifests | intermediate | system, at the gates (probe-and-revert, pair 3) |
+| **System** | Plan, ADRs, several specs and history | census, ADRs, charter property and refutation, cross-layer conflicts, pre-flight, reports | system | **the human** (`done@gate`) |
+
+The rule, in order: needs a **decision** → system. Reads **more than one module** → module. **Has no mechanical gate** → cannot be local. Everything else is local.
+
+### Four operating rules
+
+1. **Blind checking.** The checker receives the packet, the output and the gate; never the executor's reasoning. It runs the gate before reading the output.
+2. **Escalation on failure.** Two gate failures move the task up one level. Repeated failure at a level means the packet was not closed: the defect goes back to the system level as a spec defect.
+3. **Oracle by another author.** An arc's oracle is written by an executor other than the implementer (another model, language or person). Cheap, and it reduces correlated error.
+4. **Measure, don't assume.** Each packet's record (gate on first attempt, escalations, cost) is what tells whether the division saves anything. If the local level's escalation rate exceeds the limit declared in the charter, the classification rule is wrong.

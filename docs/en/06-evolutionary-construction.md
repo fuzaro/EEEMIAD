@@ -154,7 +154,7 @@ For each gate, the battery proves the declared posture under dependency failure:
 
 ### Independence at the functional tier
 
-When the same author (human or model) writes spec, code and test, **consistently wrong** cases pass verification and stay invisible inside "verified". In an experimental loop with single authorship, the rate of "verified by execution" sat around 0.51 (95% CI 0.41–0.62) and rose to about 0.62 (95% CI 0.53–0.71) when types were pinned in the spec; and that number is an **upper bound** of real correctness, inflated by self-consistent wrong cases of unknown size. Only independent or blind authorship sees that ceiling. That is why the role **who verifies** generates tests from the spec and the M11, without reading the implementation.
+When the same author (human or model) writes spec, code and test, **consistently wrong** cases pass verification and stay invisible inside "verified". In an experimental loop with single authorship, the rate of "verified by execution" sat around 0.51 (95% CI 0.41–0.62) and rose to about 0.62 (95% CI 0.53–0.71) when types were pinned in the spec; and that number is an **upper bound** of real correctness, inflated by self-consistent wrong cases of unknown size. Only independent or blind authorship sees that ceiling. That is why the role **who verifies** generates tests from the spec and the M11, without reading the implementation, and an arc's oracle comes from an author other than the implementer (another person, model or language; see [08 §6](08-application-guide.md#6-task-division-by-context-level-optional)).
 
 ### Proof level at closure (R15)
 

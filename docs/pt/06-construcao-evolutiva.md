@@ -154,7 +154,7 @@ Para cada gate, a bateria prova a postura declarada sob falha da dependência: i
 
 ### Independência no degrau funcional
 
-Quando o mesmo autor (humano ou modelo) escreve spec, código e teste, casos **consistentemente errados** passam na verificação e ficam invisíveis dentro do "verificado". Em um laço experimental com autoria única, a taxa de "verificado por execução" ficou em torno de 0,51 (IC 95% 0,41–0,62) e subiu para cerca de 0,62 (IC 95% 0,53–0,71) ao fixar tipos na spec; e esse número é um **limite superior** da correção real, inflado por casos autoconsistentes e errados de tamanho desconhecido. Só autoria independente ou cega enxerga esse teto. Por isso o papel **quem verifica** gera testes a partir da spec e da M11, sem ler a implementação.
+Quando o mesmo autor (humano ou modelo) escreve spec, código e teste, casos **consistentemente errados** passam na verificação e ficam invisíveis dentro do "verificado". Em um laço experimental com autoria única, a taxa de "verificado por execução" ficou em torno de 0,51 (IC 95% 0,41–0,62) e subiu para cerca de 0,62 (IC 95% 0,53–0,71) ao fixar tipos na spec; e esse número é um **limite superior** da correção real, inflado por casos autoconsistentes e errados de tamanho desconhecido. Só autoria independente ou cega enxerga esse teto. Por isso o papel **quem verifica** gera testes a partir da spec e da M11, sem ler a implementação, e o oráculo de um arco vem de um autor diferente de quem implementa (outra pessoa, outro modelo ou outra linguagem; ver [08 §6](08-guia-de-aplicacao.md#6-divisão-de-tarefas-por-nível-de-contexto-opcional)).
 
 ### Nível de prova no fechamento (R15)
 

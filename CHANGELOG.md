@@ -2,6 +2,16 @@
 
 All notable changes to EEEMIAD are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.0] — 2026-11-14
+
+### Added
+- Ch. 08 §6 **Task division by context level (optional)**: off by default, enabled only by the operator's *yes* at the questions phase and recorded in the charter (`delegation: none | tiered`). Three levels (local, module, system), an objective classification rule (*no mechanical gate → cannot be local*), blind checking against the gate, escalation after two failures, oracle by another author, and a per-packet record to measure whether the division saves anything.
+- `templates/{pt,en}/task-packet-template.md`.
+- Charter template: `delegation` field. Arc checklist: the question is asked and recorded.
+- Glossary: *task packet*, *context level*.
+
+The instantiation with agents and language models is in the sibling repository EEEMIAD-dual (v0.2.0).
+
 ## [1.2.0] — 2026-11-14
 
 Driven by a validation-by-use: a legacy system was rebuilt arc by arc following this repository to the letter, and every point where the method helped, cost extra or stayed silent was logged. The changes below are what that log asked of the method.

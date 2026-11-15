@@ -45,4 +45,6 @@
 | **Anonymization gate** | Arc-opening line when real data is private: shape-only census, synthetic base, sentinel scan = 0 before the first commit. | [08 §3](08-application-guide.md) |
 | **Executor change** | A change of person, agent or model mid-work; triggers a full re-run of the battery before accepting earlier reports. | [08 §4](08-application-guide.md) |
 | **Proof levels 3a / 3b** | R15 level 3 split: 3a is state in the test process, 3b is state in the deployment artifact. Packaging defects only show at 3b. | [05](05-refinement-rules.md) |
+| **Task packet** | A task closed for dispatch: allowed inputs, forbidden reads, output contract, mechanical gate and refutation. Exists only when the operator accepted the context-level division. | [08 §6](08-application-guide.md), [template](../../templates/en/task-packet-template.md) |
+| **Context level (local / module / system)** | How much a task must read. Decides who executes and who checks; a task without a mechanical gate cannot be local. | [08 §6](08-application-guide.md) |
 | **Bamboo chime** | Metaphor of purpose: infrastructure that disappears when it works and returns attention to the human. | [00](00-manifesto.md) |

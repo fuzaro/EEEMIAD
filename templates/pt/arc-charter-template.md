@@ -9,6 +9,7 @@ target_spec: specs/[componente].md
 flag: [NOME_DA_FLAG]
 flag_domain: [off | shadow | enforce]
 flag_default_in_code: off
+delegation: none # none | tiered: só com resposta positiva do operador na fase de perguntas (08 §6)
 opened: YYYY-MM-DD
 owner: [papel ou pessoa que decide]
 ```
