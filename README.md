@@ -8,7 +8,7 @@
 *Evolutionary Empirical Engineering — AI Methodology for Software Development*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.6.0-emerald.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.7.0-emerald.svg)](CHANGELOG.md)
 [![Languages](https://img.shields.io/badge/Languages-PT_%7C_EN_(FR_%26_ES_scaffold)-purple.svg)](docs/)
 [![Hierarchy](https://img.shields.io/badge/Hierarchy-Plan_%E2%86%92_ADR_%E2%86%92_Spec_%E2%86%92_Code-orange.svg)](docs/pt/03-hierarquia-da-verdade.md)
 
@@ -100,10 +100,12 @@ EEEMIAD/
 ├── docs/
 │   ├── pt/   00 manifesto · 01 visão geral · 02 princípios · 03 hierarquia · 04 fases
 │   │         05 regras · 06 construção evolutiva · 07 anti-padrões · 08 guia
-│   │         09 fundamentação · 10 casos ilustrativos · 11 glossário
-│   ├── en/   (same twelve chapters)
+│   │         09 fundamentação · 10 casos ilustrativos · 11 glossário · 12 primeiros passos
+│   ├── en/   (same thirteen chapters)
 │   ├── fr/   scaffold + roadmap
 │   └── es/   scaffold + roadmap
+├── starter/
+│   └── eee_init.py                     cria um projeto novo pronto para a EEE, em um comando (12)
 ├── templates/{pt,en}/
 │   ├── adr-template.md                 ADR com alternativas, D1..Dn, ratificação separada
 │   ├── arc-charter-template.md         charter de arco: propriedade, refutação, flag, gates
@@ -113,6 +115,11 @@ EEEMIAD/
 │   ├── task-packet-template.md         pacote de tarefa (divisão opcional por nível de contexto)
 │   ├── evidence-journal-template.md    diário de evidências permanente (08 §8.1)
 │   ├── agents-entry-template.md        AGENTS.md: entrada neutra quanto ao harness (08 §8.2)
+│   ├── request-template.md             pedido de origem + fase de perguntas (08 §1 passo 2)
+│   ├── request-matrix-template.md      matriz pedido × arco
+│   ├── foundational-plan-template.md   Plan fundacional de uma página
+│   ├── operational-state-template.md   estado operacional datado (08 §8.2)
+│   ├── operator-decisions-template.md  decisões fixas do operador
 │   └── reality-check-template.md       reality-check por símbolo e nível R15
 ├── skills/
 │   ├── eee-adversarial-verifier/       papel "quem verifica": testes a partir da spec, sem ler o código
@@ -148,7 +155,13 @@ python3 examples/verification-harness/verify_hierarchy.py --project-root ./examp
 python3 examples/verification-harness/check_falsification.py --test-dir ./examples/reference-implementation/code/tests
 ```
 
-**3. Adote em um projeto novo ou legado:** siga o [Guia de Aplicação](docs/pt/08-guia-de-aplicacao.md) e abra o primeiro arco com o [template de charter](templates/pt/arc-charter-template.md).
+**3. Comece um projeto novo em um comando** ([passo a passo](docs/pt/12-primeiros-passos.md) · [getting started](docs/en/12-getting-started.md)):
+
+```bash
+python3 starter/eee_init.py ~/projetos/meu-sistema --insumos ~/insumos-do-sistema
+```
+
+O script cria a árvore de governança, o `AGENTS.md`, o pedido, a matriz pedido × arco, o Plan de uma página, o estado, o diário e o gate único, copia os templates e verificadores com origem e versão, e registra os insumos. Para um projeto legado, siga o [Guia de Aplicação §2](docs/pt/08-guia-de-aplicacao.md).
 
 **4. Integre as skills ao seu assistente de IA:** copie `skills/` para o diretório de skills do seu ambiente, ou cole os prompts em `skills/*/prompts/` no início da sessão.
 

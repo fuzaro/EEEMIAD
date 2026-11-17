@@ -17,14 +17,14 @@ Instructions for people and for coding agents of any tool. This file is the **ca
 
 1. `eee/state/STATE.md`: the operational state (dated). Check it against the environment before acting.
 2. `eee/state/decisions-operator.md`: the operator's fixed decisions. Do not reopen them.
-3. The arc's charter (`specs/charters/`), the spec it cites and the ADR that governs the spec.
+3. The arc's charter (`specs/charters/`), the request item it serves (`request_item`, in the request × arc matrix), the spec it cites and the ADR that governs the spec. Work with no item in the matrix starts by recording the request.
 4. The procedure for your role in `eee/playbooks/`.
 
 ## Hierarchy of truth
 
 | Layer | Where | Rule |
 |---|---|---|
-| 1 · Plan | `Plan/docs/` | purpose, invariants, budgets |
+| 1 · Plan | `Plan/docs/` | purpose, invariants, budgets; the original request and the request × arc matrix |
 | 2 · ADR | `Plan/decisions/` | born `PROPOSED`; ratified by whoever decides, in a separate commit |
 | 3 · Spec | `specs/` | 1:1 contract with the code; charters in `specs/charters/` |
 | 4 · Code | [`src/`, `tests/`] | follows the spec; divergence is resolved in the layer above |

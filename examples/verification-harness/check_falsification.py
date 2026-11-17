@@ -25,7 +25,7 @@ from pathlib import Path
 
 # Version of the EEEMIAD harness this file belongs to. A project that copies the file keeps this line and
 # records the origin and version (ch. 08 §8.3); a copy that drifts from its declared version is a finding.
-HARNESS_VERSION = "1.5.0"
+HARNESS_VERSION = "1.7.0"
 
 NEGATIVE = re.compile(
     r"invalid|fail|deny|denie|reject|refuse|unauth|forbid|malform|negative|blocked|barred|abort|"

@@ -200,3 +200,11 @@ def test_gate_fails_on_a_project_where_nothing_can_be_examined():
     with tempfile.TemporaryDirectory() as d:
         r = _gate(d)
         assert r.returncode >= 1, r.stdout
+
+
+def test_gate_runs_the_typescript_adapter_when_asked_and_rejects_an_unknown_language():
+    with tempfile.TemporaryDirectory() as d:
+        r = _gate(d, HARNESS_LANG="ts")
+        assert "verify_hierarchy_ts.py" in r.stdout and "check_falsification_ts.py" in r.stdout
+        assert r.returncode >= 1
+        assert _gate(d, HARNESS_LANG="cobol").returncode == 97

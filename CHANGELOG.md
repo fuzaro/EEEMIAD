@@ -2,6 +2,20 @@
 
 All notable changes to EEEMIAD are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.7.0] — 2026-11-17
+
+A beginner's path into EEE: one command creates a new project, and one short chapter tells what to do next.
+
+### Added
+- **`starter/eee_init.py`**: creates a new project ready for EEE. Governance tree; `AGENTS.md` and a thin `CLAUDE.md` adapter; request, request × arc matrix, one-page Plan, operational state, operator decisions and evidence journal, already named after the project; templates and verifiers copied with origin and version (`eee/kit/VERSION`); single gate (`tools/gate.sh` + `tools/gate.env`). Inputs (database layout, screens, UX template) are copied into `Plan/docs/insumos/` or, with `--private`, only inventoried (name, size, hash) and left outside. It runs the gate once and records the real result as journal entry #1; never overwrites a file; refuses an existing EEE project. PT and EN; tests in `starter/test_eee_init.py`.
+- **Ch. 12 Getting started** (PT and EN): prerequisites, the command, what it creates, the request, five stages driven by a coding agent with the text to paste and what the human approves, the daily routine and common problems. Ch. 08 §1 step 1 points to it.
+- Templates (PT and EN): `request-template` (with the question-phase questions), `request-matrix-template`, `foundational-plan-template`, `operational-state-template`, `operator-decisions-template`.
+- `gate.sh`: `HARNESS_LANG=py|ts` selects the Python verifiers or the TypeScript adapter.
+
+### Changed
+- `agents-entry-template`: the reading order includes the request item (`request_item`, matrix), as v1.6.0 required.
+- `HARNESS_VERSION` 1.7.0 in every harness script.
+
 ## [1.6.0] — 2026-11-17
 
 The remaining proposals from the validation by use (one gap in scope, two frictions in testing, one gap in live proof, one pre-flight question that caught a real defect).

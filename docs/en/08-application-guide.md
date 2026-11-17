@@ -22,6 +22,9 @@ flowchart TD
 
 ### Step 1 · Governance tree
 
+> [!TIP]
+> **Shortcut:** `python3 starter/eee_init.py <folder>` does this whole step, plus the request, the matrix, the one-page Plan template, the state, the journal and the single gate ([12 · Getting started](12-getting-started.md)). The commands below show what it creates.
+
 ```bash
 mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adversarial eee/state
 ```

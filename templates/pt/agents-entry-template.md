@@ -17,14 +17,14 @@ Instruções para pessoas e para agentes de código de qualquer ferramenta. Este
 
 1. `eee/state/STATE.md`: o estado operacional (datado). Confira com o ambiente antes de agir.
 2. `eee/state/decisions-operator.md`: decisões fixas do operador. Não as rediscuta.
-3. O charter do arco (`specs/charters/`), a spec que ele cita e a ADR que governa a spec.
+3. O charter do arco (`specs/charters/`), o item do pedido que ele atende (`request_item`, na matriz pedido × arco), a spec que ele cita e a ADR que governa a spec. Trabalho sem item na matriz começa por registrar o pedido.
 4. O procedimento do seu papel em `eee/playbooks/`.
 
 ## Hierarquia da verdade
 
 | Camada | Onde | Regra |
 |---|---|---|
-| 1 · Plan | `Plan/docs/` | propósito, invariantes, orçamentos |
+| 1 · Plan | `Plan/docs/` | propósito, invariantes, orçamentos; o pedido de origem e a matriz pedido × arco |
 | 2 · ADR | `Plan/decisions/` | nasce `PROPOSED`; ratificada por quem decide, em commit separado |
 | 3 · Spec | `specs/` | contrato 1:1 com o código; charters em `specs/charters/` |
 | 4 · Código | [`src/`, `tests/`] | segue a spec; divergência se resolve na camada de cima |

@@ -14,3 +14,4 @@
 | 📚 | [09 · Fundamentação Acadêmica](09-fundamentacao-academica.md) | Em que literatura a EEE se apoia |
 | 🔍 | [10 · Casos Ilustrativos](10-casos-ilustrativos.md) | Incidentes contados pela forma |
 | 📖 | [11 · Glossário](11-glossario.md) | Termos |
+| 🚀 | [12 · Primeiros passos](12-primeiros-passos.md) | Como começar um projeto novo com a EEE em um comando |

@@ -7,11 +7,12 @@
 # Environment:
 #   PYTHON         interpreter to use (default: first python >= 3.8 found)
 #   TEST_DIR       tests directory, relative to the root (default: tests)
+#   HARNESS_LANG   py (default) or ts: which verifiers to run (ts = typescript/ adapter: Next.js routes, Vitest/Jest)
 #   HARNESS_DIR    where verify_hierarchy.py and check_falsification.py live (default: this script's directory)
 #   GATE_ARGS      extra arguments for verify_hierarchy.py (e.g. --allow-missing-code in Phase 2)
 #   GATE_REQUIRE   space-separated host:port that must accept connections (e.g. a test database)
 #   GATE_SUITE     the project's test-suite command, run with bash -c from the root
-# Exit: number of failed steps (0 = approved); 98 = no suitable Python.
+# Exit: number of failed steps (0 = approved); 97 = unknown HARNESS_LANG; 98 = no suitable Python.
 set -u
 HARNESS_DIR=${HARNESS_DIR:-$(cd "$(dirname "$0")" && pwd)}
 ROOT=${1:-.}
@@ -40,9 +41,14 @@ reachable() {  # reachable host:port — a missing dependency fails the gate ins
   (exec 3<>"/dev/tcp/$host/$port") 2>/dev/null || { echo "$1 does not accept connections"; return 1; }
 }
 
+case ${HARNESS_LANG:-py} in
+  py) VH="$HARNESS_DIR/verify_hierarchy.py"; CF="$HARNESS_DIR/check_falsification.py" ;;
+  ts) VH="$HARNESS_DIR/typescript/verify_hierarchy_ts.py"; CF="$HARNESS_DIR/typescript/check_falsification_ts.py" ;;
+  *) echo "[gate] HARNESS_LANG must be py or ts (got ${HARNESS_LANG})"; exit 97 ;;
+esac
 # shellcheck disable=SC2086
-step "hierarchy of truth" "$PY" "$HARNESS_DIR/verify_hierarchy.py" --project-root . ${GATE_ARGS:-}
-step "disagreeable pairs (R2)" "$PY" "$HARNESS_DIR/check_falsification.py" --test-dir "$TEST_DIR"
+step "hierarchy of truth" "$PY" "$VH" --project-root . ${GATE_ARGS:-}
+step "disagreeable pairs (R2)" "$PY" "$CF" --test-dir "$TEST_DIR"
 for dep in ${GATE_REQUIRE:-}; do step "dependency $dep" reachable "$dep"; done
 [ -n "${GATE_SUITE:-}" ] && step "test suite" bash -c "$GATE_SUITE"
 # ── project steps go here (Phase 8 sweep, DDL = spec, adapter checks, ...) ──

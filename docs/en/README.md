@@ -14,3 +14,4 @@
 | 📚 | [09 · Academic Foundation](09-academic-foundation.md) | Which literature EEE rests on |
 | 🔍 | [10 · Illustrative Cases](10-illustrative-cases.md) | Incidents told by their form |
 | 📖 | [11 · Glossary](11-glossary.md) | Terms |
+| 🚀 | [12 · Getting started](12-getting-started.md) | How to start a new project with EEE in one command |

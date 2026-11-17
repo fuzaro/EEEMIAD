@@ -22,6 +22,9 @@ flowchart TD
 
 ### Passo 1 · Árvore de governança
 
+> [!TIP]
+> **Atalho:** `python3 starter/eee_init.py <pasta>` faz este passo inteiro, mais o pedido, a matriz, o modelo do Plan de uma página, o estado, o diário e o gate único ([12 · Primeiros passos](12-primeiros-passos.md)). Os comandos abaixo mostram o que ele cria.
+
 ```bash
 mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adversarial eee/state
 ```
