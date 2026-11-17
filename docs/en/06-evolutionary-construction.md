@@ -144,6 +144,12 @@ Without (3), an accidental loosening produces exactly the same green. The rule h
 
 The target case's test is written **before** the code and must **fail** for the right reason. A test born green has measured nothing: *probe-and-revert* (inject the exact defect, confirm the red, revert) is mandatory before accepting the green.
 
+**Defence in depth.** When two layers guarantee the same property (an application check and a database constraint, for instance), removing one leaves the test green: the other refuses on its own, and the probe measured nothing. So: (a) the probe **declares the layers it removes**; (b) each redundant layer gets **a test that exercises it alone** (the one that inserts directly into the database proves the constraint; the one that calls the function proves the application rule); (c) a probe that removes every layer confirms the whole battery sees the property.
+
+### Each battery declares the state it starts from
+
+A battery that depends on state (database, queue, files) declares **which state it starts from** and **prepares it itself**: an isolated database per suite, or the fixture loaded in the file itself. Batteries that share state without declaring it sabotage each other: a suite that truncates the database wipes the fixture another depends on, and the failure points at the wrong code. Before reading a series of failures, name the generating process (R4): the first question is "which state did this test start from?".
+
 ### Debt declared as a test (R29b)
 
 When a property does not yet hold (for example, "policy mutation requires a credential" in P1), it enters the battery as a negative assertion marked `xfail(strict=True)`. The test documents the debt **and** announces its settlement: when the property is implemented, it turns `XPASS` and fails the suite, forcing its promotion to a normal test. In arcs where instruments lied, it was the only mechanism that announced good news nobody asked for.
@@ -158,7 +164,7 @@ When the same author (human or model) writes spec, code and test, **consistently
 
 ### Proof level at closure (R15)
 
-The arc's closure declares the level at which each claim was proven. A whole ledger at level 1 (versioned file) with real deploys proven at level 4 (live reproduction) is honest; a ledger that does not declare a level is read as 4 and is usually 1. Before level 4, exercise the **deployment artifact** (level 3b): a suite that is green in the test process (3a) cannot see what packaging left out.
+The arc's closure declares the level at which each claim was proven. A whole ledger at level 1 (versioned file) with real deploys proven at level 4 (live reproduction) is honest; a ledger that does not declare a level is read as 4 and is usually 1. Before level 4, exercise the **deployment artifact** (level 3b): a suite that is green in the test process (3a) cannot see what packaging left out. At level 4, declare **read** or **write**: a suite that runs against production needs a switch that turns off the cases that write, and a read-only level 4 does not prove the write property.
 
 ## 5. Evolutionary expansion
 

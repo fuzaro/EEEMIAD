@@ -42,6 +42,8 @@ The "operations" rows are not a fifth layer of the hierarchy: they decide nothin
 ### Step 2 · Foundational Plan
 One page. Contains: why the system exists; what it **must not** do; default failure postures (decision → fail-closed; evidence → durable fail-open); global budgets.
 
+Keep beside it the **original request**, in the words of whoever asked (`Plan/docs/request.md`), and a **request × arc matrix**: each item of the request points to an arc or to an explicit exclusion, with date and decider. The Plan is a reading of the request and can be wrong; the matrix is what lets you see the error.
+
 ### Step 3 · ADR-001
 Born `PROPOSED`. Has ≥ 2 alternatives, consequences and numbered decisions (D1...Dn). Ratification is a separate commit citing Phase 1 evidence.
 
@@ -129,6 +131,7 @@ Printable. An arc is complete when every line has evidence (command + result, no
 ### P1 · Thin slice (flag OFF)
 - [ ] Stubs tagged in source; scaffold data with provenance `unknown`, `scaffold` or `synthetic` (never `real`)
 - [ ] Target test red → green; legacy green; neighbour barred (R2)
+- [ ] Every stateful battery declares and prepares the state it starts from (isolated database or fixture loaded in the file itself)
 - [ ] Debts recorded in xfail(strict=True) (R29b)
 - [ ] Flag in the ledger; spec describes what was created (R30)
 
@@ -143,14 +146,15 @@ Printable. An arc is complete when every line has evidence (command + result, no
 - [ ] Stub's historical radius measured; verifiable retirement trigger
 
 ### P4 · Cut-over
-- [ ] Pre-flight: blast radius · reversible? · rehearsed rollback · state precondition · flip composition
+- [ ] Pre-flight: blast radius · reversible? · rehearsed rollback · state precondition · flip composition · target state covered by the tests
 - [ ] Deployment artifact exercised end to end before the flip (level 3b)
 - [ ] Flip and ledger in the same commit; explicit value in the deployment
-- [ ] Live reproduction of the property and of the refutation (level 4), recorded in the [cut-over evidence template](../../templates/en/cutover-evidence-template.md)
+- [ ] Live reproduction of the property and of the refutation (level 4, **read** or **write** declared; no test data in business data), recorded in the [cut-over evidence template](../../templates/en/cutover-evidence-template.md)
 
 ### Closure
 - [ ] Deficit query = 0; single gate green
 - [ ] Evidence journal line and operational state updated, in the same commit (§8)
+- [ ] Request × delivered: the item of the original request this arc serves is marked in the matrix, read against the request's words, not against the Plan
 - [ ] done@tier declared, with proof level
 - [ ] Post-enforce window met → flag retired; Phase 8 sweep finds no ghosts
 ```
@@ -166,6 +170,7 @@ Printable. An arc is complete when every line has evidence (command + result, no
 7. **Executor change** (person, agent or model): before accepting any earlier report, the new executor re-runs the whole battery from the repository. Any divergence between report and re-run goes to the ledger, even a small one: it is the plausible answer in miniature.
 8. **Copied tools:** every copy of the harness or of templates in the project declares origin and version; a copy that drifts from its declared version is a finding, not a detail (§8.3).
 9. **Journal and state:** every state change of the cycle has a journal line; the operational state matches the environment (§8.1, §8.2).
+10. **Request × delivered:** re-read the original request and the request × arc matrix. An item with no arc and no explicit exclusion is a scope gap, even with every gate green: gates measure properties of code, not whether the requested code exists.
 
 ## 5. Adopting with AI agents
 

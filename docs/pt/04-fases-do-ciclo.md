@@ -67,6 +67,7 @@ flowchart LR
   4. **Precondição de estado** verificada na fonte: tuplas, grants, chaves e tabelas existem **antes** do deploy (comando e resultado observado).
   5. **Composição de flips:** quais outros gates mudaram nesta janela e o **produto** deles foi exercitado ponta a ponta (comando e resultado, não inferência).
   6. **Mecanismo existe:** o caminho `enforce` está construído e verificado sintaticamente; nomear a fase na ADR não a constrói (R26).
+  7. **Estado do destino coberto:** o ambiente de destino está num estado que os testes não exercitaram (vazio, recém-migrado, com dados antigos fora da regra nova, com volume diferente)? Se sim, rode a bateria **a partir desse estado** antes do flip. Cada arco costuma ser testado com dados; o destino pode estar vazio.
 - **Após o flip:** janela de observação declarada antes de **aposentar** a flag.
 
 ### Fase 8 · Governança evolutiva e sprint-exit sweeps

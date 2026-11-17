@@ -144,6 +144,12 @@ Sem (3), um afrouxamento acidental produz exatamente o mesmo verde. A regra vale
 
 O teste do caso alvo é escrito **antes** do código e deve **falhar** pela razão certa. Um teste que nasce verde não mediu nada: *probe-and-revert* (injetar o defeito exato, confirmar o vermelho, reverter) é obrigatório antes de aceitar o verde.
 
+**Defesa em profundidade.** Quando duas camadas garantem a mesma propriedade (uma validação na aplicação e uma restrição no banco, por exemplo), remover uma deixa o teste verde: a outra recusa sozinha, e o probe não mediu nada. Então: (a) o probe **declara as camadas que remove**; (b) cada camada redundante ganha **um teste que a exercita sozinha** (o que insere direto no banco prova a restrição; o que chama a função prova a regra da aplicação); (c) um probe que remove todas as camadas confirma que a bateria inteira vê a propriedade.
+
+### Cada bateria declara o estado de que parte
+
+Uma bateria que depende de estado (banco, fila, arquivos) declara **de que estado parte** e o **prepara ela mesma**: banco isolado por suíte, ou carga da fixture no próprio arquivo. Baterias que compartilham estado sem declarar se sabotam: uma suíte que trunca o banco apaga a fixture de que a outra depende, e a falha aponta para o código errado. Antes de ler uma série de falhas, nomeie o processo gerador (R4): a primeira pergunta é "de que estado este teste partiu?".
+
 ### Dívida declarada como teste (R29b)
 
 Quando uma propriedade ainda não vale (por exemplo, "a mutação de política exige credencial" em P1), ela entra na bateria como asserção negativa marcada `xfail(strict=True)`. O teste documenta a dívida **e** anuncia a quitação: ao implementar a propriedade, ele passa a `XPASS` e falha a suíte, obrigando a promovê-lo a teste normal. Em arcos onde instrumentos mentiram, foi o único mecanismo que anunciou boa notícia que ninguém pediu.
@@ -158,7 +164,7 @@ Quando o mesmo autor (humano ou modelo) escreve spec, código e teste, casos **c
 
 ### Nível de prova no fechamento (R15)
 
-O fechamento do arco declara em que nível cada afirmação foi provada. Um ledger inteiro no nível 1 (arquivo versionado) com deploys reais provados no nível 4 (reprodução ao vivo) é honesto; um ledger que não declara nível é lido como 4 e costuma ser 1. Antes do nível 4, exercite o **artefato de deploy** (nível 3b): uma suíte verde no processo de teste (3a) não vê o que o empacotamento deixou de fora.
+O fechamento do arco declara em que nível cada afirmação foi provada. Um ledger inteiro no nível 1 (arquivo versionado) com deploys reais provados no nível 4 (reprodução ao vivo) é honesto; um ledger que não declara nível é lido como 4 e costuma ser 1. Antes do nível 4, exercite o **artefato de deploy** (nível 3b): uma suíte verde no processo de teste (3a) não vê o que o empacotamento deixou de fora. No nível 4, declare **leitura** ou **escrita**: a suíte que roda contra produção deve ter uma chave que desliga os casos que escrevem, e um nível 4 em leitura não prova a propriedade de escrita.
 
 ## 5. A ampliação evolutiva
 

@@ -10,6 +10,7 @@ flag: [FLAG_NAME]
 flag_domain: [off | shadow | enforce]
 flag_default_in_code: off
 delegation: none # none | tiered: only after the operator's yes at the questions phase (08 §6)
+request_item: [item of the request × arc matrix this arc serves, in the request's words (08 §1 step 2)]
 opened: YYYY-MM-DD
 owner: [deciding role or person]
 ```

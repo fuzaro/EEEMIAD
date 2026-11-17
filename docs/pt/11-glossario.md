@@ -41,9 +41,9 @@
 | **Duas chaves** | Regra da execução entre sessões: escrita remota exige a decisão na sessão que pede **e** a autorização do operador na sessão que age. | [08 §7](08-guia-de-aplicacao.md) |
 | **Par discordável** | Segunda medida que pode **discordar** da primeira. "Medida sem companheira discordável não é medida; é afirmação." | [05 R2](05-regras-do-refinamento.md) |
 | **Controle negativo** | Teste que deve **falhar** (ou barrar) para provar que a asserção positiva mede algo. Inclui o vizinho que deve seguir barrado. | [06](06-construcao-evolutiva.md) |
-| **Probe-and-revert** | Injetar o defeito exato que o teste existe para pegar, confirmar o vermelho, reverter; só então aceitar o verde. | [06](06-construcao-evolutiva.md) |
+| **Probe-and-revert** | Injetar o defeito exato que o teste existe para pegar, confirmar o vermelho, reverter; só então aceitar o verde. Com camadas redundantes, o probe declara quais remove e cada camada tem um teste que a exercita sozinha. | [06](06-construcao-evolutiva.md) |
 | **Proof test** | Exercício deliberado, em cadência declarada, de um mecanismo de contingência cuja única manifestação orgânica é a falha que ele trata. | [04 Fase 8](04-fases-do-ciclo.md) |
-| **Nível de ground truth (R15)** | 1 intenção · 2 intenção aplicada · 3 estado · 4 estado e efeito. Toda afirmação de estado declara o seu. | [05](05-regras-do-refinamento.md) |
+| **Nível de ground truth (R15)** | 1 intenção · 2 intenção aplicada · 3 estado · 4 estado e efeito. Toda afirmação de estado declara o seu; o nível 4 declara também se leu ou escreveu. | [05](05-regras-do-refinamento.md) |
 | **Reality-check (RC)** | Medição do terreno contra o que um documento assume: âncoras verificadas por símbolo, precondições na fonte, drift reportado antes de qualquer edição. | [08](08-guia-de-aplicacao.md), [template](../../templates/pt/reality-check-template.md) |
 | **Reconciliação ascendente** | Resolução de drift subindo para a camada superior (ADR de emenda), nunca ajustando a spec ao código. | [03](03-hierarquia-da-verdade.md) |
 | **Inversão de hierarquia** | Anti-padrão: a spec é alterada para perdoar o atalho do código. | [03](03-hierarquia-da-verdade.md), [07](07-anti-padroes.md) |

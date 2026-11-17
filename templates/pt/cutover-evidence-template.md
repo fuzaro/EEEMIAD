@@ -29,6 +29,7 @@ date: YYYY-MM-DD
 | 4 | Precondição de estado na fonte (tabelas, grants, variáveis, registry acessível pelos nós) | | |
 | 5 | Composição: outros gates mudados nesta janela e produto exercitado | | |
 | 6 | Mecanismo `enforce` existe (verificação sintática) | | |
+| 7 | Estado do destino coberto pelos testes? (vazio, recém-migrado, dados antigos fora da regra nova, volume) Se não, bateria rodada a partir desse estado | | |
 
 ## 2. Artefato de deploy exercitado (nível 3b)
 
@@ -42,6 +43,8 @@ O artefato **que vai para produção**, não o processo de teste.
 | Vizinho que deve seguir barrado (R2) | | |
 
 ## 3. Reprodução ao vivo (nível 4)
+
+Modo: **leitura** | **escrita** (escrita em ambiente com dado de negócio só com dado marcado como teste e removível; senão, a escrita fica provada em 3b e este nível vale só para leitura).
 
 | Caso | Requisição | Esperado | Observado |
 |---|---|---|---|

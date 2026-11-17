@@ -10,6 +10,7 @@ flag: [NOME_DA_FLAG]
 flag_domain: [off | shadow | enforce]
 flag_default_in_code: off
 delegation: none # none | tiered: só com resposta positiva do operador na fase de perguntas (08 §6)
+request_item: [item da matriz pedido × arco que este arco atende, nas palavras do pedido (08 §1 passo 2)]
 opened: YYYY-MM-DD
 owner: [papel ou pessoa que decide]
 ```

@@ -67,6 +67,7 @@ flowchart LR
   4. **State precondition** verified at the source: tuples, grants, keys and tables exist **before** the deploy (command and observed result).
   5. **Flip composition:** which other gates changed in this window and whether their **product** was exercised end to end (command and result, not inference).
   6. **The mechanism exists:** the `enforce` path is built and syntactically verified; naming the phase in the ADR does not build it (R26).
+  7. **Target state covered:** is the target environment in a state the tests never exercised (empty, just migrated, holding old data outside a new rule, a different volume)? If so, run the battery **from that state** before the flip. Each arc is usually tested with data; the target may be empty.
 - **After the flip:** a declared observation window before **retiring** the flag.
 
 ### Phase 8 · Evolutionary governance and sprint-exit sweeps

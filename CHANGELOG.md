@@ -2,6 +2,19 @@
 
 All notable changes to EEEMIAD are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.6.0] — 2026-11-17
+
+The remaining proposals from the validation by use (one gap in scope, two frictions in testing, one gap in live proof, one pre-flight question that caught a real defect).
+
+### Added
+- **Request × delivered** (gap L4). Ch. 08 step 2 keeps the original request in the requester's words and a request × arc matrix (each item → an arc or an explicit exclusion). The closure checklist and the Phase 8 ritual (item 10) re-read the request against the matrix: gates measure properties of code, not whether the requested code exists. Charter template: `request_item`.
+- **Each battery declares the state it starts from** (friction A9). Ch. 06 §4: a stateful battery declares and prepares its own starting state (isolated database or fixture loaded in the file); shared undeclared state makes suites sabotage each other. P1 checklist line.
+- **Probe-and-revert under defence in depth** (friction A10). Ch. 06 §4: the probe declares the layers it removes; each redundant layer gets a test that exercises it alone; a probe that removes every layer confirms the battery sees the property. Glossary updated.
+- **Target state covered** (pre-flight question 7). Ch. 04 Phase 7: is the target environment in a state the tests never exercised (empty, just migrated, old data outside a new rule, volume)? If so, run the battery from that state before the flip. Cut-over evidence template row 7; P4 checklist.
+
+### Changed
+- **R15 level 4 declares read or write** (gap L5). Ch. 05 R15, ch. 06 §4 and the cut-over evidence template: a write into an environment holding business data uses data marked as test and removable, or stays out; a read-only level 4 does not prove the write property. P4 checklist and glossary updated.
+
 ## [1.5.0] — 2026-11-17
 
 Driven by the same validation-by-use, after adoption: the state needed to continue the project lived only in one agent session's memory, and a copied R2 detector had fallen behind the published one, unnoticed for days because the verifiers ran one by one.

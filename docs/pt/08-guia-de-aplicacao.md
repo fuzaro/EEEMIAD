@@ -42,6 +42,8 @@ As linhas "operação" não são uma quinta camada da hierarquia: não decidem n
 ### Passo 2 · Plan fundacional
 Uma página. Contém: por que o sistema existe; o que ele **não pode** fazer; posturas de falha padrão (decisão → fail-closed; evidência → fail-open durável); orçamentos globais.
 
+Guarde ao lado o **pedido de origem**, nas palavras de quem pediu (`Plan/docs/pedido.md`), e uma **matriz pedido × arco**: cada item do pedido aponta para um arco ou para uma exclusão explícita, com data e quem decidiu. O Plan é uma leitura do pedido e pode errar; a matriz é o que permite ver o erro.
+
 ### Passo 3 · ADR-001
 Nasce `PROPOSED`. Tem ≥ 2 alternativas, consequências e decisões numeradas (D1...Dn). A ratificação é um commit separado que cita evidência da Fase 1.
 
@@ -129,6 +131,7 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 ### P1 · Fatia fina (flag OFF)
 - [ ] Stubs marcados na fonte; dados de andaime com proveniência `unknown`, `scaffold` ou `synthetic` (nunca `real`)
 - [ ] Teste alvo vermelho → verde; legado verde; vizinho barrado (R2)
+- [ ] Cada bateria com estado declara e prepara o estado de que parte (banco isolado ou fixture carregada no próprio arquivo)
 - [ ] Dívidas registradas em xfail(strict=True) (R29b)
 - [ ] Flag no ledger; spec descreve o que foi criado (R30)
 
@@ -143,14 +146,15 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 - [ ] Raio histórico do stub medido; gatilho de aposentadoria verificável
 
 ### P4 · Cut-over
-- [ ] Pré-voo: raio de explosão · reversível? · rollback ensaiado · precondição de estado · composição de flips
+- [ ] Pré-voo: raio de explosão · reversível? · rollback ensaiado · precondição de estado · composição de flips · estado do destino coberto pelos testes
 - [ ] Artefato de deploy exercitado ponta a ponta antes do flip (nível 3b)
 - [ ] Flip e ledger no mesmo commit; valor explícito no deploy
-- [ ] Reprodução ao vivo da propriedade e da refutação (nível 4), registrada no [template de evidência de cut-over](../../templates/pt/cutover-evidence-template.md)
+- [ ] Reprodução ao vivo da propriedade e da refutação (nível 4, **leitura** ou **escrita** declarada; nenhum dado de teste no dado de negócio), registrada no [template de evidência de cut-over](../../templates/pt/cutover-evidence-template.md)
 
 ### Fechamento
 - [ ] Consulta de déficit = 0; gate único verde
 - [ ] Linha no diário de evidências e estado operacional atualizado, no mesmo commit (§8)
+- [ ] Pedido × entregue: o item do pedido de origem que o arco atende está marcado na matriz, lido contra as palavras do pedido, não contra o Plan
 - [ ] done@tier declarado, com nível de prova
 - [ ] Janela pós-enforce cumprida → flag aposentada; sweep da Fase 8 sem fantasmas
 ```
@@ -166,6 +170,7 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 7. **Troca de executor** (pessoa, agente ou modelo): antes de aceitar qualquer relato anterior, o novo executor reexecuta a bateria inteira a partir do repositório. Divergência entre relato e reexecução vai para o ledger, mesmo quando pequena: é a resposta plausível em miniatura.
 8. **Ferramentas copiadas:** cada cópia do harness ou de templates no projeto declara origem e versão; cópia que diverge da versão declarada é achado, não detalhe (§8.3).
 9. **Diário e estado:** cada mudança de estado do ciclo tem linha no diário; o estado operacional confere com o ambiente (§8.1, §8.2).
+10. **Pedido × entregue:** reler o pedido de origem e a matriz pedido × arco. Item sem arco e sem exclusão explícita é lacuna de escopo, mesmo com todos os gates verdes: os gates medem propriedades de código, não se o código pedido existe.
 
 ## 5. Adotando com agentes de IA
 

@@ -29,6 +29,7 @@ date: YYYY-MM-DD
 | 4 | State precondition at the source (tables, grants, variables, registry reachable by the nodes) | | |
 | 5 | Composition: other gates changed in this window and their product exercised | | |
 | 6 | `enforce` mechanism exists (syntactic check) | | |
+| 7 | Target state covered by the tests? (empty, just migrated, old data outside a new rule, volume) If not, battery run from that state | | |
 
 ## 2. Deployment artifact exercised (level 3b)
 
@@ -42,6 +43,8 @@ The artifact **that ships**, not the test process.
 | Neighbour that must stay barred (R2) | | |
 
 ## 3. Live reproduction (level 4)
+
+Mode: **read** | **write** (a write into an environment holding business data only with data marked as test and removable; otherwise the write is proven at 3b and this level covers reads only).
 
 | Case | Request | Expected | Observed |
 |---|---|---|---|

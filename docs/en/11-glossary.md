@@ -29,9 +29,9 @@
 | **Plausible answer family** | Well-formed, typed value for a question that was not asked, indistinguishable from the correct answer. | [05](05-refinement-rules.md) |
 | **Disagreeable pair** | Second measurement that can **disagree** with the first. "A measurement without a disagreeable companion is not a measurement; it is a claim." | [05 R2](05-refinement-rules.md) |
 | **Negative control** | Test that must **fail** (or bar) to prove the positive assertion measures something. Includes the neighbour that must stay barred. | [06](06-evolutionary-construction.md) |
-| **Probe-and-revert** | Inject the exact defect the test exists to catch, confirm the red, revert; only then accept the green. | [06](06-evolutionary-construction.md) |
+| **Probe-and-revert** | Inject the exact defect the test exists to catch, confirm the red, revert; only then accept the green. With redundant layers, the probe declares which ones it removes and each layer has a test that exercises it alone. | [06](06-evolutionary-construction.md) |
 | **Proof test** | Deliberate exercise, on a declared cadence, of a contingency mechanism whose only organic trigger is the failure it handles. | [04 Phase 8](04-cycle-phases.md) |
-| **Ground-truth level (R15)** | 1 intent · 2 applied intent · 3 state · 4 state and effect. Every state claim declares its own. | [05](05-refinement-rules.md) |
+| **Ground-truth level (R15)** | 1 intent · 2 applied intent · 3 state · 4 state and effect. Every state claim declares its own; level 4 also declares whether it read or wrote. | [05](05-refinement-rules.md) |
 | **Reality-check (RC)** | Measurement of the terrain against what a document assumes: anchors verified by symbol, preconditions at the source, drift reported before any edit. | [08](08-application-guide.md), [template](../../templates/en/reality-check-template.md) |
 | **Upward reconciliation** | Resolution of drift by escalating to the higher layer (amendment ADR), never by adjusting the spec to the code. | [03](03-hierarchy-of-truth.md) |
 | **Hierarchy inversion** | Anti-pattern: the spec is altered to forgive the code's shortcut. | [03](03-hierarchy-of-truth.md), [07](07-anti-patterns.md) |
