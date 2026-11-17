@@ -16,6 +16,8 @@ python3 examples/verification-harness/typescript/check_falsification_ts.py --tes
 python3 examples/verification-harness/typescript/sweep_ts.py --src app/src --specs specs
 ```
 
+Every script prints `EEEMIAD harness <version>` from its `HARNESS_VERSION` constant. A project that copies these files records their origin and version (ch. 08 §8.3) and runs them, with its own checks, behind one gate command ([`../gate.sh`](../gate.sh) is the starting point).
+
 Expected layout: `Plan/docs/` (or `plan/`), `Plan/decisions/` (or `adr/`), `specs/` with an enforcement ledger whose rows start with `` | `NAME_MODE` ``, and a flags module declaring every flag. Paths are flags, not assumptions.
 
 > [!NOTE]

@@ -23,6 +23,10 @@ import re
 import sys
 from pathlib import Path
 
+# Version of the EEEMIAD harness this file belongs to. A project that copies the file keeps this line and
+# records the origin and version (ch. 08 §8.3); a copy that drifts from its declared version is a finding.
+HARNESS_VERSION = "1.5.0"
+
 NEGATIVE = re.compile(
     r"invalid|fail|deny|denie|reject|refuse|unauth|forbid|malform|negative|blocked|barred|abort|"
     r"diverg|tamper|corrupt|missing|unknown|neighbo|refut|stale|_(400|401|403|404|409|422|500|503)(_|$)",
@@ -73,6 +77,7 @@ def analyze_test_file(filepath) -> dict[str, dict[str, list[str]]]:
 
 
 def verify_falsification(test_dir) -> int:
+    print(f"[*] EEEMIAD harness {HARNESS_VERSION} (check_falsification.py)")
     print(f"[*] Checking EEEMIAD Rule R2 (disagreeable pairs, per group) across: {test_dir}")
     test_path = Path(test_dir)
     if not test_path.exists():

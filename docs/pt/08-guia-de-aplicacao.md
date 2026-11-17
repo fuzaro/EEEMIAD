@@ -23,7 +23,7 @@ flowchart TD
 ### Passo 1 · Árvore de governança
 
 ```bash
-mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adversarial
+mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adversarial eee/state
 ```
 
 | Diretório | Camada | Conteúdo |
@@ -32,6 +32,12 @@ mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adver
 | `Plan/decisions/` | 2 | ADRs numeradas ([template](../../templates/pt/adr-template.md)) |
 | `specs/` | 3 | Contratos vivos + matriz M11 ([template](../../templates/pt/failure-modes-m11-template.md)) + ledger de flags ([template](../../templates/pt/flag-ledger-template.md)) |
 | `tests/` | 4 | Suítes com par discordável; `adversarial/` é escrito sem ler a implementação |
+| `AGENTS.md` | operação | Ponto de entrada para pessoas e agentes de qualquer harness: regras duras, ordem de leitura, comandos ([template](../../templates/pt/agents-entry-template.md), §8.2) |
+| `eee/log.md` | operação | Diário de evidências, permanente ([template](../../templates/pt/evidence-journal-template.md), §8.1) |
+| `eee/state/` | operação | Estado operacional: o que está ligado onde, pendências, decisões do operador; **onde** vive cada segredo, nunca o valor (§8.2) |
+| `tools/gate.sh` | operação | Comando único de gate ([exemplo](../../examples/verification-harness/gate.sh), §8.3) |
+
+As linhas "operação" não são uma quinta camada da hierarquia: não decidem nada. Registram o que aconteceu, onde as coisas estão e como verificar.
 
 ### Passo 2 · Plan fundacional
 Uma página. Contém: por que o sistema existe; o que ele **não pode** fazer; posturas de falha padrão (decisão → fail-closed; evidência → fail-open durável); orçamentos globais.
@@ -64,7 +70,9 @@ python3 examples/verification-harness/verify_hierarchy.py --project-root .
 python3 examples/verification-harness/check_falsification.py --test-dir ./tests
 ```
 
-Fecha quando: harness verde; a consulta que detectou o déficit retorna zero; o tier é declarado (`done@funcional`, nível de prova R15). Qualquer coisa acima disso é `done@gate` e pertence ao humano.
+No projeto, esses comandos e os demais verificadores (adaptador de linguagem, paridade de DDL, suíte) ficam atrás de **um** comando de gate (§8.3).
+
+Fecha quando: gate verde; a consulta que detectou o déficit retorna zero; o tier é declarado (`done@funcional`, nível de prova R15). Qualquer coisa acima disso é `done@gate` e pertence ao humano.
 
 > [!IMPORTANT]
 > **Leia a linha `examined`, não só o veredito.** O verificador falha quando não encontra código para examinar; na Fase 2, antes do código, use `--allow-missing-code`. Um verificador que não examina nada não pode dizer que passou. Projetos em TypeScript/Next.js usam o [adaptador TypeScript](../../examples/verification-harness/typescript/README.md); outras linguagens precisam de um adaptador que mantenha o mesmo contrato.
@@ -141,26 +149,30 @@ Imprimível. Um arco está completo quando todas as linhas têm evidência (coma
 - [ ] Reprodução ao vivo da propriedade e da refutação (nível 4), registrada no [template de evidência de cut-over](../../templates/pt/cutover-evidence-template.md)
 
 ### Fechamento
-- [ ] Consulta de déficit = 0; harness verde
+- [ ] Consulta de déficit = 0; gate único verde
+- [ ] Linha no diário de evidências e estado operacional atualizado, no mesmo commit (§8)
 - [ ] done@tier declarado, com nível de prova
 - [ ] Janela pós-enforce cumprida → flag aposentada; sweep da Fase 8 sem fantasmas
 ```
 
 ## 4. O ritual da Fase 8 (saída de sprint)
 
-1. Rodar o harness e o sweep: `verify_hierarchy.py`, `check_falsification.py`, `sweep_codebase.py`.
+1. Rodar o **gate único** do projeto, que inclui o harness e o sweep (`verify_hierarchy.py`, `check_falsification.py`, `sweep_codebase.py`). Rodar os verificadores um a um deixa um vermelho passar (§8.3).
 2. Paridade bidirecional rotas ↔ specs; flags ↔ ledger; tabelas ↔ spec de banco.
 3. Custódia: ADRs citadas existem no ramo principal; âncoras resolvem para símbolo.
 4. Envelhecimento de `PROPOSED` além do prazo declarado: promover, emendar ou cancelar.
 5. Proporção de gates não exercitados (R6) e **proof test** dos mecanismos de contingência em cadência.
 6. Reexecutar a bateria de fechamento por reavaliação.
 7. **Troca de executor** (pessoa, agente ou modelo): antes de aceitar qualquer relato anterior, o novo executor reexecuta a bateria inteira a partir do repositório. Divergência entre relato e reexecução vai para o ledger, mesmo quando pequena: é a resposta plausível em miniatura.
+8. **Ferramentas copiadas:** cada cópia do harness ou de templates no projeto declara origem e versão; cópia que diverge da versão declarada é achado, não detalhe (§8.3).
+9. **Diário e estado:** cada mudança de estado do ciclo tem linha no diário; o estado operacional confere com o ambiente (§8.1, §8.2).
 
 ## 5. Adotando com agentes de IA
 
 A EEE é agnóstica de ferramenta; o harness, não. Ele lê Python pela AST e TypeScript/Next.js por um [adaptador](../../examples/verification-harness/typescript/README.md); para outra linguagem, escreva um adaptador com o mesmo contrato antes de confiar no veredito. Dois pontos de encaixe:
 
 - **Skills:** [`eee-governance-sweep`](../../skills/eee-governance-sweep/SKILL.md) automatiza a Fase 8; [`eee-adversarial-verifier`](../../skills/eee-adversarial-verifier/SKILL.md) instancia o papel *quem verifica* (testes a partir da spec, sem ler o código).
+- **Instruções neutras quanto ao harness:** um `AGENTS.md` de entrada e conteúdo canônico em Markdown; os arquivos próprios de cada ferramenta são adaptadores finos verificados pelo gate (§8.2).
 - **Divisão de papéis entre agentes:** a instanciação completa em dois agentes (reflexivo e executivo), com brief, reality-check de pré-voo e avaliação decisão por decisão, está no repositório irmão `EEEMIAD-dual`.
 
 ## 6. Divisão de tarefas por nível de contexto (opcional)
@@ -229,4 +241,45 @@ A sessão remota pode reiniciar e perder variáveis de ambiente, inclusive a cre
 - [ ] Para escrita: decisão aqui + autorização do operador na sessão que age
 - [ ] Resposta com comando + saída por passo; o que for reexecutável daqui foi reexecutado
 - [ ] Evidência e tempos registrados no charter do arco (nível R15 de cada linha)
+```
+
+## 8. Continuidade: diário, estado e gate único
+
+Os charters guardam a evidência de cada arco. Três coisas ficam entre os arcos e não têm dono no ciclo: a **linha do tempo** (o que mudou, quando e com que prova), o **estado operacional** (o que está ligado em cada ambiente, o que está pendente, onde vive cada credencial) e o **ato de verificar** (que comando prova que o repositório está íntegro). Sem dono, cada um deles vira *config-as-state* ([07 §6.7](07-anti-padroes.md)): vive na memória de uma pessoa, de uma sessão ou de um agente, e some com ela.
+
+> [!NOTE]
+> Caso de origem (validação por uso): o estado necessário para continuar um projeto vivia só na memória local de uma sessão de agente, invisível para qualquer outra ferramenta; e um detector de R2 copiado para o projeto ficou atrás da versão publicada, de modo que três grupos de testes reprovaram por dias sem que ninguém visse, porque os verificadores rodavam um a um. O primeiro gate único pegou os dois na primeira execução.
+
+### 8.1 Diário de evidências (permanente)
+
+Um arquivo (`eee/log.md`, [template](../../templates/pt/evidence-journal-template.md)) com uma linha por mudança de estado relevante: arco aberto ou fechado, flip, deploy, rollback, incidente, decisão do operador, achado sobre o método.
+
+- **Mesmo commit:** a linha entra no commit da mudança, como o ledger de flags no flip.
+- **Sem comando e resultado, não há linha.** O diário não é narrativa; cada entrada aponta para a evidência (charter, saída, ID de deploy) e declara o nível R15.
+- **A coluna "achado" continua depois da adoção:** `ok`, `atrito` ou `lacuna` sobre o método. Atritos e lacunas viram propostas para o método, com a entrada como origem.
+- **Não substitui o charter:** o charter é a prova de um arco; o diário é o índice cronológico que costura arcos, flips e incidentes.
+
+### 8.2 Estado operacional e instruções neutras quanto ao harness
+
+- **Um ponto de entrada:** `AGENTS.md` na raiz ([template](../../templates/pt/agents-entry-template.md)) com as regras duras do projeto, a ordem de leitura, os comandos e o mapa. É o arquivo que a maior parte das ferramentas de agentes lê sem configuração, e é legível por pessoas.
+- **Conteúdo canônico em Markdown neutro**, numa pasta do projeto (ex.: `eee/`): estado operacional (`state/`), decisões do operador com data e palavras, fatos de cada ambiente, procedimentos por papel escritos sem nome de ferramenta ou de modelo, templates do método com versão fixada.
+- **Adaptadores finos:** os arquivos próprios de cada ferramenta (instruções, skills, definições de agente) só apontam para o conteúdo canônico. Podem trazer configuração da ferramenta (nome, modelo, permissões); não trazem regra, procedimento nem estado. O gate verifica: tamanho máximo, ponteiro presente, nenhum caminho morto.
+- **A memória de um agente é atalho, não fonte.** O estado vale o que está no repositório; quem age a partir dele confere com o ambiente antes (o estado tem data).
+- **Segredo:** o estado registra **onde** está cada credencial, nunca o valor; o gate reprova linha com forma de segredo.
+
+### 8.3 Gate único e ferramentas copiadas
+
+- **Um comando** ([exemplo](../../examples/verification-harness/gate.sh)) roda todos os verificadores do projeto (hierarquia, R2, sweep, paridades, suíte, adaptadores) e devolve um código de saída. Pessoas, CI e agentes de qualquer ferramenta chamam o mesmo comando.
+- **Falha, nunca pula:** dependência ausente (banco de teste fora do ar, interpretador antigo) reprova o passo. Teste pulado por falta de dependência é o falso verde mais barato que existe.
+- **Ferramentas copiadas declaram origem e versão:** cada script do harness traz `HARNESS_VERSION` e o imprime; o projeto registra de onde copiou cada ferramenta e template (ex.: `eee/kit/VERSION`). Atualizar é um commit visível; divergência entre a cópia e a versão declarada é achado.
+
+### Checklist de continuidade
+
+```markdown
+- [ ] AGENTS.md existe e só cita caminhos que existem
+- [ ] Adaptadores de ferramenta curtos, só com ponteiros (verificados pelo gate)
+- [ ] Estado operacional com data, sem valor secreto, conferido com o ambiente antes de agir
+- [ ] Diário com linha (comando + resultado) no mesmo commit de cada mudança de estado
+- [ ] Um comando de gate; dependência ausente reprova
+- [ ] Origem e versão declaradas para cada ferramenta e template copiados
 ```

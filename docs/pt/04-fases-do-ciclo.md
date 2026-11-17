@@ -77,7 +77,8 @@ flowchart LR
   - **Custódia do registro de decisão:** toda ADR citada existe no ramo principal; âncoras `arquivo:linha` resolvem para o símbolo nomeado ao lado (R13, R14).
   - Envelhecimento: decisões em `PROPOSED` além do prazo declarado são promovidas, emendadas ou canceladas.
   - **Proof test** dos mecanismos de contingência: tratadores cuja única manifestação orgânica é a falha que tratam são exercitados deliberadamente, em cadência declarada.
-  - Reexecução da bateria de fechamento por reavaliação.
+  - Reexecução da bateria de fechamento por reavaliação, pelo **gate único** do projeto; versões das ferramentas copiadas conferidas ([08 §8.3](08-guia-de-aplicacao.md)).
+  - **Diário de evidências** em dia: toda mudança de estado do ciclo tem linha com comando e resultado; o estado operacional confere com o ambiente ([08 §8](08-guia-de-aplicacao.md)).
 
 ## 3. Como as fases se encaixam em um arco
 

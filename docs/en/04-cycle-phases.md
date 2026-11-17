@@ -77,7 +77,8 @@ flowchart LR
   - **Custody of the decision record:** every cited ADR exists on the main branch; `file:line` anchors resolve to the symbol named beside them (R13, R14).
   - Ageing: decisions in `PROPOSED` beyond the declared window are promoted, amended or cancelled.
   - **Proof test** of contingency mechanisms: handlers whose only organic trigger is the failure they handle are exercised deliberately, on a declared cadence.
-  - Re-run of the closure-by-re-evaluation battery.
+  - Re-run of the closure-by-re-evaluation battery, through the project's **single gate**; versions of copied tools checked ([08 §8.3](08-application-guide.md)).
+  - **Evidence journal** up to date: every state change of the cycle has a line with command and result; the operational state matches the environment ([08 §8](08-application-guide.md)).
 
 ## 3. How the phases fit into an arc
 

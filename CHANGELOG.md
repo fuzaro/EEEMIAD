@@ -2,6 +2,25 @@
 
 All notable changes to EEEMIAD are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.5.0] — 2026-11-17
+
+Driven by the same validation-by-use, after adoption: the state needed to continue the project lived only in one agent session's memory, and a copied R2 detector had fallen behind the published one, unnoticed for days because the verifiers ran one by one.
+
+### Added
+- Ch. 08 §8 **Continuity: journal, state and single gate**.
+  - §8.1 **Evidence journal (permanent):** one line per relevant state change, in the same commit, with command and result; the method-finding column continues after adoption.
+  - §8.2 **Operational state and harness-neutral instructions:** `AGENTS.md` as the single entry point, canonical content in neutral Markdown, tool-specific files as thin adapters checked by the gate, agent memory as a shortcut and not a source, no secret values in state.
+  - §8.3 **Single gate and copied tools:** one command for every verifier, failing (never skipping) on a missing dependency; copied tools and templates declare origin and version.
+- `templates/{pt,en}/evidence-journal-template.md` and `templates/{pt,en}/agents-entry-template.md`.
+- `examples/verification-harness/gate.sh`: a starting single gate (hierarchy, R2, required dependencies, project suite) with tests.
+- `HARNESS_VERSION` in every harness script, printed on each run; a test keeps the five scripts on the same version.
+- Glossary: *evidence journal*, *operational state*, *harness adapter*, *single gate*.
+
+### Changed
+- Ch. 08 §1 step 1: the governance tree gains the "operations" rows (`AGENTS.md`, `eee/log.md`, `eee/state/`, `tools/gate.sh`); step 8 and the closure checklist refer to the single gate and the journal line.
+- Ch. 08 §4 Phase 8 ritual: run the single gate; check copied tools against their declared version; journal and state up to date. Ch. 04 Phase 8 mirrors it.
+- Ch. 08 §5: harness-neutral instructions as an attachment point for AI agents.
+
 ## [1.4.0] — 2026-11-15
 
 ### Added

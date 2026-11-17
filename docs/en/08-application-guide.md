@@ -23,7 +23,7 @@ flowchart TD
 ### Step 1 · Governance tree
 
 ```bash
-mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adversarial
+mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adversarial eee/state
 ```
 
 | Directory | Layer | Content |
@@ -32,6 +32,12 @@ mkdir -p Plan/decisions Plan/docs specs tests/unit tests/integration tests/adver
 | `Plan/decisions/` | 2 | Numbered ADRs ([template](../../templates/en/adr-template.md)) |
 | `specs/` | 3 | Living contracts + M11 matrix ([template](../../templates/en/failure-modes-m11-template.md)) + flag ledger ([template](../../templates/en/flag-ledger-template.md)) |
 | `tests/` | 4 | Suites with disagreeable pairs; `adversarial/` is written without reading the implementation |
+| `AGENTS.md` | operations | Entry point for people and for agents of any harness: hard rules, reading order, commands ([template](../../templates/en/agents-entry-template.md), §8.2) |
+| `eee/log.md` | operations | Evidence journal, permanent ([template](../../templates/en/evidence-journal-template.md), §8.1) |
+| `eee/state/` | operations | Operational state: what is on where, pending items, operator decisions; **where** each secret lives, never its value (§8.2) |
+| `tools/gate.sh` | operations | Single gate command ([example](../../examples/verification-harness/gate.sh), §8.3) |
+
+The "operations" rows are not a fifth layer of the hierarchy: they decide nothing. They record what happened, where things are and how to verify.
 
 ### Step 2 · Foundational Plan
 One page. Contains: why the system exists; what it **must not** do; default failure postures (decision → fail-closed; evidence → durable fail-open); global budgets.
@@ -64,7 +70,9 @@ python3 examples/verification-harness/verify_hierarchy.py --project-root .
 python3 examples/verification-harness/check_falsification.py --test-dir ./tests
 ```
 
-Closes when: harness green; the query that detected the deficit returns zero; the tier is declared (`done@functional`, R15 proof level). Anything above that is `done@gate` and belongs to the human.
+In the project, these commands and the other verifiers (language adapter, DDL parity, suite) sit behind **one** gate command (§8.3).
+
+Closes when: gate green; the query that detected the deficit returns zero; the tier is declared (`done@functional`, R15 proof level). Anything above that is `done@gate` and belongs to the human.
 
 > [!IMPORTANT]
 > **Read the `examined` line, not only the verdict.** The verifier fails when it finds no code to examine; in Phase 2, before code exists, pass `--allow-missing-code`. A verifier that examines nothing must not say it passed. TypeScript/Next.js projects use the [TypeScript adapter](../../examples/verification-harness/typescript/README.md); other languages need an adapter that keeps the same contract.
@@ -141,26 +149,30 @@ Printable. An arc is complete when every line has evidence (command + result, no
 - [ ] Live reproduction of the property and of the refutation (level 4), recorded in the [cut-over evidence template](../../templates/en/cutover-evidence-template.md)
 
 ### Closure
-- [ ] Deficit query = 0; harness green
+- [ ] Deficit query = 0; single gate green
+- [ ] Evidence journal line and operational state updated, in the same commit (§8)
 - [ ] done@tier declared, with proof level
 - [ ] Post-enforce window met → flag retired; Phase 8 sweep finds no ghosts
 ```
 
 ## 4. The Phase 8 ritual (sprint exit)
 
-1. Run the harness and the sweep: `verify_hierarchy.py`, `check_falsification.py`, `sweep_codebase.py`.
+1. Run the project's **single gate**, which includes the harness and the sweep (`verify_hierarchy.py`, `check_falsification.py`, `sweep_codebase.py`). Running verifiers one by one lets a red slip through (§8.3).
 2. Bidirectional parity routes ↔ specs; flags ↔ ledger; tables ↔ database spec.
 3. Custody: cited ADRs exist on the main branch; anchors resolve to symbols.
 4. `PROPOSED` ageing beyond the declared window: promote, amend or cancel.
 5. Proportion of unexercised gates (R6) and **proof test** of contingency mechanisms on cadence.
 6. Re-run the closure-by-re-evaluation battery.
 7. **Executor change** (person, agent or model): before accepting any earlier report, the new executor re-runs the whole battery from the repository. Any divergence between report and re-run goes to the ledger, even a small one: it is the plausible answer in miniature.
+8. **Copied tools:** every copy of the harness or of templates in the project declares origin and version; a copy that drifts from its declared version is a finding, not a detail (§8.3).
+9. **Journal and state:** every state change of the cycle has a journal line; the operational state matches the environment (§8.1, §8.2).
 
 ## 5. Adopting with AI agents
 
 EEE is tool-agnostic; the harness is not. It reads Python through the AST and TypeScript/Next.js through an [adapter](../../examples/verification-harness/typescript/README.md); for another language, write an adapter with the same contract before trusting its verdict. Two attachment points:
 
 - **Skills:** [`eee-governance-sweep`](../../skills/eee-governance-sweep/SKILL.md) automates Phase 8; [`eee-adversarial-verifier`](../../skills/eee-adversarial-verifier/SKILL.md) instantiates the role *who verifies* (tests from the spec, without reading the code).
+- **Harness-neutral instructions:** one `AGENTS.md` entry point and canonical content in Markdown; each tool's own files are thin adapters checked by the gate (§8.2).
 - **Role division between agents:** the full instantiation with two agents (reflective and executive), with brief, pre-flight reality-check and decision-by-decision evaluation, is in the sibling repository `EEEMIAD-dual`.
 
 ## 6. Task division by context level (optional)
@@ -229,4 +241,45 @@ The remote session may restart and lose environment variables, the credential in
 - [ ] For writes: decision here + operator's authorization in the acting session
 - [ ] Reply with command + output per step; whatever can be re-run from here was re-run
 - [ ] Evidence and timings recorded in the arc's charter (R15 level per line)
+```
+
+## 8. Continuity: journal, state and single gate
+
+Charters keep the evidence of each arc. Three things sit between arcs and have no owner in the cycle: the **timeline** (what changed, when, with what proof), the **operational state** (what is on in each environment, what is pending, where each credential lives) and the **act of verifying** (which command proves the repository is sound). Without an owner, each of them becomes *config-as-state* ([07 §6.7](07-anti-patterns.md)): it lives in the memory of a person, a session or an agent, and disappears with it.
+
+> [!NOTE]
+> Origin case (validation by use): the state needed to continue a project lived only in one agent session's local memory, invisible to any other tool; and an R2 detector copied into the project fell behind the published version, so three test groups failed for days without anyone noticing, because the verifiers ran one by one. The first single gate caught both on its first run.
+
+### 8.1 Evidence journal (permanent)
+
+One file (`eee/log.md`, [template](../../templates/en/evidence-journal-template.md)) with one line per relevant state change: arc opened or closed, flip, deploy, rollback, incident, operator decision, finding about the method.
+
+- **Same commit:** the line goes into the commit of the change, like the flag ledger on a flip.
+- **No command and result, no line.** The journal is not narrative; each entry points to the evidence (charter, output, deploy ID) and declares its R15 level.
+- **The "finding" column continues after adoption:** `ok`, `friction` or `gap` about the method. Frictions and gaps become proposals for the method, with the entry as their origin.
+- **It does not replace the charter:** the charter is the proof of one arc; the journal is the chronological index that ties arcs, flips and incidents together.
+
+### 8.2 Operational state and harness-neutral instructions
+
+- **One entry point:** `AGENTS.md` at the root ([template](../../templates/en/agents-entry-template.md)) with the project's hard rules, reading order, commands and map. Most agent tools read it without configuration, and people can read it too.
+- **Canonical content in neutral Markdown**, in a project folder (e.g. `eee/`): operational state (`state/`), operator decisions with date and words, facts about each environment, per-role procedures written without tool or model names, method templates with a pinned version.
+- **Thin adapters:** each tool's own files (instructions, skills, agent definitions) only point to the canonical content. They may carry tool configuration (name, model, permissions); they carry no rule, procedure or state. The gate checks it: maximum length, pointer present, no dead path.
+- **An agent's memory is a shortcut, not a source.** The state is what the repository says; whoever acts on it checks it against the environment first (the state is dated).
+- **Secrets:** the state records **where** each credential lives, never its value; the gate fails a line shaped like a secret.
+
+### 8.3 Single gate and copied tools
+
+- **One command** ([example](../../examples/verification-harness/gate.sh)) runs every verifier of the project (hierarchy, R2, sweep, parities, suite, adapters) and returns one exit code. People, CI and agents of any tool call the same command.
+- **Fail, never skip:** a missing dependency (test database down, old interpreter) fails the step. A test skipped for lack of a dependency is the cheapest false green there is.
+- **Copied tools declare origin and version:** every harness script carries `HARNESS_VERSION` and prints it; the project records where each tool and template was copied from (e.g. `eee/kit/VERSION`). Updating is a visible commit; drift between the copy and its declared version is a finding.
+
+### Continuity checklist
+
+```markdown
+- [ ] AGENTS.md exists and cites only paths that exist
+- [ ] Tool adapters are short and only point (checked by the gate)
+- [ ] Operational state is dated, holds no secret value, and is checked against the environment before acting
+- [ ] A journal line (command + result) in the same commit as each state change
+- [ ] One gate command; a missing dependency fails it
+- [ ] Origin and version declared for every copied tool and template
 ```

@@ -28,6 +28,10 @@ import re
 import sys
 from pathlib import Path
 
+# Version of the EEEMIAD harness this file belongs to. A project that copies the file keeps this line and
+# records the origin and version (ch. 08 §8.3); a copy that drifts from its declared version is a finding.
+HARNESS_VERSION = "1.5.0"
+
 VALID_STATUS = {"PROPOSED", "ACCEPTED", "REJECTED", "DEPRECATED", "SUPERSEDED"}
 HTTP_METHODS = {"GET", "POST", "PUT", "DELETE", "PATCH"}
 
@@ -103,6 +107,7 @@ def extract_routes(code_dir: Path, issues: list[str]) -> list[tuple[str, str, st
 
 def check_project_hierarchy(root_dir: str, allow_missing_code: bool = False) -> int:
     root = Path(root_dir)
+    print(f"[*] EEEMIAD harness {HARNESS_VERSION} (verify_hierarchy.py)")
     print(f"[*] Validating EEEMIAD Hierarchy of Truth for: {root.resolve()}")
     issues: list[str] = []
 

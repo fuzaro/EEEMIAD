@@ -21,6 +21,10 @@ import re
 import sys
 from pathlib import Path
 
+# Version of the EEEMIAD harness this file belongs to. A project that copies the file keeps this line and
+# records the origin and version (ch. 08 §8.3); a copy that drifts from its declared version is a finding.
+HARNESS_VERSION = "1.5.0"
+
 DEFAULT_FORBIDDEN = [r"['\"]x-user['\"]", r"['\"]x-role['\"]", r"body\.user\b", r"body\.subject\b", r"body\.autor\b"]
 IGNORED_ENV = {"NODE_ENV"}
 
@@ -33,6 +37,7 @@ def main() -> int:
     ap.add_argument("--deploy-spec", default=None, help="default: <specs>/deploy.md")
     ap.add_argument("--forbid", action="append", default=None, help="regex of a forbidden symbol (repeatable)")
     a = ap.parse_args()
+    print(f"[*] EEEMIAD harness {HARNESS_VERSION} (sweep_ts.py)")
     src, specs = Path(a.src), Path(a.specs)
     flags_file = Path(a.flags_file) if a.flags_file else src / "server" / "flags.ts"
     deploy_spec = Path(a.deploy_spec) if a.deploy_spec else specs / "deploy.md"

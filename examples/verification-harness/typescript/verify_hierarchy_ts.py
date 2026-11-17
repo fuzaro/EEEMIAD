@@ -23,6 +23,10 @@ import re
 import sys
 from pathlib import Path
 
+# Version of the EEEMIAD harness this file belongs to. A project that copies the file keeps this line and
+# records the origin and version (ch. 08 §8.3); a copy that drifts from its declared version is a finding.
+HARNESS_VERSION = "1.5.0"
+
 VALID_STATUS = {"PROPOSED", "ACCEPTED", "REJECTED", "DEPRECATED", "SUPERSEDED"}
 METHODS = "GET|POST|PUT|PATCH|DELETE"
 
@@ -93,6 +97,7 @@ def main() -> int:
     adr_dir = next((root / d for d in ("Plan/decisions", "adr") if (root / d).exists()), None)
     spec_dir = next((root / d for d in ("specs", "spec") if (root / d).exists()), None)
     issues: list[str] = []
+    print(f"[*] EEEMIAD harness {HARNESS_VERSION} (verify_hierarchy_ts.py)")
     print(f"[*] Hierarchy of truth (TypeScript) at {root.resolve()}")
 
     adrs: dict[str, dict] = {}

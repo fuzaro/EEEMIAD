@@ -153,3 +153,50 @@ def test_ts_falsification_fails_on_describe_without_negative():
         (t / "a.test.ts").write_text('describe("ok", () => {\n  it("works", () => {});\n  it("rejects bad input with 422", () => {});\n});\n'
                                      'describe("lonely", () => {\n  it("renders", () => {});\n});\n', encoding="utf-8")
         assert _run("check_falsification_ts.py", "--test-dir", str(t)) == 1
+
+
+# ── version and single gate (ch. 08 §8.3) ─────────────────────────────────────────────────────
+
+SCRIPTS = ["verify_hierarchy.py", "check_falsification.py", "typescript/verify_hierarchy_ts.py",
+           "typescript/check_falsification_ts.py", "typescript/sweep_ts.py"]
+
+
+def test_every_harness_script_declares_and_prints_the_same_version():
+    import re
+    versions = {s: re.search(r'^HARNESS_VERSION = "([^"]+)"', (HERE / s).read_text(encoding="utf-8"), re.M).group(1) for s in SCRIPTS}
+    assert len(set(versions.values())) == 1, versions
+    out = subprocess.run([sys.executable, str(HERE / "verify_hierarchy.py"), "--project-root", str(HERE.parent / "reference-implementation")],
+                         capture_output=True, text=True).stdout
+    assert f"EEEMIAD harness {versions['verify_hierarchy.py']}" in out
+
+
+def _gate(root: str, **env: str) -> subprocess.CompletedProcess:
+    import os
+    e = {**os.environ, "PYTHON": sys.executable, **env}
+    return subprocess.run(["bash", str(HERE / "gate.sh"), root], capture_output=True, text=True, env=e)
+
+
+def test_gate_approves_a_compliant_project():
+    with tempfile.TemporaryDirectory() as d:
+        _project(Path(d), code=HEALTH)
+        (Path(d) / "tests").mkdir()
+        (Path(d) / "tests" / "test_h.py").write_text("def test_health_ok(): pass\ndef test_health_rejects_post(): pass\n", encoding="utf-8")
+        r = _gate(d)
+        assert r.returncode == 0, r.stdout
+        assert "APPROVED" in r.stdout
+
+
+def test_gate_fails_instead_of_skipping_when_a_required_dependency_is_down_and_counts_failed_steps():
+    with tempfile.TemporaryDirectory() as d:
+        _project(Path(d), code=HEALTH)
+        (Path(d) / "tests").mkdir()
+        (Path(d) / "tests" / "test_h.py").write_text("def test_health_ok(): pass\ndef test_health_rejects_post(): pass\n", encoding="utf-8")
+        r = _gate(d, GATE_REQUIRE="127.0.0.1:1", GATE_SUITE="exit 3")
+        assert r.returncode == 2, r.stdout
+        assert "FAIL  dependency 127.0.0.1:1" in r.stdout and "FAIL  test suite" in r.stdout
+
+
+def test_gate_fails_on_a_project_where_nothing_can_be_examined():
+    with tempfile.TemporaryDirectory() as d:
+        r = _gate(d)
+        assert r.returncode >= 1, r.stdout

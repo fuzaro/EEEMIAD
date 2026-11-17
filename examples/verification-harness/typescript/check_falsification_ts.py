@@ -18,6 +18,10 @@ import re
 import sys
 from pathlib import Path
 
+# Version of the EEEMIAD harness this file belongs to. A project that copies the file keeps this line and
+# records the origin and version (ch. 08 §8.3); a copy that drifts from its declared version is a finding.
+HARNESS_VERSION = "1.5.0"
+
 NEGATIVE = re.compile(
     r"reject|denie|deny|fail|invalid|unauthor|forbid|malform|blocked|barred|refuse|abort|diverg|tamper|corrupt|"
     r"missing|unknown|neighbo|refut|stale|negative control|\b(400|401|403|404|409|422|500|503)\b",
@@ -54,6 +58,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="EEEMIAD R2 verifier (Vitest/Jest)")
     ap.add_argument("--test-dir", default="tests")
     a = ap.parse_args()
+    print(f"[*] EEEMIAD harness {HARNESS_VERSION} (check_falsification_ts.py)")
     files = sorted(p for ext in ("ts", "tsx", "js", "mjs") for p in Path(a.test_dir).glob(f"**/*.test.{ext}"))
     if not files:
         print("[!] no *.test.(ts|tsx|js|mjs) found")
