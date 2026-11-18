@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+  <title>A melhor infraestrutura é aquela que desaparece quando funciona.</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c2340"/>
+      <stop offset="0.38" stop-color="#4a3a66"/>
+      <stop offset="0.62" stop-color="#b8687a"/>
+      <stop offset="0.78" stop-color="#ec9a6c"/>
+      <stop offset="0.9" stop-color="#f7c88c"/>
+    </linearGradient>
+    <radialGradient id="sunglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff1cf" stop-opacity="0.95"/>
+      <stop offset="0.25" stop-color="#ffd79a" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#f6a66e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bamboo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5e5a2e"/>
+      <stop offset="0.3" stop-color="#c9b66e"/>
+      <stop offset="0.45" stop-color="#ead9a0"/>
+      <stop offset="0.7" stop-color="#a99650"/>
+      <stop offset="1" stop-color="#4c4824"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a5f3a"/>
+      <stop offset="1" stop-color="#4a3020"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a110c"/>
+      <stop offset="0.85" stop-color="#2e1f16"/>
+      <stop offset="1" stop-color="#4a3222"/>
+    </linearGradient>
+    <linearGradient id="tea" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a2a22"/>
+      <stop offset="0.5" stop-color="#6e5444"/>
+      <stop offset="1" stop-color="#2a1d17"/>
+    </linearGradient>
+    <radialGradient id="fly" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6c8" stop-opacity="1"/>
+      <stop offset="0.35" stop-color="#ffe58a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffe58a" stop-opacity="0"/>
+    </radialGradient>
+    <g id="tube">
+      <!-- tube 26 wide, height set by scale: drawn 0..1 then nodes added per tube -->
+    </g>
+  <clipPath id="scene"><rect width="1200" height="1200"/></clipPath>
+  </defs>
+  <rect width="1080" height="1350" fill="#140d09"/>
+  <g transform="scale(0.9)" clip-path="url(#scene)">
+  
+
+  <!-- céu -->
+  <rect width="1200" height="1200" fill="url(#sky)"/>
+
+  <!-- estrelas -->
+  <g fill="#fff" opacity="0.7">
+    <circle cx="140" cy="150" r="1.6"/><circle cx="260" cy="220" r="1.1"/><circle cx="380" cy="130" r="1.4"/>
+    <circle cx="520" cy="190" r="1"/><circle cx="930" cy="140" r="1.5"/><circle cx="1050" cy="230" r="1.1"/>
+    <circle cx="1120" cy="120" r="1.3"/><circle cx="860" cy="250" r="0.9"/><circle cx="460" cy="290" r="0.9"/>
+    <circle cx="1000" cy="330" r="1"/>
+  </g>
+
+  <!-- sol baixo -->
+  <circle cx="930" cy="790" r="300" fill="url(#sunglow)"/>
+  <circle cx="930" cy="812" r="54" fill="#fff3d6"/>
+
+  <!-- montanhas -->
+  <path d="M0 880 C 140 820 250 840 360 800 C 470 760 560 830 680 810 C 800 790 900 840 1020 815 C 1110 798 1160 820 1200 812 L1200 1200 L0 1200 Z" fill="#a8687c"/>
+  <path d="M0 930 C 120 890 230 910 330 880 C 450 845 560 905 700 885 C 820 868 940 912 1060 890 C 1130 878 1170 892 1200 888 L1200 1200 L0 1200 Z" fill="#5b3f5f" opacity="0.8"/>
+  <path d="M0 975 C 160 950 300 965 460 945 C 620 925 760 962 920 948 C 1040 938 1140 955 1200 950 L1200 1200 L0 1200 Z" fill="#3a2a44"/>
+
+  <!-- bambuzal à esquerda -->
+  <g stroke="#17201b" stroke-linecap="round" fill="none">
+    <path d="M70 1200 C 80 900 60 600 95 60" stroke-width="16"/>
+    <path d="M150 1200 C 160 950 175 700 150 160" stroke-width="12"/>
+    <path d="M20 1200 C 25 1000 10 800 30 420" stroke-width="10"/>
+  </g>
+  <g stroke="#2a3a2c" stroke-width="3" opacity="0.9">
+    <path d="M60 300 h28 M74 520 h28 M78 760 h26 M140 380 h22 M146 640 h22 M150 880 h22 M14 600 h22 M18 820 h22"/>
+  </g>
+  <g fill="#17201b">
+    <path d="M95 210 C 150 190 210 200 260 230 C 200 236 150 232 95 210 Z"/>
+    <path d="M92 250 C 140 270 180 300 210 345 C 160 320 120 295 92 250 Z"/>
+    <path d="M88 420 C 40 400 10 405 -20 420 C 20 438 55 438 88 420 Z"/>
+    <path d="M152 300 C 205 285 255 295 300 322 C 245 326 195 322 152 300 Z"/>
+    <path d="M155 470 C 200 480 240 510 265 550 C 220 530 180 505 155 470 Z"/>
+    <path d="M150 560 C 195 545 240 548 285 565 C 235 578 190 576 150 560 Z"/>
+    <path d="M96 120 C 130 90 170 80 215 85 C 175 108 135 120 96 120 Z"/>
+    <path d="M30 540 C 70 560 95 590 110 625 C 75 605 45 580 30 540 Z"/>
+    <path d="M85 640 C 40 625 5 632 -25 650 C 15 663 52 660 85 640 Z"/>
+    <path d="M150 180 C 190 150 230 140 275 145 C 235 168 195 180 150 180 Z"/>
+  </g>
+
+  <!-- vaga-lumes -->
+  <g>
+    <circle cx="300" cy="760" r="14" fill="url(#fly)"/>
+    <circle cx="420" cy="680" r="10" fill="url(#fly)"/>
+    <circle cx="1040" cy="640" r="12" fill="url(#fly)"/>
+    <circle cx="1110" cy="760" r="9" fill="url(#fly)"/>
+    <circle cx="250" cy="560" r="8" fill="url(#fly)"/>
+  </g>
+
+  <!-- ondas de som, suaves -->
+  <g fill="none" stroke="#fff4dc" stroke-linecap="round">
+    <path d="M860 430 C 890 470 890 530 860 570" stroke-width="3" opacity="0.35"/>
+    <path d="M895 400 C 940 460 940 540 895 600" stroke-width="2.5" opacity="0.22"/>
+    <path d="M930 370 C 990 450 990 550 930 630" stroke-width="2" opacity="0.12"/>
+    <path d="M540 430 C 510 470 510 530 540 570" stroke-width="3" opacity="0.35"/>
+    <path d="M505 400 C 460 460 460 540 505 600" stroke-width="2.5" opacity="0.22"/>
+    <path d="M470 370 C 410 450 410 550 470 630" stroke-width="2" opacity="0.12"/>
+  </g>
+
+  <!-- sino de bambu, levemente inclinado pela brisa -->
+  <g transform="rotate(-4 700 80)">
+    <!-- cordão principal -->
+    <line x1="700" y1="80" x2="700" y2="262" stroke="#e9d8b4" stroke-width="2.4"/>
+    <!-- cordões laterais até o disco -->
+    <path d="M700 200 L600 262 M700 200 L800 262" stroke="#e9d8b4" stroke-width="1.6" opacity="0.8" fill="none"/>
+
+    <!-- tubos de trás -->
+    <g stroke="#e9d8b4" stroke-width="1.6">
+      <line x1="640" y1="270" x2="640" y2="300"/><line x1="700" y1="268" x2="700" y2="296"/><line x1="760" y1="270" x2="760" y2="300"/>
+    </g>
+    <g>
+      <!-- tubo trás 1 -->
+      <path d="M627 312 L653 300 L653 650 L627 650 Z" fill="url(#bamboo)" opacity="0.85"/>
+      <rect x="626" y="470" width="28" height="7" rx="3" fill="#6f6634" opacity="0.85"/>
+      <rect x="626" y="600" width="28" height="7" rx="3" fill="#6f6634" opacity="0.85"/>
+      <!-- tubo trás 2 -->
+      <path d="M687 308 L713 296 L713 590 L687 590 Z" fill="url(#bamboo)" opacity="0.85"/>
+      <rect x="686" y="440" width="28" height="7" rx="3" fill="#6f6634" opacity="0.85"/>
+      <!-- tubo trás 3 -->
+      <path d="M747 312 L773 300 L773 620 L747 620 Z" fill="url(#bamboo)" opacity="0.85"/>
+      <rect x="746" y="455" width="28" height="7" rx="3" fill="#6f6634" opacity="0.85"/>
+      <rect x="746" y="580" width="28" height="7" rx="3" fill="#6f6634" opacity="0.85"/>
+    </g>
+
+    <!-- disco de madeira -->
+    <ellipse cx="700" cy="276" rx="112" ry="24" fill="#3a2618"/>
+    <ellipse cx="700" cy="268" rx="112" ry="24" fill="url(#wood)"/>
+    <ellipse cx="700" cy="266" rx="96" ry="17" fill="none" stroke="#a87a4e" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- batente (central) -->
+    <line x1="700" y1="276" x2="700" y2="740" stroke="#e9d8b4" stroke-width="1.8"/>
+    <ellipse cx="700" cy="530" rx="44" ry="10" fill="#3a2618"/>
+    <ellipse cx="700" cy="526" rx="44" ry="10" fill="url(#wood)"/>
+
+    <!-- tubos da frente -->
+    <g stroke="#e9d8b4" stroke-width="1.6">
+      <line x1="610" y1="282" x2="610" y2="318"/><line x1="670" y1="290" x2="670" y2="326"/>
+      <line x1="730" y1="290" x2="730" y2="326"/><line x1="790" y1="282" x2="790" y2="318"/>
+    </g>
+    <g>
+      <!-- frente 1 -->
+      <path d="M595 334 L625 320 L625 720 L595 720 Z" fill="url(#bamboo)"/>
+      <rect x="593" y="470" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <rect x="593" y="620" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <!-- frente 2 -->
+      <path d="M655 342 L685 328 L685 800 L655 800 Z" fill="url(#bamboo)"/>
+      <rect x="653" y="500" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <rect x="653" y="660" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <!-- frente 3 -->
+      <path d="M715 342 L745 328 L745 760 L715 760 Z" fill="url(#bamboo)"/>
+      <rect x="713" y="485" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <rect x="713" y="640" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <!-- frente 4 -->
+      <path d="M775 334 L805 320 L805 680 L775 680 Z" fill="url(#bamboo)"/>
+      <rect x="773" y="465" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <rect x="773" y="600" width="34" height="8" rx="4" fill="#7a6e38"/>
+      <!-- bocas dos cortes inclinados -->
+      <path d="M595 334 L625 320" stroke="#3b3418" stroke-width="3"/>
+      <path d="M655 342 L685 328" stroke="#3b3418" stroke-width="3"/>
+      <path d="M715 342 L745 328" stroke="#3b3418" stroke-width="3"/>
+      <path d="M775 334 L805 320" stroke="#3b3418" stroke-width="3"/>
+    </g>
+
+    <!-- vela (pega o vento) -->
+    <path d="M700 740 C 650 770 640 850 700 905 C 760 850 750 770 700 740 Z" fill="url(#wood)"/>
+    <path d="M700 752 L700 892" stroke="#a87a4e" stroke-width="1.5" opacity="0.6"/>
+  </g>
+
+  <!-- viga da varanda -->
+  <rect x="0" y="0" width="1200" height="80" fill="url(#beam)"/>
+  <g fill="#120c08">
+    <rect x="80" y="80" width="46" height="20"/><rect x="380" y="80" width="46" height="20"/>
+    <rect x="980" y="80" width="46" height="20"/>
+  </g>
+  <rect x="690" y="70" width="20" height="16" rx="4" fill="#2a1b12"/>
+
+  <!-- guarda-corpo e piso -->
+  <rect x="0" y="1010" width="1200" height="18" fill="#22160f"/>
+  <rect x="0" y="1006" width="1200" height="4" fill="#5a3c28" opacity="0.7"/>
+  <g fill="#1b120c">
+    <rect x="40" y="1028" width="16" height="80"/><rect x="200" y="1028" width="16" height="80"/>
+    <rect x="360" y="1028" width="16" height="80"/><rect x="520" y="1028" width="16" height="80"/>
+    <rect x="680" y="1028" width="16" height="80"/><rect x="840" y="1028" width="16" height="80"/>
+    <rect x="1000" y="1028" width="16" height="80"/><rect x="1160" y="1028" width="16" height="80"/>
+  </g>
+  <rect x="0" y="1100" width="1200" height="100" fill="#140d09"/>
+  <rect x="0" y="1100" width="1200" height="3" fill="#4a3222" opacity="0.6"/>
+
+  <!-- xícara de chá sobre o guarda-corpo -->
+  <ellipse cx="300" cy="1008" rx="64" ry="9" fill="#120c08" opacity="0.6"/>
+  <ellipse cx="300" cy="1004" rx="58" ry="10" fill="#3a2a22"/>
+  <path d="M262 952 L338 952 L330 1000 C 326 1006 274 1006 270 1000 Z" fill="url(#tea)"/>
+  <ellipse cx="300" cy="952" rx="38" ry="7" fill="#6e5444"/>
+  <ellipse cx="300" cy="953" rx="32" ry="5" fill="#8a6a3a"/>
+  <!-- vapor -->
+  <g fill="none" stroke="#fff4e0" stroke-linecap="round">
+    <path d="M290 936 C 278 914 302 900 290 876 C 280 856 298 842 292 822" stroke-width="3" opacity="0.35"/>
+    <path d="M312 932 C 322 912 302 896 314 874 C 324 856 308 842 314 826" stroke-width="2.5" opacity="0.25"/>
+  </g>
+</g>
+  <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140d09" stop-opacity="0"/><stop offset="1" stop-color="#0e0906"/></linearGradient>
+  <rect x="0" y="990" width="1080" height="360" fill="url(#fade)"/>
+  <g font-family="'EB Garamond', Georgia, 'Times New Roman', serif" text-anchor="middle">
+    <text x="540" y="1112" font-size="50" font-style="italic" fill="#f6e7c8">A melhor infraestrutura é aquela</text>
+    <text x="540" y="1176" font-size="50" font-style="italic" fill="#f6e7c8">que desaparece quando funciona.</text>
+    <line x1="490" y1="1222" x2="590" y2="1222" stroke="#d9a464" stroke-width="1.5" opacity="0.8"/>
+    <text x="540" y="1268" font-size="20" letter-spacing="3" fill="#d9a464">MANIFESTO DA ATENÇÃO HUMANA FINITA · EEEMIAD</text>
+  </g>
+</svg>
